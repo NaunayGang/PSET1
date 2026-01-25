@@ -1122,8 +1122,11 @@ How to get Nix and activate the devshell?
 <blockquote>
 <p>Supported platforms: Linux, MacOS, WSL2, Docker</p>
 </blockquote></li>
+<li><p>Enable <code>nix-command</code> and <code>flakes</code> features.
+Edit <code>/etc/nix/nix.conf</code> and add the following line.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode toml"><code class="sourceCode toml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dt">experimental-features</span> <span class="op">=</span> <span class="dt">nix-command</span> <span class="dt">flakes</span></span></code></pre></div></li>
 <li><p>Activate devshell.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nix-develop</span> <span class="co"># Run this on project&#39;s root (i.e. in the same directory where .git resides)</span></span></code></pre></div></li>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nix-develop</span> <span class="co"># Run this on project&#39;s root (i.e. in the same directory where .git resides)</span></span></code></pre></div></li>
 </ol>
 </details>
 <h2 id="how-to-use-tern">How to use tern?</h2>
@@ -1135,10 +1138,10 @@ replaced with a better one made in SDL3 eventually.</p>
 <blockquote>
 <p>I’ve already done this, ignore this step - Steven</p>
 </blockquote>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">tern</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">tern</span></span></code></pre></div>
 <p>A window should pop up, fill out the “form”</p></li>
 <li><p>Convert files</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">tern</span></span></code></pre></div></li>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">tern</span></span></code></pre></div></li>
 </ol>
 <h2 id="any-tip">Any tip?</h2>
 <p>Yeah, since <code>tern</code> tracks file metadata to not re-render
@@ -1152,7 +1155,7 @@ documents: <code>tern -f</code></p>
 <h1 id="miscellaneous">Miscellaneous</h1>
 <h2 id="how-to-view-documentation">How to view documentation?</h2>
 <p>You can serve it using a simple HTTP Python server:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> http.server <span class="at">-d</span> docs 8080 <span class="co"># This works in Python 3.7 and onwards</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> http.server <span class="at">-d</span> docs 8080 <span class="co"># This works in Python 3.7 and onwards</span></span></code></pre></div>
 <p>Then open up in your browser: <a href="http://localhost:8080" class="uri">http://localhost:8080</a></p>
 <h2 id="any-problem-bug">Any problem, bug?</h2>
 <p>Tell me about it, I’ll fix it - Steven</p>

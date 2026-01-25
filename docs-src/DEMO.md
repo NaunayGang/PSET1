@@ -23,6 +23,12 @@ It uses some Lua magick, but don't worry about it, the Nix devshell takes care o
 
     > Supported platforms: Linux, MacOS, WSL2, Docker
 
+1.  Enable `nix-command` and `flakes` features. Edit `/etc/nix/nix.conf` and add the following line.
+
+    ```toml
+    experimental-features = nix-command flakes
+    ```
+
 1.  Activate devshell.
 
     ```bash
