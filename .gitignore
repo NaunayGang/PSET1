@@ -6,3 +6,5 @@
 /tern
 # Ignore create fork
 /ripgrep
+# Pandoc resources
+/pandoc-resources

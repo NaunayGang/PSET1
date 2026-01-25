@@ -1,0 +1,1396 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="generator" content="pandoc" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+                   <title>REQUIREMENTS</title>
+        <style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+                <style type="text/css">
+
+
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+main,
+nav,
+section,
+summary {
+display: block;
+}
+
+audio,
+canvas,
+video {
+display: inline-block;
+}
+
+audio:not([controls]) {
+display: none;
+height: 0;
+}
+
+[hidden],
+template {
+display: none;
+}
+
+
+html {
+font-family: sans-serif;
+
+-ms-text-size-adjust: 100%;
+
+-webkit-text-size-adjust: 100%;
+
+}
+
+body {
+margin: 0;
+}
+
+
+a {
+background: transparent;
+}
+
+a:focus {
+outline: thin dotted;
+}
+
+a:active,
+a:hover {
+outline: 0;
+}
+
+
+h1 {
+font-size: 2em;
+margin: 0.67em 0;
+}
+
+abbr[title] {
+border-bottom: 1px dotted;
+}
+
+b,
+strong {
+font-weight: bold;
+}
+
+dfn {
+font-style: italic;
+}
+
+hr {
+-moz-box-sizing: content-box;
+box-sizing: content-box;
+height: 0;
+}
+
+mark {
+background: #ff0;
+color: #000;
+}
+
+code,
+kbd,
+pre,
+samp {
+font-family: monospace, serif;
+font-size: 1em;
+}
+
+pre {
+white-space: pre-wrap;
+}
+
+q {
+quotes: "\201C" "\201D" "\2018" "\2019";
+}
+
+small {
+font-size: 80%;
+}
+
+sub,
+sup {
+font-size: 75%;
+line-height: 0;
+position: relative;
+vertical-align: baseline;
+}
+sup {
+top: -0.5em;
+}
+sub {
+bottom: -0.25em;
+}
+
+
+img {
+border: 0;
+}
+
+svg:not(:root) {
+overflow: hidden;
+}
+
+
+figure {
+margin: 0;
+}
+
+
+fieldset {
+border: 1px solid #c0c0c0;
+margin: 0 2px;
+padding: 0.35em 0.625em 0.75em;
+}
+
+legend {
+border: 0;
+
+padding: 0;
+
+}
+
+button,
+input,
+select,
+textarea {
+font-family: inherit;
+
+font-size: 100%;
+
+margin: 0;
+
+}
+
+button,
+input {
+line-height: normal;
+}
+
+button,
+select {
+text-transform: none;
+}
+
+button,
+html input[type="button"],
+
+input[type="reset"],
+input[type="submit"] {
+-webkit-appearance: button;
+
+cursor: pointer;
+
+}
+
+button[disabled],
+html input[disabled] {
+cursor: default;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+box-sizing: border-box;
+
+padding: 0;
+
+}
+
+input[type="search"] {
+-webkit-appearance: textfield;
+
+-moz-box-sizing: content-box;
+-webkit-box-sizing: content-box;
+
+box-sizing: content-box;
+}
+
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration {
+-webkit-appearance: none;
+}
+
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+border: 0;
+padding: 0;
+}
+
+textarea {
+overflow: auto;
+
+vertical-align: top;
+
+}
+
+
+table {
+border-collapse: collapse;
+border-spacing: 0;
+}
+.go-top {
+position: fixed;
+bottom: 2em;
+right: 2em;
+text-decoration: none;
+background-color: #E0E0E0;
+font-size: 12px;
+padding: 1em;
+display: inline;
+}
+
+html,
+body {
+margin: auto;
+padding-right: 1em;
+padding-left: 1em;
+max-width: 85%;
+color: black;
+}
+*:not('#mkdbuttons') {
+margin: 0;
+padding: 0
+}
+body {
+font: 13.34px helvetica, arial, freesans, clean, sans-serif;
+-webkit-font-smoothing: subpixel-antialiased;
+line-height: 1.4;
+padding: 3px;
+background: #fff;
+border-radius: 3px;
+-moz-border-radius: 3px;
+-webkit-border-radius: 3px
+}
+p {
+margin: 1em 0
+}
+a {
+color: #4183c4;
+text-decoration: none
+}
+body {
+background-color: #fff;
+padding: 30px;
+margin: 15px;
+font-size: 14px;
+line-height: 1.6
+}
+body>*:first-child {
+margin-top: 0 !important
+}
+body>*:last-child {
+margin-bottom: 0 !important
+}
+@media screen {}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+margin: 20px 0 10px;
+padding: 0;
+font-weight: bold;
+-webkit-font-smoothing: subpixel-antialiased;
+cursor: text
+}
+h1 {
+font-size: 28px;
+color: #000
+}
+h2 {
+font-size: 24px;
+border-bottom: 1px solid #ccc;
+color: #000
+}
+h3 {
+font-size: 18px;
+}
+h4 {
+font-size: 16px;
+}
+h5 {
+font-size: 14px;
+}
+h6 {
+color: #777;
+font-size: 14px
+}
+p,
+blockquote,
+table,
+pre {
+margin: 15px 0
+}
+ul {
+padding-left: 30px
+}
+ol {
+padding-left: 30px
+}
+ol li ul:first-of-type {
+margin-top: 0
+}
+hr {
+background: transparent url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAECAYAAACtBE5DAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OENDRjNBN0E2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OENDRjNBN0I2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo4Q0NGM0E3ODY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo4Q0NGM0E3OTY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PqqezsUAAAAfSURBVHjaYmRABcYwBiM2QSA4y4hNEKYDQxAEAAIMAHNGAzhkPOlYAAAAAElFTkSuQmCC) repeat-x 0 0;
+border: 0 none;
+color: #ccc;
+height: 4px;
+padding: 0
+}
+body>h2:first-child {
+margin-top: 0;
+padding-top: 0
+}
+body>h1:first-child {
+margin-top: 0;
+padding-top: 0
+}
+body>h1:first-child+h2 {
+margin-top: 0;
+padding-top: 0
+}
+body>h3:first-child,
+body>h4:first-child,
+body>h5:first-child,
+body>h6:first-child {
+margin-top: 0;
+padding-top: 0
+}
+a:first-child h1,
+a:first-child h2,
+a:first-child h3,
+a:first-child h4,
+a:first-child h5,
+a:first-child h6 {
+margin-top: 0;
+padding-top: 0
+}
+h1+p,
+h2+p,
+h3+p,
+h4+p,
+h5+p,
+h6+p,
+ul li>:first-child,
+ol li>:first-child {
+margin-top: 0
+}
+dl {
+padding: 0
+}
+dl dt {
+font-size: 14px;
+font-weight: bold;
+font-style: italic;
+padding: 0;
+margin: 15px 0 5px
+}
+dl dt:first-child {
+padding: 0
+}
+dl dt>:first-child {
+margin-top: 0
+}
+dl dt>:last-child {
+margin-bottom: 0
+}
+dl dd {
+margin: 0 0 15px;
+padding: 0 15px
+}
+dl dd>:first-child {
+margin-top: 0
+}
+dl dd>:last-child {
+margin-bottom: 0
+}
+blockquote {
+border-left: 4px solid #DDD;
+padding: 0 15px;
+color: #777
+}
+blockquote>:first-child {
+margin-top: 0
+}
+blockquote>:last-child {
+margin-bottom: 0
+}
+table {
+border-collapse: collapse;
+border-spacing: 0;
+font-size: 100%;
+font: inherit
+}
+table th {
+font-weight: bold;
+border: 1px solid #ccc;
+padding: 6px 13px
+}
+table td {
+border: 1px solid #ccc;
+padding: 6px 13px
+}
+table tr {
+border-top: 1px solid #ccc;
+background-color: #fff
+}
+table tr:nth-child(2n) {
+background-color: #f8f8f8
+}
+img {
+max-width: 100%
+}
+code,
+tt {
+margin: 0 2px;
+padding: 0 5px;
+white-space: nowrap;
+border: 1px solid #eaeaea;
+background-color: #f8f8f8;
+border-radius: 3px;
+font-family: Consolas, 'Liberation Mono', Courier, monospace;
+
+;
+color: #333
+}
+pre>code {
+margin: 0;
+padding: 0;
+white-space: pre;
+border: 0;
+background: transparent
+}
+.highlight pre {
+background-color: #f8f8f8;
+border: 1px solid #ccc;
+font-size: 13px;
+line-height: 19px;
+overflow: auto;
+padding: 6px 10px;
+border-radius: 3px
+}
+pre {
+background-color: #f8f8f8;
+border: 1px solid #ccc;
+font-size: 13px;
+line-height: 19px;
+overflow: auto;
+padding: 6px 10px;
+border-radius: 3px
+}
+pre code,
+pre tt {
+background-color: transparent;
+border: 0
+}
+.poetry pre {
+font-family: Georgia, Garamond, serif !important;
+font-style: italic;
+font-size: 110% !important;
+line-height: 1.6em;
+display: block;
+margin-left: 1em
+}
+.poetry pre code {
+font-family: Georgia, Garamond, serif !important;
+word-break: break-all;
+word-break: break-word;
+-webkit-hyphens: auto;
+-moz-hyphens: auto;
+hyphens: auto;
+white-space: pre-wrap
+}
+sup,
+sub,
+a.footnote {
+font-size: 1.4ex;
+height: 0;
+line-height: 1;
+vertical-align: super;
+position: relative
+}
+sub {
+vertical-align: sub;
+top: -1px
+}
+@media print {
+body {
+background: #fff
+}
+img,
+pre,
+blockquote,
+table,
+figure {
+page-break-inside: avoid
+}
+body {
+background: #fff;
+border: 0
+}
+code {
+background-color: #fff;
+color: #333 !important;
+padding: 0 .2em;
+border: 1px solid #dedede
+}
+pre {
+background: #fff
+}
+pre code {
+background-color: white !important;
+overflow: visible
+}
+}
+@media screen {
+body.inverted {
+color: #eee !important;
+border-color: #555;
+box-shadow: none
+}
+.inverted body,
+.inverted hr .inverted p,
+.inverted td,
+.inverted li,
+.inverted h1,
+.inverted h2,
+.inverted h3,
+.inverted h4,
+.inverted h5,
+.inverted h6,
+.inverted th,
+.inverted .math,
+.inverted caption,
+.inverted dd,
+.inverted dt,
+.inverted blockquote {
+color: #eee !important;
+border-color: #555;
+box-shadow: none
+}
+.inverted td,
+.inverted th {
+background: #333
+}
+.inverted h2 {
+border-color: #555
+}
+.inverted hr {
+border-color: #777;
+border-width: 1px !important
+}
+::selection {
+background: rgba(157, 193, 200, 0.5)
+}
+h1::selection {
+background-color: rgba(45, 156, 208, 0.3)
+}
+h2::selection {
+background-color: rgba(90, 182, 224, 0.3)
+}
+h3::selection,
+h4::selection,
+h5::selection,
+h6::selection,
+li::selection,
+ol::selection {
+background-color: rgba(133, 201, 232, 0.3)
+}
+code::selection {
+background-color: rgba(0, 0, 0, 0.7);
+color: #eee
+}
+code span::selection {
+background-color: rgba(0, 0, 0, 0.7) !important;
+color: #eee !important
+}
+a::selection {
+background-color: rgba(255, 230, 102, 0.2)
+}
+.inverted a::selection {
+background-color: rgba(255, 230, 102, 0.6)
+}
+td::selection,
+th::selection,
+caption::selection {
+background-color: rgba(180, 237, 95, 0.5)
+}
+.inverted {
+background: #0b2531;
+background: #252a2a
+}
+.inverted body {
+background: #252a2a
+}
+.inverted a {
+color: #acd1d5
+}
+}
+.highlight .c {
+color: #998;
+font-style: italic
+}
+.highlight .err {
+color: #a61717;
+background-color: #e3d2d2
+}
+.highlight .k,
+.highlight .o {
+font-weight: bold
+}
+.highlight .cm {
+color: #998;
+font-style: italic
+}
+.highlight .cp {
+color: #999;
+font-weight: bold
+}
+.highlight .c1 {
+color: #998;
+font-style: italic
+}
+.highlight .cs {
+color: #999;
+font-weight: bold;
+font-style: italic
+}
+.highlight .gd {
+color: #000;
+background-color: #fdd
+}
+.highlight .gd .x {
+color: #000;
+background-color: #faa
+}
+.highlight .ge {
+font-style: italic
+}
+.highlight .gr {
+color: #a00
+}
+.highlight .gh {
+color: #999
+}
+.highlight .gi {
+color: #000;
+background-color: #dfd
+}
+.highlight .gi .x {
+color: #000;
+background-color: #afa
+}
+.highlight .go {
+color: #888
+}
+.highlight .gp {
+color: #555
+}
+.highlight .gs {
+font-weight: bold
+}
+.highlight .gu {
+color: #800080;
+font-weight: bold
+}
+.highlight .gt {
+color: #a00
+}
+.highlight .kc,
+.highlight .kd,
+.highlight .kn,
+.highlight .kp,
+.highlight .kr {
+font-weight: bold
+}
+.highlight .kt {
+color: #458;
+font-weight: bold
+}
+.highlight .m {
+color: #099
+}
+.highlight .s {
+color: #d14
+}
+.highlight .na {
+color: #008080
+}
+.highlight .nb {
+color: #0086b3
+}
+.highlight .nc {
+color: #458;
+font-weight: bold
+}
+.highlight .no {
+color: #008080
+}
+.highlight .ni {
+color: #800080
+}
+.highlight .ne,
+.highlight .nf {
+color: #900;
+font-weight: bold
+}
+.highlight .nn {
+color: #555
+}
+.highlight .nt {
+color: #000080
+}
+.highlight .nv {
+color: #008080
+}
+.highlight .ow {
+font-weight: bold
+}
+.highlight .w {
+color: #bbb
+}
+.highlight .mf,
+.highlight .mh,
+.highlight .mi,
+.highlight .mo {
+color: #099
+}
+.highlight .sb,
+.highlight .sc,
+.highlight .sd,
+.highlight .s2,
+.highlight .se,
+.highlight .sh,
+.highlight .si,
+.highlight .sx {
+color: #d14
+}
+.highlight .sr {
+color: #009926
+}
+.highlight .s1 {
+color: #d14
+}
+.highlight .ss {
+color: #990073
+}
+.highlight .bp {
+color: #999
+}
+.highlight .vc,
+.highlight .vg,
+.highlight .vi {
+color: #008080
+}
+.highlight .il {
+color: #099
+}
+.highlight .gc {
+color: #999;
+background-color: #eaf2f5
+}
+.type-csharp .highlight .k,
+.type-csharp .highlight .kt {
+color: #00F
+}
+.type-csharp .highlight .nf {
+color: #000;
+font-weight: normal
+}
+.type-csharp .highlight .nc {
+color: #2b91af
+}
+.type-csharp .highlight .nn {
+color: #000
+}
+.type-csharp .highlight .s,
+.type-csharp .highlight .sc {
+color: #a31515
+}
+#title-block-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 5px;
+
+border-bottom: 1px solid #ddd;
+}
+#title-block-header .left {
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+}
+#title-block-header .right {
+display: flex;
+flex-direction: column;
+align-items: flex-end;
+}
+h1.title {
+font-size: 20px;
+margin: 0;
+color: #777777;
+}
+p.subtitle,
+p.author,
+p.date {
+margin: 0;
+font-size: 14px;
+color: #777777;
+}
+a tt,
+a code {
+color: #4183c4;
+}
+details {
+margin-bottom: 1.5em;
+background-color: #f9f9f9;
+border-bottom: 1px solid #ddd;
+border-radius: 2px;
+}
+details summary {
+padding: 2px 15px;
+cursor: pointer;
+font-family: Arial, Helvetica, sans-serif;
+font-weight: 500;
+color: #444;
+position: relative;
+display: block;
+background-color: #f9f9f9;
+}
+details summary::after {
+content: "+";
+position: absolute;
+right: 15px;
+top: 50%;
+transform: translateY(-50%);
+font-size: 18px;
+color: #666;
+transition: transform 0.2s;
+}
+details[open] summary::after {
+content: "−";
+}
+
+.tab-container {
+margin: 1em 0;
+}
+.tab-buttons {
+display: flex;
+border-bottom: 2px solid #ddd;
+gap: 0;
+}
+.tab-button {
+padding: 0.5em 1em;
+border: none;
+background: transparent;
+cursor: pointer;
+font-size: 1em;
+border-bottom: 2px solid transparent;
+margin-bottom: -2px;
+transition: border-color 0.2s, color 0.2s;
+}
+.tab-button:hover {
+color: #0066cc;
+}
+.tab-button.active {
+border-bottom-color: #0066cc;
+color: #0066cc;
+font-weight: bold;
+
+}
+.tab-panel {
+display: none;
+padding: 1em 0;
+}
+.tab-panel.active {
+display: block;
+}
+</style>
+         
+        <script data-external="1" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"></script>
+        <script>
+        // Tabset functionality for pandoc-rendered markdown
+        // Emulates R Markdown's {.tabset} behavior
+        document.addEventListener('DOMContentLoaded', function() {
+          // Find all headers with 'tabset' class (pandoc applies class to header, not section)
+          document.querySelectorAll('h1.tabset, h2.tabset, h3.tabset, h4.tabset, h5.tabset, h6.tabset').forEach(function(tabsetHeader) {
+            const tabLevel = parseInt(tabsetHeader.tagName[1]);
+            const childHeaderTag = 'H' + (tabLevel + 1);
+            
+            // Find all child sections (tabs) - siblings until next same-level header
+            const tabs = [];
+            const introContent = []; // Content before first tab
+            let currentTab = null;
+            
+            let sibling = tabsetHeader.nextElementSibling;
+            while (sibling) {
+              if (sibling.tagName === childHeaderTag) {
+                // New tab starts
+                if (currentTab) tabs.push(currentTab);
+                currentTab = {
+                  title: sibling.textContent,
+                  id: sibling.id || sibling.textContent.toLowerCase().replace(/\s+/g, '-'),
+                  header: sibling,
+                  content: []
+                };
+              } else if (sibling.tagName && sibling.tagName[0] === 'H' && parseInt(sibling.tagName[1]) <= tabLevel) {
+                // Hit a same-level or higher header, stop
+                break;
+              } else if (currentTab) {
+                // Add content to current tab
+                currentTab.content.push(sibling);
+              } else {
+                // Content before first tab (intro text)
+                introContent.push(sibling);
+              }
+              sibling = sibling.nextElementSibling;
+            }
+            if (currentTab) tabs.push(currentTab);
+            
+            if (tabs.length === 0) return;
+            
+            // Create tab UI
+            const tabContainer = document.createElement('div');
+            tabContainer.className = 'tab-container';
+            
+            // Create tab buttons
+            const tabButtons = document.createElement('div');
+            tabButtons.className = 'tab-buttons';
+            
+            tabs.forEach(function(tab, index) {
+              const button = document.createElement('button');
+              button.className = 'tab-button' + (index === 0 ? ' active' : '');
+              button.textContent = tab.title;
+              button.setAttribute('data-tab', tab.id);
+              button.addEventListener('click', function() {
+                // Deactivate all tabs in this container
+                tabContainer.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
+                tabContainer.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+                // Activate clicked tab
+                button.classList.add('active');
+                tabContainer.querySelector('.tab-panel[data-tab="' + tab.id + '"]').classList.add('active');
+              });
+              tabButtons.appendChild(button);
+            });
+            
+            tabContainer.appendChild(tabButtons);
+            
+            // Create tab panels and move content
+            tabs.forEach(function(tab, index) {
+              const panel = document.createElement('div');
+              panel.className = 'tab-panel' + (index === 0 ? ' active' : '');
+              panel.setAttribute('data-tab', tab.id);
+              tab.content.forEach(function(el) {
+                panel.appendChild(el);
+              });
+              tabContainer.appendChild(panel);
+              // Remove the original tab header
+              tab.header.remove();
+            });
+            
+            // Insert intro content right after tabset header, then tab container
+            let insertPoint = tabsetHeader;
+            introContent.forEach(function(el) {
+              insertPoint.after(el);
+              insertPoint = el;
+            });
+            insertPoint.after(tabContainer);
+          });
+        });
+        </script>
+    </head>
+    <body>
+           <h1 id="learning-objectives">Learning Objectives</h1>
+<ul class="incremental">
+<li><strong>Git:</strong> Clear commits, branches, tags.</li>
+<li><strong>GitHub:</strong> Issues, PRs, reviews.</li>
+<li><strong>Docker:</strong> Reproducible images for backend and
+frontend.</li>
+<li><strong>Docker Compose:</strong> Launch services with correct
+networking.</li>
+<li><strong>FastAPI:</strong> Complete CRUD endpoints (with
+validations).</li>
+<li><strong>Streamlit:</strong> Multipage interface that consumes the
+backend via HTTP.</li>
+<li><strong>Basic Ingestion:</strong> Load a real parquet file and use
+CRUD endpoints to populate/update data.</li>
+</ul>
+<h1 id="deliverables">Deliverables</h1>
+<ol class="incremental" type="1">
+<li>GitHub repository with:
+<ul class="incremental">
+<li><code>backend/</code>, <code>frontend/</code>,
+<code>docker-compose.yml</code></li>
+<li><code>README.md</code> (setup, how to run, endpoints, how to use the
+UI)</li>
+<li><code>CONTRIBUTING.md</code> (rules for branches/PR/commits)</li>
+<li><code>docs/</code> with decisions + evidence (screenshots,
+logs)</li>
+</ul></li>
+<li>Services running with Docker Compose:
+<ul class="incremental">
+<li><code>api</code> (FastAPI)</li>
+<li><code>app</code> (Streamlit)</li>
+</ul></li>
+<li>Mandatory CRUD of 2 entities: Zones and Routes.</li>
+<li>Multipage Streamlit frontend: Home + navigation menu to CRUD pages
+and Upload.</li>
+<li>Parquet loading (NYC TLC): Upload from Streamlit; backend processes
+create/update Zones and/or Routes via CRUD endpoints.</li>
+</ol>
+<h1 id="functional-scope-mvp">Functional Scope (MVP)</h1>
+<p>Build a Demand Prediction Service with two resources.</p>
+<h2 id="zone-mandatory-crud">Zone (Mandatory CRUD)</h2>
+<p>Fields:</p>
+<ul class="incremental">
+<li><code>id</code> (int) - TLC LocationID</li>
+<li><code>borough</code> (string)</li>
+<li><code>zone_name</code> (string)</li>
+<li><code>service_zone</code> (string)</li>
+<li><code>active</code> (bool)</li>
+<li><code>created_at</code> (datetime)</li>
+</ul>
+<h2 id="route-mandatory-crud">Route (Mandatory CRUD)</h2>
+<p>Fields:</p>
+<ul class="incremental">
+<li><code>id</code> (int or uuid)</li>
+<li><code>pickup_zone_id</code> (int) - reference to
+<code>Zone.id</code></li>
+<li><code>dropoff_zone_id</code> (int) - reference to
+<code>Zone.id</code></li>
+<li><code>name</code> (string)</li>
+<li><code>active</code> (bool)</li>
+<li><code>created_at</code> (datetime)</li>
+</ul>
+<p>Minimum rules:</p>
+<ul class="incremental">
+<li><code>pickup_zone_id</code> and <code>dropoff_zone_id</code> must be
+&gt; 0</li>
+<li><code>pickup_zone_id</code> != <code>dropoff_zone_id</code> (if
+equal -&gt; 400)</li>
+<li><code>name</code> not empty</li>
+<li>Validate that pickup/dropoff zones exist; otherwise return 400</li>
+<li>Persistence for PSet #1: in-memory (dict)</li>
+</ul>
+<h1 id="api-specification-fastapi">API Specification (FastAPI)</h1>
+<p>Base URL: <code>http://localhost:8000</code></p>
+<h2 id="health">Health</h2>
+<ul class="incremental">
+<li>GET <code>/health</code> -&gt; 200
+<code>{ &quot;status&quot;: &quot;ok&quot; }</code></li>
+</ul>
+<h2 id="crud-zones">CRUD Zones</h2>
+<ul class="incremental">
+<li>POST <code>/zones</code></li>
+<li>GET <code>/zones</code> (optional filters: active, borough)</li>
+<li>GET <code>/zones/{id}</code></li>
+<li>PUT <code>/zones/{id}</code></li>
+<li>DELETE <code>/zones/{id}</code> -&gt; 204</li>
+</ul>
+<p>Minimum validation for Zones:</p>
+<ul class="incremental">
+<li><code>id</code> positive</li>
+<li><code>zone_name</code> not empty</li>
+<li><code>borough</code> not empty</li>
+</ul>
+<h2 id="crud-routes">CRUD Routes</h2>
+<ul class="incremental">
+<li>POST <code>/routes</code></li>
+<li>GET <code>/routes</code> (optional filters: active, pickup_zone_id,
+dropoff_zone_id)</li>
+<li>GET <code>/routes/{id}</code></li>
+<li>PUT <code>/routes/{id}</code></li>
+<li>DELETE <code>/routes/{id}</code> -&gt; 204</li>
+</ul>
+<p>Minimum validation for Routes:</p>
+<ul class="incremental">
+<li><code>pickup_zone_id</code>, <code>dropoff_zone_id</code>
+positive</li>
+<li><code>pickup_zone_id</code> != <code>dropoff_zone_id</code> (400 if
+equal)</li>
+<li><code>name</code> not empty</li>
+</ul>
+<h2 id="error-standards">Error Standards</h2>
+<ul class="incremental">
+<li>400: Business rules / custom validation</li>
+<li>404: Resource not found</li>
+<li>422: Automatic Pydantic validation</li>
+</ul>
+<h1 id="frontend-streamlit">Frontend (Streamlit)</h1>
+<p>Key requirement: Streamlit must consume the backend via HTTP
+requests; the API URL must be configurable (e.g.,
+<code>API_URL=http://api:8000</code> in compose, or
+<code>http://localhost:8000</code> locally).</p>
+<h2 id="home">Home</h2>
+<ul class="incremental">
+<li>System title + brief description</li>
+<li>Backend status (call GET <code>/health</code>)</li>
+<li>Navigation menu to other pages</li>
+</ul>
+<h2 id="mandatory-pages">Mandatory pages</h2>
+<ol class="incremental" type="1">
+<li>Zones: List (with filters), create, edit, delete.</li>
+<li>Routes: List (with filters), create, edit, delete. Use dropdowns
+populated from <code>/zones</code> for pickup/dropoff.</li>
+<li>Load Data: Upload <code>.parquet</code>, choose mode
+(create/update), show summary (# read, created, updated, errors).</li>
+</ol>
+<p>Navigation may use Streamlit multipage (<code>pages/</code>) or a
+sidebar menu.</p>
+<h1 id="load-data">Load Data</h1>
+<p>Source: <a href="https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page" class="uri">https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page</a></p>
+<h2 id="objective">Objective</h2>
+<p>Load a real parquet file and, based on the load, create or update
+resources using the CRUD endpoints for Zones and Routes.</p>
+<h2 id="upload-endpoint-backend">Upload Endpoint (Backend)</h2>
+<ul class="incremental">
+<li>Endpoint: POST <code>/uploads/trips-parquet</code></li>
+<li>Content type: multipart/form-data</li>
+<li>Parameters:
+<ul class="incremental">
+<li>file: parquet file</li>
+<li>mode: “create” or “update”</li>
+<li>limit_rows (optional, default: 50_000)</li>
+<li>top_n_routes (optional, default: 50)</li>
+</ul></li>
+</ul>
+<p>Response (200):</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;file_name&quot;</span><span class="fu">:</span> <span class="st">&quot;yellow_tripdata_2024-01.parquet&quot;</span><span class="fu">,</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;rows_read&quot;</span><span class="fu">:</span> <span class="dv">50000</span><span class="fu">,</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;zones_created&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="fu">,</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;zones_updated&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="fu">,</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;routes_detected&quot;</span><span class="fu">:</span> <span class="dv">120</span><span class="fu">,</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;routes_created&quot;</span><span class="fu">:</span> <span class="dv">80</span><span class="fu">,</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;routes_updated&quot;</span><span class="fu">:</span> <span class="dv">40</span><span class="fu">,</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;errors&quot;</span><span class="fu">:</span> <span class="ot">[]</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h2 id="minimum-expected-columns">Minimum expected columns</h2>
+<ul class="incremental">
+<li><code>PULocationID</code></li>
+<li><code>DOLocationID</code></li>
+</ul>
+<p>If either column is missing, return 400 with a clear message.</p>
+<h2 id="minimum-logic-required">Minimum logic required</h2>
+<ol class="incremental" type="1">
+<li>Read parquet using pandas.</li>
+<li>Apply <code>limit_rows</code> to avoid OOM.</li>
+<li>Compute pairs (<code>PULocationID</code>, <code>DOLocationID</code>)
+and counts.</li>
+<li>Select top N routes by frequency.</li>
+</ol>
+<p>For each top route:</p>
+<ul class="incremental">
+<li>Create or update via the CRUD endpoints (POST <code>/routes</code>,
+PUT <code>/routes/{id}</code>).</li>
+</ul>
+<p>Recommended upsert approach:</p>
+<ul class="incremental">
+<li>Check existence: GET
+<code>/routes?pickup_zone_id=...&amp;dropoff_zone_id=...</code>.</li>
+<li>If not exists -&gt; POST <code>/routes</code>.</li>
+<li>If exists -&gt; PUT <code>/routes/{id}</code> (e.g., set
+<code>active=true</code> or update <code>name</code>).</li>
+</ul>
+<p>Zones during load:</p>
+<ul class="incremental">
+<li>Create missing Zones found in PULocationID/DOLocationID (POST
+<code>/zones</code> with defaults: borough=“Unknown”, zone_name=“Zone
+<id>”, service_zone=“Unknown”).</li>
+<li>Update existing Zones as needed (PUT <code>/zones/{id}</code>) e.g.,
+mark <code>active=true</code>.</li>
+</ul>
+<h2 id="ui-requirements-upload-parquet">UI requirements (Upload
+Parquet)</h2>
+<ul class="incremental">
+<li><code>st.file_uploader</code> for parquet files.</li>
+<li>Mode selector (create / update).</li>
+<li>“Process” button.</li>
+<li>Summary: rows read, routes detected, created, updated, errors.</li>
+<li>Show errors in a table or list.</li>
+</ul>
+<h1 id="docker-and-docker-compose">Docker and Docker Compose</h1>
+<h2 id="services">Services</h2>
+<ul class="incremental">
+<li>api: Port mapping <code>8000:8000</code>, run uvicorn with
+<code>--host 0.0.0.0 --port 8000</code>.</li>
+<li>app: Port mapping <code>8501:8501</code>, run streamlit with
+<code>--server.address 0.0.0.0</code>, depends_on api.</li>
+</ul>
+<h2 id="technical-requirements">Technical requirements</h2>
+<ul class="incremental">
+<li>One Dockerfile per service.</li>
+<li><code>docker-compose.yml</code> at repo root.</li>
+<li>Streamlit should call FastAPI via <code>http://api:8000</code> when
+in compose.</li>
+<li>Include pandas and pyarrow in images for parquet handling.</li>
+</ul>
+<h1 id="git-github">Git &amp; GitHub</h1>
+<h2 id="minimum-workflow">Minimum workflow</h2>
+<ul class="incremental">
+<li>Protect <code>main</code> branch (recommended).</li>
+<li>Branch naming: <code>feature/...</code> and
+<code>fix/...</code>.</li>
+<li>Use PRs for all changes.</li>
+</ul>
+<h2 id="evidence">Evidence</h2>
+<ul class="incremental">
+<li>5+ real Issues.</li>
+<li>2+ PRs with review/comments.</li>
+</ul>
+<h1 id="testing">Testing</h1>
+<p>Recommended at least 8 API tests:</p>
+<ul class="incremental">
+<li>Zones: create, list, get 404, update, delete.</li>
+<li>Routes: create, validation pickup==dropoff (400), update 404.</li>
+<li>Upload: loading parquet returns summary and loaded items appear in
+list page.</li>
+</ul>
+<h1 id="repository-structure">Repository structure</h1>
+<pre><code>.
+├─ backend/
+│ ├─ app/
+│ │ ├─ main.py
+│ │ ├─ routes_zones.py
+│ │ ├─ routes_routes.py
+│ │ ├─ routes_uploads.py
+│ │ ├─ schemas.py
+│ │ └─ storage.py
+│ ├─ tests/
+│ ├─ Dockerfile
+│ └─ requirements.txt
+├─ frontend/
+│ ├─ app/
+│ │ ├─ Home.py
+│ │ └─ pages/
+│ │ ├─ 1_Zones.py
+│ │ ├─ 2_Routes.py
+│ │ └─ 3_Upload_Parquet.py
+│ ├─ Dockerfile
+│ └─ requirements.txt
+├─ docker-compose.yml
+├─ README.md
+├─ CONTRIBUTING.md
+└─ docs/
+    ├─ api_contract.md
+    └─ evidence.md</code></pre>
+<h1 id="rubric">Rubric</h1>
+<ul class="incremental">
+<li>Git &amp; GitHub (20): issues, PRs, commits, tag.</li>
+<li>Docker &amp; Compose (25): reproducible build, correct
+networking.</li>
+<li>FastAPI CRUD Zones+Routes (30): complete endpoints, validation,
+errors.</li>
+<li>Upload Parquet (15): create/update flow with summary.</li>
+<li>Streamlit UX (10): Home + menu + CRUD pages + error handling.</li>
+</ul>
+<h1 id="readme-checklist">README checklist</h1>
+<ul class="incremental" class="task-list">
+<li><label><input type="checkbox"></input><code>docker compose up --build</code> starts api and
+app.</label></li>
+<li><label><input type="checkbox"></input>Home shows backend health and
+navigation to pages.</label></li>
+<li><label><input type="checkbox"></input>CRUD Zones works completely from
+UI.</label></li>
+<li><label><input type="checkbox"></input>CRUD Routes works completely from UI
+(using Zones).</label></li>
+<li><label><input type="checkbox"></input>Upload parquet processes and
+performs create/update via CRUD endpoints.</label></li>
+<li><label><input type="checkbox"></input>README documents how to run and
+test.</label></li>
+<li><label><input type="checkbox"></input>Evidence in GitHub (issues/PR/tag)
+is ready.</label></li>
+</ul> 
+    </body>
+</html>
