@@ -48,7 +48,7 @@ Never mind that, the rest is dope, since it's set and forget.
     > I've already done this, ignore this step - Steven
 
     ```bash
-    tern
+    tern-gui
     ```
 
     A window should pop up, fill out the "form"
@@ -56,7 +56,7 @@ Never mind that, the rest is dope, since it's set and forget.
 1.  Convert files
 
     ```bash
-    tern
+    tern-core
     ```
 
 ## Any tip?
