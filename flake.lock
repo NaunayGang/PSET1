@@ -34,10 +34,27 @@
         "type": "github"
       }
     },
+    "pandoc-resources": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1769306083,
+        "narHash": "sha256-VwZSJzfNtLs1PZ+KDQqPupMXqJXw+ZDtIRAtXkhciXc=",
+        "owner": "yuuhikaze",
+        "repo": "pandoc-resources",
+        "rev": "c712b79585683bea3e57c18cd16f8e2766377039",
+        "type": "github"
+      },
+      "original": {
+        "owner": "yuuhikaze",
+        "repo": "pandoc-resources",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "flake-utils": "flake-utils",
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": "nixpkgs",
+        "pandoc-resources": "pandoc-resources"
       }
     },
     "systems": {

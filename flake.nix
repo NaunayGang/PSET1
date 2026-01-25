@@ -4,9 +4,13 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
+    pandoc-resources = {
+      url = "github:yuuhikaze/pandoc-resources";
+      flake = false;
+    };
   };
 
-  outputs = { self, nixpkgs, flake-utils, ... }:
+  outputs = { self, nixpkgs, flake-utils, pandoc-resources, ... }:
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs {
@@ -46,6 +50,7 @@
             pkgs.docker
             pkgs.docker-compose
             pkgs.git
+            pkgs.pandoc
             tern
           ] ++ (with pkgs; [
             fontconfig
@@ -69,11 +74,27 @@
               fontconfig
               libGL
             ])}
-            echo "--- PSET1 Development Environment ---"
+
+            # Setup Tern Converter
+            mkdir -p ~/.local/share/tern/converters
+            ln -sf ${pandoc-resources}/tern-converters/pandoc.lua ~/.local/share/tern/converters/pandoc.lua
+
+            # Setup Pandoc Templates
+            mkdir -p ~/.local/share/pandoc/templates
+            ln -sf ${pandoc-resources}/pandoc-templates/docs.html ~/.local/share/pandoc/templates/docs.html
+            ln -sf ${pandoc-resources}/pandoc-templates/docs.css ~/.local/share/pandoc/templates/docs.css
+
+            export PANDOC_DOCS_HTML="$HOME/.local/share/pandoc/templates/docs.html"
+            export PANDOC_DOCS_CSS="$HOME/.local/share/pandoc/templates/docs.css"
+
+            echo "======= PSET1 Development Environment ======="
             echo "Python: $(python --version)"
             echo "Docker: $(docker --version)"
             echo "Tern:   $(tern --version)"
-            echo "-------------------------------------"
+            echo "Pandoc: $(pandoc --version | head -n 1)"
+            echo "Resources synced (tern converter & pandoc templates)"
+            echo "Templates available via: \$PANDOC_DOCS_HTML, \$PANDOC_DOCS_CSS"
+            echo "============================================="
           '';
         };
       }
