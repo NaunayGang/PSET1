@@ -84,16 +84,17 @@
             ln -sf ${pandoc-resources}/pandoc-templates/docs.html ~/.local/share/pandoc/templates/docs.html
             ln -sf ${pandoc-resources}/pandoc-templates/docs.css ~/.local/share/pandoc/templates/docs.css
 
-            export PANDOC_DOCS_HTML="$HOME/.local/share/pandoc/templates/docs.html"
+            # export PANDOC_DOCS_HTML="$HOME/.local/share/pandoc/templates/docs.html"
+            # ts one is needed bc pandoc for some reason does not "add to path" CSS templates
             export PANDOC_DOCS_CSS="$HOME/.local/share/pandoc/templates/docs.css"
+            # basic usage: pandoc -f markdown --template='docs.html' --mathjax --embed-resources --css="$PANDOC_DOCS_CSS" -t html -i <input.md> -o <output.html>
 
             echo "======= PSET1 Development Environment ======="
             echo "Python: $(python --version)"
             echo "Docker: $(docker --version)"
             echo "Tern:   $(tern --version)"
             echo "Pandoc: $(pandoc --version | head -n 1)"
-            echo "Resources synced (tern converter & pandoc templates)"
-            echo "Templates available via: \$PANDOC_DOCS_HTML, \$PANDOC_DOCS_CSS"
+            echo "Resources synced ✓"
             echo "============================================="
           '';
         };

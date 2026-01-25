@@ -2,9 +2,6 @@
 /context
 # Messy files
 /misc
-# Tern source code
-/tern
-# Ignore create fork
-/ripgrep
-# Pandoc resources
-/pandoc-resources
+# Tern DB artifacts
+store.db-shm
+store.db-wal

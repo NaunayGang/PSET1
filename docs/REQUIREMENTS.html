@@ -1092,7 +1092,7 @@ display: block;
     </head>
     <body>
            <h1 id="learning-objectives">Learning Objectives</h1>
-<ul class="incremental">
+<ul>
 <li><strong>Git:</strong> Clear commits, branches, tags.</li>
 <li><strong>GitHub:</strong> Issues, PRs, reviews.</li>
 <li><strong>Docker:</strong> Reproducible images for backend and
@@ -1107,9 +1107,9 @@ backend via HTTP.</li>
 CRUD endpoints to populate/update data.</li>
 </ul>
 <h1 id="deliverables">Deliverables</h1>
-<ol class="incremental" type="1">
+<ol type="1">
 <li>GitHub repository with:
-<ul class="incremental">
+<ul>
 <li><code>backend/</code>, <code>frontend/</code>,
 <code>docker-compose.yml</code></li>
 <li><code>README.md</code> (setup, how to run, endpoints, how to use the
@@ -1119,7 +1119,7 @@ UI)</li>
 logs)</li>
 </ul></li>
 <li>Services running with Docker Compose:
-<ul class="incremental">
+<ul>
 <li><code>api</code> (FastAPI)</li>
 <li><code>app</code> (Streamlit)</li>
 </ul></li>
@@ -1133,7 +1133,7 @@ create/update Zones and/or Routes via CRUD endpoints.</li>
 <p>Build a Demand Prediction Service with two resources.</p>
 <h2 id="zone-mandatory-crud">Zone (Mandatory CRUD)</h2>
 <p>Fields:</p>
-<ul class="incremental">
+<ul>
 <li><code>id</code> (int) - TLC LocationID</li>
 <li><code>borough</code> (string)</li>
 <li><code>zone_name</code> (string)</li>
@@ -1143,7 +1143,7 @@ create/update Zones and/or Routes via CRUD endpoints.</li>
 </ul>
 <h2 id="route-mandatory-crud">Route (Mandatory CRUD)</h2>
 <p>Fields:</p>
-<ul class="incremental">
+<ul>
 <li><code>id</code> (int or uuid)</li>
 <li><code>pickup_zone_id</code> (int) - reference to
 <code>Zone.id</code></li>
@@ -1154,7 +1154,7 @@ create/update Zones and/or Routes via CRUD endpoints.</li>
 <li><code>created_at</code> (datetime)</li>
 </ul>
 <p>Minimum rules:</p>
-<ul class="incremental">
+<ul>
 <li><code>pickup_zone_id</code> and <code>dropoff_zone_id</code> must be
 &gt; 0</li>
 <li><code>pickup_zone_id</code> != <code>dropoff_zone_id</code> (if
@@ -1166,12 +1166,12 @@ equal -&gt; 400)</li>
 <h1 id="api-specification-fastapi">API Specification (FastAPI)</h1>
 <p>Base URL: <code>http://localhost:8000</code></p>
 <h2 id="health">Health</h2>
-<ul class="incremental">
+<ul>
 <li>GET <code>/health</code> -&gt; 200
 <code>{ &quot;status&quot;: &quot;ok&quot; }</code></li>
 </ul>
 <h2 id="crud-zones">CRUD Zones</h2>
-<ul class="incremental">
+<ul>
 <li>POST <code>/zones</code></li>
 <li>GET <code>/zones</code> (optional filters: active, borough)</li>
 <li>GET <code>/zones/{id}</code></li>
@@ -1179,13 +1179,13 @@ equal -&gt; 400)</li>
 <li>DELETE <code>/zones/{id}</code> -&gt; 204</li>
 </ul>
 <p>Minimum validation for Zones:</p>
-<ul class="incremental">
+<ul>
 <li><code>id</code> positive</li>
 <li><code>zone_name</code> not empty</li>
 <li><code>borough</code> not empty</li>
 </ul>
 <h2 id="crud-routes">CRUD Routes</h2>
-<ul class="incremental">
+<ul>
 <li>POST <code>/routes</code></li>
 <li>GET <code>/routes</code> (optional filters: active, pickup_zone_id,
 dropoff_zone_id)</li>
@@ -1194,7 +1194,7 @@ dropoff_zone_id)</li>
 <li>DELETE <code>/routes/{id}</code> -&gt; 204</li>
 </ul>
 <p>Minimum validation for Routes:</p>
-<ul class="incremental">
+<ul>
 <li><code>pickup_zone_id</code>, <code>dropoff_zone_id</code>
 positive</li>
 <li><code>pickup_zone_id</code> != <code>dropoff_zone_id</code> (400 if
@@ -1202,7 +1202,7 @@ equal)</li>
 <li><code>name</code> not empty</li>
 </ul>
 <h2 id="error-standards">Error Standards</h2>
-<ul class="incremental">
+<ul>
 <li>400: Business rules / custom validation</li>
 <li>404: Resource not found</li>
 <li>422: Automatic Pydantic validation</li>
@@ -1213,13 +1213,13 @@ requests; the API URL must be configurable (e.g.,
 <code>API_URL=http://api:8000</code> in compose, or
 <code>http://localhost:8000</code> locally).</p>
 <h2 id="home">Home</h2>
-<ul class="incremental">
+<ul>
 <li>System title + brief description</li>
 <li>Backend status (call GET <code>/health</code>)</li>
 <li>Navigation menu to other pages</li>
 </ul>
 <h2 id="mandatory-pages">Mandatory pages</h2>
-<ol class="incremental" type="1">
+<ol type="1">
 <li>Zones: List (with filters), create, edit, delete.</li>
 <li>Routes: List (with filters), create, edit, delete. Use dropdowns
 populated from <code>/zones</code> for pickup/dropoff.</li>
@@ -1234,11 +1234,11 @@ sidebar menu.</p>
 <p>Load a real parquet file and, based on the load, create or update
 resources using the CRUD endpoints for Zones and Routes.</p>
 <h2 id="upload-endpoint-backend">Upload Endpoint (Backend)</h2>
-<ul class="incremental">
+<ul>
 <li>Endpoint: POST <code>/uploads/trips-parquet</code></li>
 <li>Content type: multipart/form-data</li>
 <li>Parameters:
-<ul class="incremental">
+<ul>
 <li>file: parquet file</li>
 <li>mode: “create” or “update”</li>
 <li>limit_rows (optional, default: 50_000)</li>
@@ -1257,13 +1257,13 @@ resources using the CRUD endpoints for Zones and Routes.</p>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;errors&quot;</span><span class="fu">:</span> <span class="ot">[]</span></span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
 <h2 id="minimum-expected-columns">Minimum expected columns</h2>
-<ul class="incremental">
+<ul>
 <li><code>PULocationID</code></li>
 <li><code>DOLocationID</code></li>
 </ul>
 <p>If either column is missing, return 400 with a clear message.</p>
 <h2 id="minimum-logic-required">Minimum logic required</h2>
-<ol class="incremental" type="1">
+<ol type="1">
 <li>Read parquet using pandas.</li>
 <li>Apply <code>limit_rows</code> to avoid OOM.</li>
 <li>Compute pairs (<code>PULocationID</code>, <code>DOLocationID</code>)
@@ -1271,12 +1271,12 @@ and counts.</li>
 <li>Select top N routes by frequency.</li>
 </ol>
 <p>For each top route:</p>
-<ul class="incremental">
+<ul>
 <li>Create or update via the CRUD endpoints (POST <code>/routes</code>,
 PUT <code>/routes/{id}</code>).</li>
 </ul>
 <p>Recommended upsert approach:</p>
-<ul class="incremental">
+<ul>
 <li>Check existence: GET
 <code>/routes?pickup_zone_id=...&amp;dropoff_zone_id=...</code>.</li>
 <li>If not exists -&gt; POST <code>/routes</code>.</li>
@@ -1284,7 +1284,7 @@ PUT <code>/routes/{id}</code>).</li>
 <code>active=true</code> or update <code>name</code>).</li>
 </ul>
 <p>Zones during load:</p>
-<ul class="incremental">
+<ul>
 <li>Create missing Zones found in PULocationID/DOLocationID (POST
 <code>/zones</code> with defaults: borough=“Unknown”, zone_name=“Zone
 <id>”, service_zone=“Unknown”).</li>
@@ -1293,7 +1293,7 @@ mark <code>active=true</code>.</li>
 </ul>
 <h2 id="ui-requirements-upload-parquet">UI requirements (Upload
 Parquet)</h2>
-<ul class="incremental">
+<ul>
 <li><code>st.file_uploader</code> for parquet files.</li>
 <li>Mode selector (create / update).</li>
 <li>“Process” button.</li>
@@ -1302,14 +1302,14 @@ Parquet)</h2>
 </ul>
 <h1 id="docker-and-docker-compose">Docker and Docker Compose</h1>
 <h2 id="services">Services</h2>
-<ul class="incremental">
+<ul>
 <li>api: Port mapping <code>8000:8000</code>, run uvicorn with
 <code>--host 0.0.0.0 --port 8000</code>.</li>
 <li>app: Port mapping <code>8501:8501</code>, run streamlit with
 <code>--server.address 0.0.0.0</code>, depends_on api.</li>
 </ul>
 <h2 id="technical-requirements">Technical requirements</h2>
-<ul class="incremental">
+<ul>
 <li>One Dockerfile per service.</li>
 <li><code>docker-compose.yml</code> at repo root.</li>
 <li>Streamlit should call FastAPI via <code>http://api:8000</code> when
@@ -1318,20 +1318,20 @@ in compose.</li>
 </ul>
 <h1 id="git-github">Git &amp; GitHub</h1>
 <h2 id="minimum-workflow">Minimum workflow</h2>
-<ul class="incremental">
+<ul>
 <li>Protect <code>main</code> branch (recommended).</li>
 <li>Branch naming: <code>feature/...</code> and
 <code>fix/...</code>.</li>
 <li>Use PRs for all changes.</li>
 </ul>
 <h2 id="evidence">Evidence</h2>
-<ul class="incremental">
+<ul>
 <li>5+ real Issues.</li>
 <li>2+ PRs with review/comments.</li>
 </ul>
 <h1 id="testing">Testing</h1>
 <p>Recommended at least 8 API tests:</p>
-<ul class="incremental">
+<ul>
 <li>Zones: create, list, get 404, update, delete.</li>
 <li>Routes: create, validation pickup==dropoff (400), update 404.</li>
 <li>Upload: loading parquet returns summary and loaded items appear in
@@ -1366,7 +1366,7 @@ list page.</li>
     ├─ api_contract.md
     └─ evidence.md</code></pre>
 <h1 id="rubric">Rubric</h1>
-<ul class="incremental">
+<ul>
 <li>Git &amp; GitHub (20): issues, PRs, commits, tag.</li>
 <li>Docker &amp; Compose (25): reproducible build, correct
 networking.</li>
@@ -1376,7 +1376,7 @@ errors.</li>
 <li>Streamlit UX (10): Home + menu + CRUD pages + error handling.</li>
 </ul>
 <h1 id="readme-checklist">README checklist</h1>
-<ul class="incremental" class="task-list">
+<ul class="task-list">
 <li><label><input type="checkbox"></input><code>docker compose up --build</code> starts api and
 app.</label></li>
 <li><label><input type="checkbox"></input>Home shows backend health and
