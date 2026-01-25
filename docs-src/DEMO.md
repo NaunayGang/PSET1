@@ -6,7 +6,7 @@ date: 2026-01-24
 
 This is a normal markdown document `(・_・ヾ`.
 
-However, when rendered with pandoc with the provided templates, it has some perks!
+However, when rendered using pandoc with the provided templates, it has some perks!
 
 # What is tern?
 
