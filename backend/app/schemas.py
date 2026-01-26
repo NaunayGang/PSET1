@@ -23,6 +23,7 @@ from pydantic import BaseModel, Field, field_validator
 # - ZoneUpdate: For PUT /zones/{id} (updating existing zones)
 # - ZoneResponse: For GET /zones (what API returns to frontend)
 
+
 class ZoneBase(BaseModel):
     """Base schema for Zone with common fields."""
 
@@ -32,26 +33,26 @@ class ZoneBase(BaseModel):
     service_zone: str = Field(..., description="Service zone designation")
     active: bool = Field(default=True, description="Whether zone is active")
 
-    @field_validator('borough', 'zone_name')
+    @field_validator("borough", "zone_name")
     @classmethod
     def validate_not_empty(cls, v: str) -> str:
         """Ensure string fields are not empty or whitespace-only."""
         if not v or not v.strip():
-            raise ValueError('Field cannot be empty or whitespace-only')
+            raise ValueError("Field cannot be empty or whitespace-only")
         return v.strip()
 
 
-class ZoneCreate(ZoneBase):
-    """Schema for creating a new Zone."""
-    # 'pass' means: inherit everything from ZoneBase without modifications.
-    # We create separate classes for semantic clarity (ZoneCreate vs ZoneUpdate)
-    # and future flexibility (easy to add create-specific validation later).
-    pass
+# class ZoneCreate(ZoneBase):
+#     """Schema for creating a new Zone."""
+#     # 'pass' means: inherit everything from ZoneBase without modifications.
+#     # We create separate classes for semantic clarity (ZoneCreate vs ZoneUpdate)
+#     # and future flexibility (easy to add create-specific validation later).
+#     pass
 
 
-class ZoneUpdate(ZoneBase):
-    """Schema for updating an existing Zone."""
-    pass
+# class ZoneUpdate(ZoneBase):
+#     """Schema for updating an existing Zone."""
+#     pass
 
 
 class ZoneResponse(ZoneBase):
@@ -68,7 +69,7 @@ class ZoneResponse(ZoneBase):
                 "zone_name": "Newark Airport",
                 "service_zone": "EWR",
                 "active": True,
-                "created_at": "2025-01-25T20:00:00Z"
+                "created_at": "2025-01-25T20:00:00Z",
             }
         }
 
@@ -87,39 +88,44 @@ class ZoneResponse(ZoneBase):
 #
 # Key validation: pickup_zone_id must != dropoff_zone_id (can't route to same zone)
 
+
 class RouteBase(BaseModel):
     """Base schema for Route with common fields."""
 
-    pickup_zone_id: int = Field(..., gt=0, description="Pickup zone ID, must be positive")
-    dropoff_zone_id: int = Field(..., gt=0, description="Dropoff zone ID, must be positive")
+    pickup_zone_id: int = Field(
+        ..., gt=0, description="Pickup zone ID, must be positive"
+    )
+    dropoff_zone_id: int = Field(
+        ..., gt=0, description="Dropoff zone ID, must be positive"
+    )
     name: str = Field(..., min_length=1, description="Route name, not empty")
     active: bool = Field(default=True, description="Whether route is active")
 
-    @field_validator('name')
+    @field_validator("name")
     @classmethod
     def validate_name_not_empty(cls, v: str) -> str:
         """Ensure name is not empty or whitespace-only."""
         if not v or not v.strip():
-            raise ValueError('Route name cannot be empty or whitespace-only')
+            raise ValueError("Route name cannot be empty or whitespace-only")
         return v.strip()
 
-    @field_validator('dropoff_zone_id')
+    @field_validator("dropoff_zone_id")
     @classmethod
     def validate_different_zones(cls, v: int, info) -> int:
         """Ensure pickup and dropoff zones are different."""
-        if 'pickup_zone_id' in info.data and v == info.data['pickup_zone_id']:
-            raise ValueError('pickup_zone_id and dropoff_zone_id must be different')
+        if "pickup_zone_id" in info.data and v == info.data["pickup_zone_id"]:
+            raise ValueError("pickup_zone_id and dropoff_zone_id must be different")
         return v
 
 
-class RouteCreate(RouteBase):
-    """Schema for creating a new Route."""
-    pass
+# class RouteCreate(RouteBase):
+#     """Schema for creating a new Route."""
+#     pass
 
 
-class RouteUpdate(RouteBase):
-    """Schema for updating an existing Route."""
-    pass
+# class RouteUpdate(RouteBase):
+#     """Schema for updating an existing Route."""
+#     pass
 
 
 class RouteResponse(RouteBase):
@@ -137,7 +143,7 @@ class RouteResponse(RouteBase):
                 "dropoff_zone_id": 2,
                 "name": "Manhattan to JFK",
                 "active": True,
-                "created_at": "2025-01-25T20:10:00Z"
+                "created_at": "2025-01-25T20:10:00Z",
             }
         }
 
@@ -154,18 +160,23 @@ class RouteResponse(RouteBase):
 #
 # Usage: Frontend uploads .parquet → Backend processes → Returns UploadResponse
 
+
 class UploadMode(BaseModel):
     """Schema for upload processing mode."""
 
     mode: str = Field(..., pattern="^(create|update)$", description="Processing mode")
-    limit_rows: int = Field(default=50000, gt=0, le=1000000, description="Maximum rows to process")
-    top_n_routes: int = Field(default=50, gt=0, le=500, description="Number of top routes to process")
+    limit_rows: int = Field(
+        default=50000, gt=0, le=1000000, description="Maximum rows to process"
+    )
+    top_n_routes: int = Field(
+        default=50, gt=0, le=500, description="Number of top routes to process"
+    )
 
-    @field_validator('mode')
+    @field_validator("mode")
     @classmethod
     def validate_mode(cls, v: str) -> str:
         """Ensure mode is either 'create' or 'update'."""
-        if v not in ['create', 'update']:
+        if v not in ["create", "update"]:
             raise ValueError('Mode must be either "create" or "update"')
         return v
 
@@ -177,10 +188,14 @@ class UploadResponse(BaseModel):
     rows_read: int = Field(..., ge=0, description="Number of rows read from file")
     zones_created: int = Field(default=0, ge=0, description="Number of zones created")
     zones_updated: int = Field(default=0, ge=0, description="Number of zones updated")
-    routes_detected: int = Field(..., ge=0, description="Number of route pairs detected")
+    routes_detected: int = Field(
+        ..., ge=0, description="Number of route pairs detected"
+    )
     routes_created: int = Field(default=0, ge=0, description="Number of routes created")
     routes_updated: int = Field(default=0, ge=0, description="Number of routes updated")
-    errors: List[str] = Field(default_factory=list, description="List of error messages")
+    errors: List[str] = Field(
+        default_factory=list, description="List of error messages"
+    )
 
     class Config:
         json_schema_extra = {
@@ -192,7 +207,7 @@ class UploadResponse(BaseModel):
                 "routes_detected": 120,
                 "routes_created": 80,
                 "routes_updated": 40,
-                "errors": []
+                "errors": [],
             }
         }
 
@@ -203,17 +218,14 @@ class UploadResponse(BaseModel):
 # Simple health check for monitoring API availability.
 # GET /health returns {"status": "ok"} if API is running.
 
+
 class HealthResponse(BaseModel):
     """Schema for health check response."""
 
     status: str = Field(..., description="API health status")
 
     class Config:
-        json_schema_extra = {
-            "example": {
-                "status": "ok"
-            }
-        }
+        json_schema_extra = {"example": {"status": "ok"}}
 
 
 # =============================================================================
@@ -222,6 +234,7 @@ class HealthResponse(BaseModel):
 # Standard error responses for API failures.
 # ErrorDetail: Pydantic validation errors (422) with field location
 # ErrorResponse: General errors (400, 404) with simple message
+
 
 class ErrorDetail(BaseModel):
     """Schema for detailed error information."""
@@ -238,7 +251,5 @@ class ErrorResponse(BaseModel):
 
     class Config:
         json_schema_extra = {
-            "example": {
-                "detail": "Error message describing what went wrong"
-            }
+            "example": {"detail": "Error message describing what went wrong"}
         }
