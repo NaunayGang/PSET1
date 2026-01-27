@@ -7,7 +7,7 @@ FastAPI will auto-generate OpenAPI/Swagger spec from these models.
 """
 
 from datetime import datetime
-from typing import Optional, List
+from typing import List
 from pydantic import BaseModel, Field, field_validator
 
 
@@ -32,6 +32,9 @@ class ZoneBase(BaseModel):
     zone_name: str = Field(..., min_length=1, description="Zone name, not empty")
     service_zone: str = Field(..., description="Service zone designation")
     active: bool = Field(default=True, description="Whether zone is active")
+    created_at: datetime = Field(
+        default=datetime.now(), description="Timestamp of creation"
+    )
 
     @field_validator("borough", "zone_name")
     @classmethod
@@ -55,23 +58,23 @@ class ZoneBase(BaseModel):
 #     pass
 
 
-class ZoneResponse(ZoneBase):
-    """Schema for Zone response with auto-generated fields."""
-
-    created_at: datetime = Field(..., description="Timestamp of creation")
-
-    class Config:
-        from_attributes = True
-        json_schema_extra = {
-            "example": {
-                "id": 1,
-                "borough": "Manhattan",
-                "zone_name": "Newark Airport",
-                "service_zone": "EWR",
-                "active": True,
-                "created_at": "2025-01-25T20:00:00Z",
-            }
-        }
+# class ZoneResponse(ZoneBase):
+#     """Schema for Zone response with auto-generated fields."""
+#
+#     created_at: datetime = Field(..., description="Timestamp of creation")
+#
+#     class Config:
+#         from_attributes = True
+#         json_schema_extra = {
+#             "example": {
+#                 "id": 1,
+#                 "borough": "Manhattan",
+#                 "zone_name": "Newark Airport",
+#                 "service_zone": "EWR",
+#                 "active": True,
+#                 "created_at": "2025-01-25T20:00:00Z",
+#             }
+#         }
 
 
 # =============================================================================
@@ -92,6 +95,8 @@ class ZoneResponse(ZoneBase):
 class RouteBase(BaseModel):
     """Base schema for Route with common fields."""
 
+    id: int = Field(..., gt=0, description="Id for the route, must be positive")
+
     pickup_zone_id: int = Field(
         ..., gt=0, description="Pickup zone ID, must be positive"
     )
@@ -100,6 +105,10 @@ class RouteBase(BaseModel):
     )
     name: str = Field(..., min_length=1, description="Route name, not empty")
     active: bool = Field(default=True, description="Whether route is active")
+
+    created_at: datetime = Field(
+        default=datetime.now(), description="Timestamp of creation"
+    )
 
     @field_validator("name")
     @classmethod
@@ -128,24 +137,24 @@ class RouteBase(BaseModel):
 #     pass
 
 
-class RouteResponse(RouteBase):
-    """Schema for Route response with auto-generated fields."""
-
-    id: int = Field(..., description="Route identifier")
-    created_at: datetime = Field(..., description="Timestamp of creation")
-
-    class Config:
-        from_attributes = True
-        json_schema_extra = {
-            "example": {
-                "id": 1,
-                "pickup_zone_id": 1,
-                "dropoff_zone_id": 2,
-                "name": "Manhattan to JFK",
-                "active": True,
-                "created_at": "2025-01-25T20:10:00Z",
-            }
-        }
+# class RouteResponse(RouteBase):
+#     """Schema for Route response with auto-generated fields."""
+#
+#     id: int = Field(..., description="Route identifier")
+#     created_at: datetime = Field(..., description="Timestamp of creation")
+#
+#     class Config:
+#         from_attributes = True
+#         json_schema_extra = {
+#             "example": {
+#                 "id": 1,
+#                 "pickup_zone_id": 1,
+#                 "dropoff_zone_id": 2,
+#                 "name": "Manhattan to JFK",
+#                 "active": True,
+#                 "created_at": "2025-01-25T20:10:00Z",
+#             }
+#         }
 
 
 # =============================================================================

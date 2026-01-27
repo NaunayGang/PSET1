@@ -9,20 +9,12 @@ This module provides:
 The storage is in ram, so it doesnt survive reboots.
 """
 
-from zoneinfo import ZoneInfo
-
 import logging
-from datetime import datetime
-from typing import Dict, List, Optional, Tuple
 
-import pandas as pd
-from pydantic import ValidationError
 
 from app.schemas import (
-    RouteResponse,
-    ZoneResponse,
-    ZoneBase,
     RouteBase,
+    ZoneBase,
 )
 
 # Configure logging for storage operations
@@ -37,35 +29,35 @@ class Storage:
     Attributes:
         _zones_db: Dictionary mapping zone_id -> zone_data
         _routes_db: Dictionary mapping route_id -> route_data
-        _route_id_counter: Id for routes as a counter
     """
 
     def __init__(self):
         """
         Initialize storage with empty dictionaries.
-
-        Sets up in-memory storage for zones and routes with auto-incrementing
-        route ID counter starting at 1.
         """
         self._zones_db: dict[int, ZoneBase] = {}
         self._routes_db: dict[int, RouteBase] = {}
-        self._route_id_counter: int = 1
 
     # Zone Operations (CRUD)
 
-    def create_zone(self, zone: ZoneBase) -> ZoneResponse:
+    def create_zone(self, zone: ZoneBase):
         """
         Create a new zone in storage.
 
         Args:
             zone: ZoneBase schema containing zone data
 
-        Returns:
-            ZoneResponse: The created zone with auto-generated created_at
+        Raises:
+            ValueError: If the id is already in the storage
         """
-        pass
+        if zone.id in self._zones_db:
+            logger.warning(f"Attempted to create zone with duplicate ID: {zone.id}")
+            raise ValueError("Value already exists")
+        else:
+            self._zones_db[zone.id] = zone
+            logger.info(f"Zone created: id={zone.id}, borough={zone.borough}, zone_name={zone.zone_name}")
 
-    def get_zone(self, zone_id: int) -> Optional[ZoneResponse]:
+    def get_zone(self, zone_id: int) -> ZoneBase | None:
         """
         Retrieve a zone by ID.
 
@@ -73,15 +65,20 @@ class Storage:
             zone_id: The zone ID to retrieve
 
         Returns:
-            ZoneResponse: The zone if found, None otherwise
+            ZoneBase: The zone if found, None otherwise
         """
-        pass
+        zone = self._zones_db.get(zone_id)
+        if zone:
+            logger.debug(f"Zone retrieved: id={zone_id}")
+        else:
+            logger.debug(f"Zone not found: id={zone_id}")
+        return zone
 
     def get_all_zones(
         self,
-        active: Optional[bool] = None,
-        borough: Optional[str] = None,
-    ) -> List[ZoneResponse]:
+        active: bool | None = None,
+        borough: str | None = None,
+    ) -> list[ZoneBase]:
         """
         Retrieve all zones with optional filtering.
 
@@ -92,20 +89,24 @@ class Storage:
         Returns:
             List[ZoneResponse]: List of matching zones, ordered by creation time
         """
-        pass
+        ret = list(self._zones_db.values())
+        if active is not None:
+            ret = [i for i in ret if i.active == active]
+        if borough:
+            ret = [i for i in ret if i.borough == borough]
 
-    def update_zone(self, zone_id: int, zone: ZoneBase) -> Optional[ZoneResponse]:
+        logger.debug(f"Retrieved {len(ret)} zones with filters: active={active}, borough={borough}")
+        return ret
+
+    def update_zone(self, zone: ZoneBase):
         """
-        Update an existing zone.
+        Update a zone by ID.
 
         Args:
-            zone_id: The ID of the zone to update
-            zone: ZoneBase schema with new zone data
-
-        Returns:
-            ZoneResponse: The updated zone, None if zone_id not found
+            zone: ZoneBase schema with new zone data. The zone.id determines which zone to update.
         """
-        pass
+        self._zones_db[zone.id] = zone
+        logger.info(f"Zone updated: id={zone.id}, borough={zone.borough}, zone_name={zone.zone_name}")
 
     def delete_zone(self, zone_id: int) -> bool:
         """
@@ -117,7 +118,13 @@ class Storage:
         Returns:
             bool: True if deleted successfully, False if zone_id not found
         """
-        pass
+        if zone_id in self._zones_db:
+            del self._zones_db[zone_id]
+            logger.info(f"Zone deleted: id={zone_id}")
+            return True
+
+        logger.warning(f"Attempted to delete non-existent zone: id={zone_id}")
+        return False
 
     def zone_exists(self, zone_id: int) -> bool:
         """
@@ -129,26 +136,38 @@ class Storage:
         Returns:
             bool: True if zone exists, False otherwise
         """
-        pass
+        return zone_id in self._zones_db
 
     # Route Operations (CRUD)
 
-    def create_route(self, route: RouteBase) -> RouteResponse:
+    def create_route(self, route: RouteBase):
         """
-        Create a new route in storage with auto-generated ID.
+        Create a new route in storage.
 
         Args:
             route: RouteBase schema containing route data
 
-        Returns:
-            RouteResponse: The created route with auto-generated ID and created_at
-
         Raises:
-            ValueError: If pickup_zone_id == dropoff_zone_id or zones don't exist
+            ValueError: If pickup_zone_id == dropoff_zone_id, zones don't exist, or value already exists
         """
-        pass
 
-    def get_route(self, route_id: int) -> Optional[RouteResponse]:
+        if route.id in self._routes_db:
+            logger.warning(f"Attempted to create route with duplicate ID: {route.id}")
+            raise ValueError("Value already exists")
+        elif route.pickup_zone_id == route.dropoff_zone_id:
+            logger.warning(f"Attempted to create route with same pickup/dropoff: {route.pickup_zone_id}")
+            raise ValueError("pickup_zone_id == dropoff_zone_id")
+        elif route.dropoff_zone_id not in self._zones_db:
+            logger.warning(f"Attempted to create route with non-existent dropoff zone: {route.dropoff_zone_id}")
+            raise ValueError("dropoff_zone_id not in zones")
+        elif route.pickup_zone_id not in self._zones_db:
+            logger.warning(f"Attempted to create route with non-existent pickup zone: {route.pickup_zone_id}")
+            raise ValueError("pickup_zone_id not in zones")
+        else:
+            self._routes_db[route.id] = route
+            logger.info(f"Route created: id={route.id}, pickup={route.pickup_zone_id}, dropoff={route.dropoff_zone_id}, name={route.name}")
+
+    def get_route(self, route_id: int) -> RouteBase | None:
         """
         Retrieve a route by ID.
 
@@ -156,16 +175,21 @@ class Storage:
             route_id: The route ID to retrieve
 
         Returns:
-            RouteResponse: The route if found, None otherwise
+            RouteBase: The route if found, None otherwise
         """
-        pass
+        route = self._routes_db.get(route_id)
+        if route:
+            logger.debug(f"Route retrieved: id={route_id}")
+        else:
+            logger.debug(f"Route not found: id={route_id}")
+        return route
 
     def get_all_routes(
         self,
-        active: Optional[bool] = None,
-        pickup_zone_id: Optional[int] = None,
-        dropoff_zone_id: Optional[int] = None,
-    ) -> List[RouteResponse]:
+        active: bool = False,
+        pickup_zone_id: int | None = None,
+        dropoff_zone_id: int | None = None,
+    ) -> list[RouteBase]:
         """
         Retrieve all routes with optional filtering.
 
@@ -177,18 +201,24 @@ class Storage:
         Returns:
             List[RouteResponse]: List of matching routes, ordered by creation time
         """
-        pass
+        ret = list(self._routes_db.values())
+        if active:
+            ret = [i for i in ret if i.active]
+        if pickup_zone_id:
+            ret = [i for i in ret if i.pickup_zone_id == pickup_zone_id]
+        if dropoff_zone_id:
+            ret = [i for i in ret if i.dropoff_zone_id == dropoff_zone_id]
+
+        logger.debug(f"Retrieved {len(ret)} routes with filters: active={active}, pickup={pickup_zone_id}, dropoff={dropoff_zone_id}")
+        return ret
 
     def find_route_by_zones(
         self,
         pickup_zone_id: int,
         dropoff_zone_id: int,
-    ) -> Optional[RouteResponse]:
+    ) -> RouteBase | None:
         """
         Find a route by pickup and dropoff zone IDs (upsert lookup).
-
-        This is critical for the upload/upsert logic: determine if a route
-        already exists for a given zone pair.
 
         Args:
             pickup_zone_id: The pickup zone ID
@@ -197,23 +227,44 @@ class Storage:
         Returns:
             RouteResponse: The route if found, None otherwise
         """
-        pass
+        for value in self._routes_db.values():
+            if (
+                value.pickup_zone_id == pickup_zone_id
+                and value.dropoff_zone_id == dropoff_zone_id
+            ):
+                logger.debug(f"Route found for zone pair: pickup={pickup_zone_id}, dropoff={dropoff_zone_id}, route_id={value.id}")
+                return value
 
-    def update_route(self, route_id: int, route: RouteBase) -> Optional[RouteResponse]:
+        logger.debug(f"Route not found for zone pair: pickup={pickup_zone_id}, dropoff={dropoff_zone_id}")
+        return None
+
+    def update_route(self, route_id: int, route: RouteBase):
         """
-        Update an existing route.
+        Update an existing route. Same as create_route but doesnt check for existing values, only replaces them.
 
         Args:
             route_id: The ID of the route to update
             route: RouteBase schema with new route data
 
-        Returns:
-            RouteResponse: The updated route, None if route_id not found
-
         Raises:
-            ValueError: If updated data violates business rules
+            ValueError: If pickup_zone_id == dropoff_zone_id or zones don't exist or route_id != route.id
         """
-        pass
+
+        if route.pickup_zone_id == route.dropoff_zone_id:
+            logger.warning(f"Attempted to update route with same pickup/dropoff: {route.pickup_zone_id}")
+            raise ValueError("pickup_zone_id == dropoff_zone_id")
+        elif route.dropoff_zone_id not in self._zones_db:
+            logger.warning(f"Attempted to update route with non-existent dropoff zone: {route.dropoff_zone_id}")
+            raise ValueError("dropoff_zone_id not in zones")
+        elif route.pickup_zone_id not in self._zones_db:
+            logger.warning(f"Attempted to update route with non-existent pickup zone: {route.pickup_zone_id}")
+            raise ValueError("pickup_zone_id not in zones")
+        elif route_id != route.id:
+            logger.warning(f"Attempted to update route with mismatched IDs: route_id={route_id}, route.id={route.id}")
+            raise ValueError("route_id != route.id")
+        else:
+            self._routes_db[route_id] = route
+            logger.info(f"Route updated: id={route_id}, pickup={route.pickup_zone_id}, dropoff={route.dropoff_zone_id}, name={route.name}")
 
     def delete_route(self, route_id: int) -> bool:
         """
@@ -225,7 +276,13 @@ class Storage:
         Returns:
             bool: True if deleted successfully, False if route_id not found
         """
-        pass
+        if route_id in self._routes_db:
+            del self._routes_db[route_id]
+            logger.info(f"Route deleted: id={route_id}")
+            return True
+
+        logger.warning(f"Attempted to delete non-existent route: id={route_id}")
+        return False
 
     def route_exists(self, route_id: int) -> bool:
         """
@@ -237,33 +294,7 @@ class Storage:
         Returns:
             bool: True if route exists, False otherwise
         """
-        pass
-
-    # =========================================================================
-    # Parquet File Operations
-    # =========================================================================
-
-    @staticmethod
-    def read_parquet_file(
-        filepath: str,
-        limit_rows: int = 50000,
-    ) -> pd.DataFrame:
-        """
-        Read and validate a parquet file from disk.
-
-        Args:
-            filepath: Path to the .parquet file
-            limit_rows: Maximum number of rows to read (default 50000)
-
-        Returns:
-            pd.DataFrame: The parquet data as a DataFrame
-
-        Raises:
-            FileNotFoundError: If file does not exist
-            ValueError: If required columns (PULocationID, DOLocationID) are missing
-            Exception: If file is not a valid parquet file
-        """
-        pass
+        return route_id in self._routes_db
 
     # Utility Methods
 
@@ -274,13 +305,20 @@ class Storage:
         This method resets both zones and routes to empty state.
         Use with caution in production.
         """
-        pass
+        self._routes_db.clear()
+        self._zones_db.clear()
+        logger.info("Storage cleared: all zones and routes removed")
 
-    def get_storage_stats(self) -> Dict[str, int]:
+    def get_storage_stats(self) -> dict[str, int]:
         """
         Get statistics about current storage state.
 
         Returns:
-            dict: Dictionary with keys 'zones_count', 'routes_count', 'next_route_id'
+            dict: Dictionary with keys 'zones_count', 'routes_count'
         """
-        pass
+        stats = {
+            "zones_count": len(self._zones_db.keys()),
+            "routes_count": len(self._routes_db.keys()),
+        }
+        logger.debug(f"Storage stats: {stats}")
+        return stats
