@@ -55,7 +55,9 @@ class Storage:
             raise ValueError("Value already exists")
         else:
             self._zones_db[zone.id] = zone
-            logger.info(f"Zone created: id={zone.id}, borough={zone.borough}, zone_name={zone.zone_name}")
+            logger.info(
+                f"Zone created: id={zone.id}, borough={zone.borough}, zone_name={zone.zone_name}"
+            )
 
     def get_zone(self, zone_id: int) -> ZoneBase | None:
         """
@@ -87,7 +89,7 @@ class Storage:
             borough: Filter by borough name. None = no filter
 
         Returns:
-            List[ZoneResponse]: List of matching zones, ordered by creation time
+            List[ZoneBase]: List of matching zones, ordered by creation time
         """
         ret = list(self._zones_db.values())
         if active is not None:
@@ -95,7 +97,9 @@ class Storage:
         if borough:
             ret = [i for i in ret if i.borough == borough]
 
-        logger.debug(f"Retrieved {len(ret)} zones with filters: active={active}, borough={borough}")
+        logger.debug(
+            f"Retrieved {len(ret)} zones with filters: active={active}, borough={borough}"
+        )
         return ret
 
     def update_zone(self, zone: ZoneBase):
@@ -106,7 +110,9 @@ class Storage:
             zone: ZoneBase schema with new zone data. The zone.id determines which zone to update.
         """
         self._zones_db[zone.id] = zone
-        logger.info(f"Zone updated: id={zone.id}, borough={zone.borough}, zone_name={zone.zone_name}")
+        logger.info(
+            f"Zone updated: id={zone.id}, borough={zone.borough}, zone_name={zone.zone_name}"
+        )
 
     def delete_zone(self, zone_id: int) -> bool:
         """
@@ -155,17 +161,25 @@ class Storage:
             logger.warning(f"Attempted to create route with duplicate ID: {route.id}")
             raise ValueError("Value already exists")
         elif route.pickup_zone_id == route.dropoff_zone_id:
-            logger.warning(f"Attempted to create route with same pickup/dropoff: {route.pickup_zone_id}")
+            logger.warning(
+                f"Attempted to create route with same pickup/dropoff: {route.pickup_zone_id}"
+            )
             raise ValueError("pickup_zone_id == dropoff_zone_id")
         elif route.dropoff_zone_id not in self._zones_db:
-            logger.warning(f"Attempted to create route with non-existent dropoff zone: {route.dropoff_zone_id}")
+            logger.warning(
+                f"Attempted to create route with non-existent dropoff zone: {route.dropoff_zone_id}"
+            )
             raise ValueError("dropoff_zone_id not in zones")
         elif route.pickup_zone_id not in self._zones_db:
-            logger.warning(f"Attempted to create route with non-existent pickup zone: {route.pickup_zone_id}")
+            logger.warning(
+                f"Attempted to create route with non-existent pickup zone: {route.pickup_zone_id}"
+            )
             raise ValueError("pickup_zone_id not in zones")
         else:
             self._routes_db[route.id] = route
-            logger.info(f"Route created: id={route.id}, pickup={route.pickup_zone_id}, dropoff={route.dropoff_zone_id}, name={route.name}")
+            logger.info(
+                f"Route created: id={route.id}, pickup={route.pickup_zone_id}, dropoff={route.dropoff_zone_id}, name={route.name}"
+            )
 
     def get_route(self, route_id: int) -> RouteBase | None:
         """
@@ -199,7 +213,7 @@ class Storage:
             dropoff_zone_id: Filter by dropoff zone ID. None = no filter
 
         Returns:
-            List[RouteResponse]: List of matching routes, ordered by creation time
+            List[RouteBase]: List of matching routes, ordered by creation time
         """
         ret = list(self._routes_db.values())
         if active:
@@ -209,7 +223,9 @@ class Storage:
         if dropoff_zone_id:
             ret = [i for i in ret if i.dropoff_zone_id == dropoff_zone_id]
 
-        logger.debug(f"Retrieved {len(ret)} routes with filters: active={active}, pickup={pickup_zone_id}, dropoff={dropoff_zone_id}")
+        logger.debug(
+            f"Retrieved {len(ret)} routes with filters: active={active}, pickup={pickup_zone_id}, dropoff={dropoff_zone_id}"
+        )
         return ret
 
     def find_route_by_zones(
@@ -225,17 +241,21 @@ class Storage:
             dropoff_zone_id: The dropoff zone ID
 
         Returns:
-            RouteResponse: The route if found, None otherwise
+            RouteBase: The route if found, None otherwise
         """
         for value in self._routes_db.values():
             if (
                 value.pickup_zone_id == pickup_zone_id
                 and value.dropoff_zone_id == dropoff_zone_id
             ):
-                logger.debug(f"Route found for zone pair: pickup={pickup_zone_id}, dropoff={dropoff_zone_id}, route_id={value.id}")
+                logger.debug(
+                    f"Route found for zone pair: pickup={pickup_zone_id}, dropoff={dropoff_zone_id}, route_id={value.id}"
+                )
                 return value
 
-        logger.debug(f"Route not found for zone pair: pickup={pickup_zone_id}, dropoff={dropoff_zone_id}")
+        logger.debug(
+            f"Route not found for zone pair: pickup={pickup_zone_id}, dropoff={dropoff_zone_id}"
+        )
         return None
 
     def update_route(self, route_id: int, route: RouteBase):
@@ -251,20 +271,30 @@ class Storage:
         """
 
         if route.pickup_zone_id == route.dropoff_zone_id:
-            logger.warning(f"Attempted to update route with same pickup/dropoff: {route.pickup_zone_id}")
+            logger.warning(
+                f"Attempted to update route with same pickup/dropoff: {route.pickup_zone_id}"
+            )
             raise ValueError("pickup_zone_id == dropoff_zone_id")
         elif route.dropoff_zone_id not in self._zones_db:
-            logger.warning(f"Attempted to update route with non-existent dropoff zone: {route.dropoff_zone_id}")
+            logger.warning(
+                f"Attempted to update route with non-existent dropoff zone: {route.dropoff_zone_id}"
+            )
             raise ValueError("dropoff_zone_id not in zones")
         elif route.pickup_zone_id not in self._zones_db:
-            logger.warning(f"Attempted to update route with non-existent pickup zone: {route.pickup_zone_id}")
+            logger.warning(
+                f"Attempted to update route with non-existent pickup zone: {route.pickup_zone_id}"
+            )
             raise ValueError("pickup_zone_id not in zones")
         elif route_id != route.id:
-            logger.warning(f"Attempted to update route with mismatched IDs: route_id={route_id}, route.id={route.id}")
+            logger.warning(
+                f"Attempted to update route with mismatched IDs: route_id={route_id}, route.id={route.id}"
+            )
             raise ValueError("route_id != route.id")
         else:
             self._routes_db[route_id] = route
-            logger.info(f"Route updated: id={route_id}, pickup={route.pickup_zone_id}, dropoff={route.dropoff_zone_id}, name={route.name}")
+            logger.info(
+                f"Route updated: id={route_id}, pickup={route.pickup_zone_id}, dropoff={route.dropoff_zone_id}, name={route.name}"
+            )
 
     def delete_route(self, route_id: int) -> bool:
         """
