@@ -352,3 +352,13 @@ class Storage:
         }
         logger.debug(f"Storage stats: {stats}")
         return stats
+
+
+_storage_global = Storage()
+
+
+def get_global_storage() -> Storage:
+    """
+    Returns the global storage object for the api.
+    """
+    return _storage_global
