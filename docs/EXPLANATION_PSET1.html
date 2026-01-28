@@ -4,7 +4,7 @@
         <meta charset="utf-8" />
         <meta name="generator" content="pandoc" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-                   <title>explicacion_pset1</title>
+                   <title>EXPLANATION_PSET1</title>
         <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -1073,96 +1073,92 @@ Clave)</h2>
 documento:</p>
 <ul>
 <li><strong>MVP (Minimum Viable Product):</strong> Producto Mínimo
-Viable. [cite_start]No se pide un sistema perfecto, sino uno que cumpla
-las <em>funciones esenciales</em> descritas en el alcance[cite:
-25].</li>
-<li>[cite_start]<strong>CRUD (Create, Read, Update, Delete):</strong>
-Son las 4 operaciones básicas de cualquier sistema de datos: Crear,
-Leer, Actualizar y Borrar[cite: 54, 66].</li>
+Viable. No se pide un sistema perfecto, sino uno que cumpla las
+<em>funciones esenciales</em> descritas en el alcance.</li>
+<li><strong>CRUD (Create, Read, Update, Delete):</strong> Son las 4
+operaciones básicas de cualquier sistema de datos: Crear, Leer,
+Actualizar y Borrar.</li>
 <li><strong>Endpoint:</strong> Es una dirección específica en nuestra
 API (ej. <code>/zones</code> o <code>/health</code>) a la que el
 Frontend le pide datos o le envía información.</li>
 <li><strong>Parquet (<code>.parquet</code>):</strong> Un formato de
 archivo para guardar datos (como un Excel super eficiente y comprimido).
-[cite_start]Se usa en el proyecto para manejar los datos de viajes de
-taxi de NYC[cite: 101].</li>
+Se usa en el proyecto para manejar los datos de viajes de taxi de
+NYC.</li>
 <li><strong>Microservicios:</strong> Arquitectura donde dividimos el
-programa en piezas independientes. [cite_start]Aquí tendremos dos:
-<strong>Backend</strong> (API) y <strong>Frontend</strong> (App) [cite:
-14-16].</li>
-<li>[cite_start]<strong>Docker Compose:</strong> Herramienta para
-“encender” todos nuestros servicios al mismo tiempo y asegurar que se
-conecten entre ellos[cite: 6].</li>
+programa en piezas independientes. Aquí tendremos dos:
+<strong>Backend</strong> (API) y <strong>Frontend</strong> (App).</li>
+<li><strong>Docker Compose:</strong> Herramienta para “encender” todos
+nuestros servicios al mismo tiempo y asegurar que se conecten entre
+ellos.</li>
 </ul>
 <hr />
 <h2 id="objetivo-general">2. Objetivo General</h2>
-<p>[cite_start]Vamos a construir un <strong>“Demand Prediction
-Service”</strong> (Sistema de Predicción de Demanda)[cite: 26]. Imaginen
-que es el sistema interno para una app de transporte.</p>
+<p>Vamos a construir un <strong>“Demand Prediction Service”</strong>
+(Sistema de Predicción de Demanda). Imaginen que es el sistema interno
+para una app de transporte.</p>
 <p>El sistema consta de dos aplicaciones que corren simultáneamente: 1.
 <strong>Backend (<code>api</code>):</strong> Hecho con
-<strong>FastAPI</strong>. [cite_start]Es el cerebro que procesa y guarda
-los datos[cite: 15]. 2. <strong>Frontend (<code>app</code>):</strong>
-Hecho con <strong>Streamlit</strong>. [cite_start]Es la web visual donde
-el usuario interactúa[cite: 16].</p>
+<strong>FastAPI</strong>. Es el cerebro que procesa y guarda los datos.
+2. <strong>Frontend (<code>app</code>):</strong> Hecho con
+<strong>Streamlit</strong>. Es la web visual donde el usuario
+interactúa.</p>
 <hr />
 <h2 id="desglose-de-instrucciones-por-componente">3. Desglose de
 Instrucciones por Componente</h2>
 <h3 id="a.-el-backend-api---fastapi">A. El Backend (API - FastAPI)</h3>
 <p><em>Referencia en PDF: Sección 4 (Páginas 3-4)</em></p>
-<p>[cite_start]El objetivo es construir una API REST que corra en el
-puerto 8000[cite: 51]. Debe seguir estrictamente las especificaciones de
-endpoints descritos.</p>
+<p>El objetivo es construir una API REST que corra en el puerto 8000.
+Debe seguir estrictamente las especificaciones de endpoints
+descritos.</p>
 <p><strong>1. Persistencia (Regla Crítica)</strong> *
-[cite_start]<strong>Regla:</strong> La persistencia debe ser <strong>en
-memoria</strong> (<code>dict</code>) para este PSet #1[cite: 49]. *
+<strong>Regla:</strong> La persistencia debe ser <strong>en
+memoria</strong> (<code>dict</code>) para este PSet #1. *
 <em>Significado:</em> No usaremos base de datos SQL todavía. Los datos
 se guardan en variables de Python. Si reiniciamos el servidor, se
 borran.</p>
 <p><strong>2. Health Check (Punto 4.1)</strong> *
 <strong>Endpoint:</strong> <code>GET /health</code> * <strong>Qué
-hace:</strong> Devuelve <code>{ &quot;status&quot;: &quot;ok&quot; }</code>.
-[cite_start]Sirve para confirmar que el servicio vive[cite: 53].</p>
-<p><strong>3. CRUD de Zones (Punto 4.2)</strong> [cite_start]Deben
-implementar las operaciones para la entidad <code>Zone</code> (lugares
-físicos) [cite: 54-65]. * <strong>Endpoints:</strong> <code>POST</code>,
-<code>GET</code>, <code>GET /{id}</code>, <code>PUT /{id}</code>,
+hace:</strong> Devuelve <code>{ &quot;status&quot;: &quot;ok&quot; }</code>. Sirve para
+confirmar que el servicio vive.</p>
+<p><strong>3. CRUD de Zones (Punto 4.2)</strong> Deben implementar las
+operaciones para la entidad <code>Zone</code> (lugares físicos). *
+<strong>Endpoints:</strong> <code>POST</code>, <code>GET</code>,
+<code>GET /{id}</code>, <code>PUT /{id}</code>,
 <code>DELETE /{id}</code>. * <strong>Validaciones Obligatorias:</strong>
 * <code>id</code>: Debe ser positivo. * <code>zone_name</code> y
 <code>borough</code>: No pueden estar vacíos.</p>
-<p><strong>4. CRUD de Routes (Punto 4.3)</strong> [cite_start]La entidad
+<p><strong>4. CRUD de Routes (Punto 4.3)</strong> La entidad
 <code>Route</code> conecta dos zonas (<code>pickup</code> y
-<code>dropoff</code>) [cite: 66-75]. * <strong>Endpoints:</strong>
-<code>POST</code>, <code>GET</code>, <code>GET /{id}</code>,
-<code>PUT /{id}</code>, <code>DELETE /{id}</code>. * <strong>Reglas de
-Negocio Críticas:</strong> * <strong>Validación de Existencia:</strong>
-Los campos <code>pickup_zone_id</code> y <code>dropoff_zone_id</code>
-deben corresponder a zonas que <em>ya existen</em>. [cite_start]Si no,
-devolver error <strong>400</strong>[cite: 48]. * <strong>Lógica de
-Ruta:</strong> El origen y destino NO pueden ser iguales
-(<code>pickup != dropoff</code>). [cite_start]Si son iguales, error
-<strong>400</strong>[cite: 74]. * [cite_start]<strong>Nombre:</strong>
-Debe tener al menos 3 caracteres[cite: 75].</p>
+<code>dropoff</code>). * <strong>Endpoints:</strong> <code>POST</code>,
+<code>GET</code>, <code>GET /{id}</code>, <code>PUT /{id}</code>,
+<code>DELETE /{id}</code>. * <strong>Reglas de Negocio
+Críticas:</strong> * <strong>Validación de Existencia:</strong> Los
+campos <code>pickup_zone_id</code> y <code>dropoff_zone_id</code> deben
+corresponder a zonas que <em>ya existen</em>. Si no, devolver error
+<strong>400</strong>. * <strong>Lógica de Ruta:</strong> El origen y
+destino NO pueden ser iguales (<code>pickup != dropoff</code>). Si son
+iguales, error <strong>400</strong>. * <strong>Nombre:</strong> Debe
+tener al menos 3 caracteres.</p>
 <hr />
 <h3 id="b.-el-frontend-app---streamlit">B. El Frontend (App -
 Streamlit)</h3>
 <p><em>Referencia en PDF: Sección 5 (Página 4)</em></p>
-<p>[cite_start]La aplicación debe correr en el puerto 8501 y consumir la
-API mediante HTTP[cite: 82].</p>
+<p>La aplicación debe correr en el puerto 8501 y consumir la API
+mediante HTTP.</p>
 <p><strong>1. Configuración de Conexión</strong> * La URL del backend
 debe ser configurable (<code>API_URL</code>). No la escriban fija
 (“hardcoded”) porque debe funcionar tanto en <code>localhost</code> como
-dentro de Docker (<code>http://api:8000</code>) [cite: 82-83].</p>
-<p><strong>2. Página Home (Punto 5.1)</strong> * [cite_start]Debe
-mostrar el título y el <strong>estado del backend</strong> (llamando a
-<code>/health</code>) [cite: 85-88].</p>
+dentro de Docker (<code>http://api:8000</code>).</p>
+<p><strong>2. Página Home (Punto 5.1)</strong> * Debe mostrar el título
+y el <strong>estado del backend</strong> (llamando a
+<code>/health</code>).</p>
 <p><strong>3. Páginas de Gestión (Punto 5.2)</strong> *
-[cite_start]<strong>Zones:</strong> Tabla para listar y formularios para
-Crear/Editar/Eliminar [cite: 90-91]. * <strong>Routes:</strong> *
-[cite_start]<em>Requisito UX:</em> Para seleccionar las zonas de
-origen/destino, deben usar <strong>Dropdowns</strong> (listas
-desplegables) que carguen las zonas disponibles desde el endpoint
-<code>/zones</code>[cite: 94].</p>
+<strong>Zones:</strong> Tabla para listar y formularios para
+Crear/Editar/Eliminar. * <strong>Routes:</strong> * <em>Requisito
+UX:</em> Para seleccionar las zonas de origen/destino, deben usar
+<strong>Dropdowns</strong> (listas desplegables) que carguen las zonas
+disponibles desde el endpoint <code>/zones</code>.</p>
 <hr />
 <h3 id="c.-la-lógica-de-upload-carga-de-datos">C. La Lógica de “Upload”
 (Carga de Datos)</h3>
@@ -1170,44 +1166,56 @@ desplegables) que carguen las zonas disponibles desde el endpoint
 <p>Esta funcionalidad procesa datos reales de viajes.</p>
 <p><strong>1. El Flujo de Trabajo (Punto 6.4)</strong> 1.
 <strong>Leer:</strong> El backend recibe el archivo
-<code>.parquet</code> y lo lee con Pandas. [cite_start]Deben usar
-<code>limit_rows</code> para evitar llenar la memoria [cite: 128-129].
-2. [cite_start]<strong>Analizar:</strong> Calcular los pares
+<code>.parquet</code> y lo lee con Pandas. Deben usar
+<code>limit_rows</code> para evitar llenar la memoria. 2.
+<strong>Analizar:</strong> Calcular los pares
 (<code>PULocationID</code>, <code>DOLocationID</code>) más frecuentes y
-elegir el <strong>Top N</strong> [cite: 130-131]. 3. <strong>Upsert
-(Crear o Actualizar):</strong> * El sistema recorre esas rutas Top N. *
-Si la ruta <em>no existe</em> -&gt; Llama a crear (<code>POST</code>). *
-[cite_start]Si la ruta <em>ya existe</em> -&gt; Llama a actualizar
-(<code>PUT</code>) [cite: 133-135]. 4.
-[cite_start]<strong>Zonas:</strong> Durante la carga, si se detectan
-zonas nuevas en el archivo, también deben crearse[cite: 144].</p>
-<p><strong>2. Respuesta del Endpoint (Punto 6.2)</strong> [cite_start]El
-backend debe devolver un JSON con un resumen exacto de qué pasó (filas
-leídas, rutas creadas vs actualizadas, errores) [cite: 112-121].</p>
+elegir el <strong>Top N</strong>. 3. <strong>Upsert (Crear o
+Actualizar):</strong> * El sistema recorre esas rutas Top N. * Si la
+ruta <em>no existe</em> -&gt; Llama a crear (<code>POST</code>). * Si la
+ruta <em>ya existe</em> -&gt; Llama a actualizar (<code>PUT</code>). 4.
+<strong>Zonas:</strong> Durante la carga, si se detectan zonas nuevas en
+el archivo, también deben crearse.</p>
+<p><strong>2. Respuesta del Endpoint (Punto 6.2)</strong> El backend
+debe devolver un JSON con un resumen exacto de qué pasó (filas leídas,
+rutas creadas vs actualizadas, errores).</p>
 <hr />
 <h3 id="d.-infraestructura-y-devops">D. Infraestructura y DevOps</h3>
 <p><em>Referencia en PDF: Secciones 7 y 8 (Páginas 7-8)</em></p>
-<p><strong>1. Dockerización</strong> * [cite_start]Un
-<code>Dockerfile</code> independiente para el backend y otro para el
-frontend[cite: 168]. * [cite_start]Un <code>docker-compose.yml</code> en
-la raíz que levante ambos servicios y configure la red[cite: 170].</p>
+<p><strong>1. Dockerización</strong> * Un <code>Dockerfile</code>
+independiente para el backend y otro para el frontend. * Un
+<code>docker-compose.yml</code> en la raíz que levante ambos servicios y
+configure la red.</p>
 <p><strong>2. Git &amp; GitHub</strong> * <strong>Ramas:</strong> Usar
-ramas de <code>feature/...</code> o <code>fix/...</code>.
-[cite_start]Todo entra por Pull Request (PR) [cite: 176-177]. *
-[cite_start]<strong>Evidencia:</strong> Se requieren al menos 5 Issues
-reales y 2 PRs con review [cite: 180-181].</p>
+ramas de <code>feature/...</code> o <code>fix/...</code>. Todo entra por
+Pull Request (PR). * <strong>Evidencia:</strong> Se requieren al menos 5
+Issues reales y 2 PRs con review.</p>
 <hr />
 <h2 id="estructura-del-repositorio">4. Estructura del Repositorio</h2>
-<p>[cite_start]Debemos respetar esta estructura de archivos obligatoria
-[cite: 187-212]:</p>
-<p>```text / (Raíz del proyecto) ├── docker-compose.yml # Orquestador
-├── README.md # Instrucciones de uso ├── CONTRIBUTING.md # Reglas del
-equipo ├── backend/ │ ├── Dockerfile │ ├── requirements.txt │ ├── app/ │
-│ ├── main.py # App FastAPI │ │ ├── routes_zones.py │ │ ├──
-routes_routes.py │ │ ├── storage.py # Diccionarios (Memoria) │ │ └── …
-├── frontend/ │ ├── Dockerfile │ ├── requirements.txt │ ├── app/ │ │ ├──
-Home.py # Página principal │ │ └── pages/ │ │ ├── 1_Zones.py │ │ ├──
-2_Routes.py │ │ └── 3_Upload_Parquet.py</p>
+<p>Debemos respetar esta estructura de archivos obligatoria:</p>
+<pre class="text"><code>/ (Raíz del proyecto)
+├── docker-compose.yml       # Orquestador
+├── README.md                # Instrucciones de uso
+├── CONTRIBUTING.md          # Reglas del equipo
+├── backend/
+│   ├── Dockerfile
+│   ├── requirements.txt
+│   ├── app/
+│   │   ├── main.py          # App FastAPI
+│   │   ├── routes_zones.py
+│   │   ├── routes_routes.py
+│   │   ├── storage.py       # Diccionarios (Memoria)
+│   │   └── ...
+├── frontend/
+│   ├── Dockerfile
+│   ├── requirements.txt
+│   ├── app/
+│   │   ├── Home.py          # Página principal
+│   │   └── pages/
+│   │       ├── 1_Zones.py
+│   │       ├── 2_Routes.py
+│   │       └── 3_Upload_Parquet.py
+</code></pre>
 <hr />
 <h2 id="rúbrica-de-evaluación-y-checklist-final">5. Rúbrica de
 Evaluación y Checklist Final</h2>
@@ -1215,51 +1223,45 @@ Evaluación y Checklist Final</h2>
 el proyecto (Total: 100 Puntos) y la lista de verificación obligatoria
 para el README.</p>
 <h3 id="a.-git-github-20-puntos">A. Git &amp; GitHub (20 Puntos)</h3>
-<p>[cite_start]<em>Fuente: PDF Sección 11 [cite: 214]</em> *
-[cite_start][ ] <strong>Issues:</strong> Deben tener al menos 5 issues
-creados describiendo tareas reales (ej. “Crear endpoint de users”,
-“Arreglar bug de docker”)[cite: 180]. * [cite_start][ ] <strong>Pull
+<p><em>Fuente: PDF Sección 11</em> * [ ] <strong>Issues:</strong> Deben
+tener al menos 5 issues creados describiendo tareas reales (ej. “Crear
+endpoint de users”, “Arreglar bug de docker”). * [ ] <strong>Pull
 Requests (PRs):</strong> Mínimo 2 PRs que incluyan revisión o
-comentarios de otros miembros del equipo[cite: 181]. * [ ] <strong>Uso
-de Ramas:</strong> No subir todo directo a <code>main</code>.
-[cite_start]Usar ramas como <code>feature/nueva-funcionalidad</code> o
-<code>fix/error-x</code>[cite: 176]. * [cite_start][ ]
-<strong>Tags:</strong> Usar tags de git para marcar versiones (opcional
-pero recomendado en la rúbrica)[cite: 214].</p>
+comentarios de otros miembros del equipo. * [ ] <strong>Uso de
+Ramas:</strong> No subir todo directo a <code>main</code>. Usar ramas
+como <code>feature/nueva-funcionalidad</code> o
+<code>fix/error-x</code>. * [ ] <strong>Tags:</strong> Usar tags de git
+para marcar versiones (opcional pero recomendado en la rúbrica).</p>
 <h3 id="b.-docker-compose-25-puntos">B. Docker &amp; Compose (25
 Puntos)</h3>
-<p>[cite_start]<em>Fuente: PDF Sección 11 [cite: 215]</em> *
-[cite_start][ ] <strong>Build Reproducible:</strong> El comando
-<code>docker compose up --build</code> debe levantar todo el sistema
-(backend y frontend) sin errores y sin que el profesor tenga que
-instalar librerías extra[cite: 215]. * [cite_start][ ]
-<strong>Networking Correcto:</strong> El contenedor de Streamlit
-(<code>app</code>) debe poder comunicarse con la API (<code>api</code>)
-usando la red interna de Docker (ej. <code>http://api:8000</code>)[cite:
-215].</p>
+<p><em>Fuente: PDF Sección 11</em> * [ ] <strong>Build
+Reproducible:</strong> El comando <code>docker compose up --build</code>
+debe levantar todo el sistema (backend y frontend) sin errores y sin que
+el profesor tenga que instalar librerías extra. * [ ] <strong>Networking
+Correcto:</strong> El contenedor de Streamlit (<code>app</code>) debe
+poder comunicarse con la API (<code>api</code>) usando la red interna de
+Docker (ej. <code>http://api:8000</code>).</p>
 <h3 id="c.-fastapi-crud-zones-routes-30-puntos">C. FastAPI: CRUD Zones +
 Routes (30 Puntos)</h3>
-<p>[cite_start]<em>Fuente: PDF Sección 11 [cite: 216]</em> * [ ]
-<strong>Endpoints Completos:</strong> Deben funcionar <code>GET</code>,
-<code>POST</code>, <code>PUT</code>, <code>DELETE</code> para ambas
-entidades (<code>Zones</code> y <code>Routes</code>). * [ ]
-<strong>Validaciones:</strong> * [cite_start]Error <strong>400</strong>:
-Para reglas de negocio (ej. Origen y Destino son iguales)[cite: 74, 77].
-* [cite_start]Error <strong>404</strong>: Cuando se busca un ID que no
-existe[cite: 78]. * [cite_start]Error <strong>422</strong>: Validación
-automática de tipos (Pydantic)[cite: 79].</p>
+<p><em>Fuente: PDF Sección 11</em> * [ ] <strong>Endpoints
+Completos:</strong> Deben funcionar <code>GET</code>, <code>POST</code>,
+<code>PUT</code>, <code>DELETE</code> para ambas entidades
+(<code>Zones</code> y <code>Routes</code>). * [ ]
+<strong>Validaciones:</strong> * Error <strong>400</strong>: Para reglas
+de negocio (ej. Origen y Destino son iguales). * Error
+<strong>404</strong>: Cuando se busca un ID que no existe. * Error
+<strong>422</strong>: Validación automática de tipos (Pydantic).</p>
 <h3 id="d.-upload-parquet-15-puntos">D. Upload Parquet (15 Puntos)</h3>
-<p>[cite_start]<em>Fuente: PDF Sección 11 [cite: 217]</em> * [ ]
-<strong>Flujo Completo:</strong> El sistema recibe el archivo, lo
-procesa y <strong>crea o actualiza</strong> las rutas en memoria
-automáticamente. * [cite_start][ ] <strong>Resumen:</strong> El usuario
-debe ver un resumen con el conteo de: filas leídas, rutas creadas, rutas
-actualizadas y errores [cite: 112-121].</p>
+<p><em>Fuente: PDF Sección 11</em> * [ ] <strong>Flujo
+Completo:</strong> El sistema recibe el archivo, lo procesa y
+<strong>crea o actualiza</strong> las rutas en memoria automáticamente.
+* [ ] <strong>Resumen:</strong> El usuario debe ver un resumen con el
+conteo de: filas leídas, rutas creadas, rutas actualizadas y
+errores.</p>
 <h3 id="e.-streamlit-ux-10-puntos">E. Streamlit UX (10 Puntos)</h3>
-<p>[cite_start]<em>Fuente: PDF Sección 11 [cite: 218]</em> * [ ]
-<strong>Navegación:</strong> Menú lateral o botones para ir a “Home”,
-“Zones”, “Routes” y “Upload”. * [ ] <strong>Manejo de Errores:</strong>
-Si la API falla, la interfaz debe mostrar un mensaje amigable, no el
-error crudo de Python.</p> 
+<p><em>Fuente: PDF Sección 11</em> * [ ] <strong>Navegación:</strong>
+Menú lateral o botones para ir a “Home”, “Zones”, “Routes” y “Upload”. *
+[ ] <strong>Manejo de Errores:</strong> Si la API falla, la interfaz
+debe mostrar un mensaje amigable, no el error crudo de Python.</p> 
     </body>
 </html>
