@@ -1091,7 +1091,72 @@ display: block;
         </script>
     </head>
     <body>
-           <h1 id="api-contract-documentation">API Contract
+                  <nav id="TOC" role="doc-toc">
+             <ul>
+<li><a href="#api-contract-documentation" id="toc-api-contract-documentation">API Contract Documentation</a>
+<ul>
+<li><a href="#overview" id="toc-overview">Overview</a></li>
+<li><a href="#general-conventions" id="toc-general-conventions">General
+Conventions</a>
+<ul>
+<li><a href="#http-methods" id="toc-http-methods">HTTP Methods</a></li>
+<li><a href="#response-codes" id="toc-response-codes">Response
+Codes</a></li>
+<li><a href="#error-response-format" id="toc-error-response-format">Error Response Format</a></li>
+</ul></li>
+<li><a href="#health-check" id="toc-health-check">Health Check</a>
+<ul>
+<li><a href="#get-api-health-status" id="toc-get-api-health-status">Get
+API Health Status</a></li>
+</ul></li>
+<li><a href="#zones" id="toc-zones">Zones</a>
+<ul>
+<li><a href="#zone-schema" id="toc-zone-schema">Zone Schema</a></li>
+<li><a href="#create-zone" id="toc-create-zone">Create Zone</a></li>
+<li><a href="#list-zones" id="toc-list-zones">List Zones</a></li>
+<li><a href="#get-zone-by-id" id="toc-get-zone-by-id">Get Zone by
+ID</a></li>
+<li><a href="#update-zone" id="toc-update-zone">Update Zone</a></li>
+<li><a href="#delete-zone" id="toc-delete-zone">Delete Zone</a></li>
+</ul></li>
+<li><a href="#routes" id="toc-routes">Routes</a>
+<ul>
+<li><a href="#route-schema" id="toc-route-schema">Route Schema</a></li>
+<li><a href="#create-route" id="toc-create-route">Create Route</a></li>
+<li><a href="#list-routes" id="toc-list-routes">List Routes</a></li>
+<li><a href="#get-route-by-id" id="toc-get-route-by-id">Get Route by
+ID</a></li>
+<li><a href="#update-route" id="toc-update-route">Update Route</a></li>
+<li><a href="#delete-route" id="toc-delete-route">Delete Route</a></li>
+</ul></li>
+<li><a href="#uploads" id="toc-uploads">Uploads</a>
+<ul>
+<li><a href="#upload-parquet-file" id="toc-upload-parquet-file">Upload
+Parquet File</a></li>
+</ul></li>
+<li><a href="#data-models-summary" id="toc-data-models-summary">Data
+Models Summary</a>
+<ul>
+<li><a href="#zone-model" id="toc-zone-model">Zone Model</a></li>
+<li><a href="#route-model" id="toc-route-model">Route Model</a></li>
+<li><a href="#upload-response-model" id="toc-upload-response-model">Upload Response Model</a></li>
+</ul></li>
+<li><a href="#implementation-dependencies" id="toc-implementation-dependencies">Implementation Dependencies</a>
+<ul>
+<li><a href="#zones-endpoints-10" id="toc-zones-endpoints-10">Zones
+Endpoints (#10)</a></li>
+<li><a href="#routes-endpoints-11" id="toc-routes-endpoints-11">Routes
+Endpoints (#11)</a></li>
+<li><a href="#upload-endpoints-12" id="toc-upload-endpoints-12">Upload
+Endpoints (#12)</a></li>
+</ul></li>
+<li><a href="#testing-checklist" id="toc-testing-checklist">Testing
+Checklist</a></li>
+<li><a href="#frontend-integration-notes" id="toc-frontend-integration-notes">Frontend Integration Notes</a></li>
+</ul></li>
+</ul>
+        </nav>
+         <h1 id="api-contract-documentation">API Contract
 Documentation</h1>
 <h2 id="overview">Overview</h2>
 <p>This document defines the complete API contract for the Demand
