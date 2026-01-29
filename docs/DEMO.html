@@ -388,11 +388,14 @@ cursor: text
 }
 h1 {
 font-size: 28px;
+border-bottom: 1px solid #ccc;
 color: #000
+}
+header h1 {
+border-bottom: none;
 }
 h2 {
 font-size: 24px;
-border-bottom: 1px solid #ccc;
 color: #000
 }
 h3 {
@@ -998,6 +1001,54 @@ padding: 1em 0;
 .tab-panel.active {
 display: block;
 }
+
+.chat-container {
+display: flex;
+flex-direction: column;
+gap: 20px;
+margin: 20px 0;
+}
+
+.message {
+max-width: 80%;
+padding: 15px;
+border-radius: 4px;
+position: relative;
+}
+
+.executor {
+align-self: flex-start;
+background-color: #f9f9f9;
+border: 1px solid #ddd;
+}
+
+.target {
+align-self: flex-end;
+background-color: #f4f8fb;
+border: 1px solid #c5d5e5;
+}
+
+.message pre {
+margin: 10px 0 0 0;
+background: #ffffff !important;
+border: 1px solid rgba(0,0,0,0.1);
+}
+
+.message strong {
+display: block;
+font-family: monospace;
+font-size: 0.75rem;
+letter-spacing: 1px;
+margin-bottom: 10px;
+color: #666;
+}
+
+.message pre {
+background: rgba(255, 255, 255, 0.8) !important;
+border: 1px solid rgba(0, 0, 0, 0.05);
+border-radius: 2px;
+padding: 10px;
+}
 </style>
          
         <script data-external="1" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"></script>
@@ -1185,6 +1236,17 @@ documents: <code>tern -f</code></p>
 <h1 class="tabset" id="about-the-templates">About the templates</h1>
 <p>As you saw before, you can add collapsable/expandable sections with a
 <code>&lt;details&gt;</code> HTML block.</p>
+<p>Chat bubbles are supported as well!</p>
+<div class="chat-container">
+<div class="message executor">
+<p><strong><span class="citation" data-cites="Client">@Client</span></strong></p>
+<p>Ping!</p>
+</div>
+<div class="message target">
+<p><strong><span class="citation" data-cites="Server">@Server</span></strong></p>
+<p>Pong &gt;_&lt;</p>
+</div>
+</div>
 <p>You can also add tabs by annotating a section header with
 <code>{.tabset}</code>, then, its subheaders become tabs.</p>
 <h2 id="tab-1">Tab 1</h2>
