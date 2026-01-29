@@ -89,6 +89,28 @@ Tell me about it, I'll fix it - Steven
 
 As you saw before, you can add collapsable/expandable sections with a `<details>` HTML block.
 
+Chat bubbles are supported as well!
+
+::: {.chat-container}
+
+::: {.message .executor}
+
+**@Client**
+
+Ping!
+
+:::
+
+::: {.message .target}
+
+**@Server**
+
+Pong >\_<
+
+:::
+
+:::
+
 You can also add tabs by annotating a section header with `{.tabset}`, then, its subheaders become tabs.
 
 ## Tab 1
