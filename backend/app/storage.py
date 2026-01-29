@@ -37,6 +37,7 @@ class Storage:
         """
         self._zones_db: dict[int, ZoneBase] = {}
         self._routes_db: dict[int, RouteBase] = {}
+        self._id_counter = 0
 
     # Zone Operations (CRUD)
 
@@ -200,7 +201,7 @@ class Storage:
 
     def get_all_routes(
         self,
-        active: bool = False,
+        active: bool | None = None,
         pickup_zone_id: int | None = None,
         dropoff_zone_id: int | None = None,
     ) -> list[RouteBase]:
@@ -216,8 +217,8 @@ class Storage:
             List[RouteBase]: List of matching routes, ordered by creation time
         """
         ret = list(self._routes_db.values())
-        if active:
-            ret = [i for i in ret if i.active]
+        if active is not None:
+            ret = [i for i in ret if active == i.active]
         if pickup_zone_id:
             ret = [i for i in ret if i.pickup_zone_id == pickup_zone_id]
         if dropoff_zone_id:
@@ -352,6 +353,16 @@ class Storage:
         }
         logger.debug(f"Storage stats: {stats}")
         return stats
+
+    def assing_route_id(self) -> int:
+        """
+        Function to assign IDs to the routes. Increments the id counter.
+
+        Returns:
+            ID to assign
+        """
+        self._id_counter += 1
+        return self._id_counter
 
 
 _storage_global = Storage()
