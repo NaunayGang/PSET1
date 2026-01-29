@@ -8,8 +8,8 @@ all route modules for zones, routes, and uploads.
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-# Router imports will be implemented in subsequent issues
-# from app import routes_zones, routes_routes, routes_uploads
+# Router imports
+from app import routes_zones, routes_routes, routes_uploads
 
 app = FastAPI(
     title="Demand Prediction Service",
@@ -38,10 +38,10 @@ async def health_check():
     return {"status": "ok"}
 
 
-# Routers will be included here in subsequent issues:
-# app.include_router(routes_zones.router, prefix="/zones", tags=["Zones"])
-# app.include_router(routes_routes.router, prefix="/routes", tags=["Routes"])
-# app.include_router(routes_uploads.router, prefix="/uploads", tags=["Uploads"])
+# Include routers for all endpoints
+app.include_router(routes_zones.router, tags=["Zones"])
+app.include_router(routes_routes.router, tags=["Routes"])
+app.include_router(routes_uploads.router, tags=["Uploads"])
 
 
 if __name__ == "__main__":
