@@ -141,11 +141,11 @@
         "tern-src": "tern-src"
       },
       "locked": {
-        "lastModified": 1769742539,
-        "narHash": "sha256-6Ta4sfqE4z7aOQsFrkDRcf4Wh4EcGPIViqvQ8zF9wSw=",
+        "lastModified": 1769744673,
+        "narHash": "sha256-BUVqZzVGlirTCvFsR9YSTLeGisusxxrgjAjlhmogOMI=",
         "owner": "yuuhikaze",
         "repo": "resources",
-        "rev": "17350471efbbef68fdb4351be09fb894a6f8b273",
+        "rev": "644fe646337f7ef0febe004ae6bf640a224535e6",
         "type": "github"
       },
       "original": {
