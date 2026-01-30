@@ -33,7 +33,7 @@
             echo "====== PSET1 Development Environment ======="
             echo "Python: $(python --version)"
             echo "Docker: $(docker --version)"
-            echo "==========================================="
+            echo "============================================"
           '';
         };
       });
