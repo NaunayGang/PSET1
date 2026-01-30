@@ -5,3 +5,9 @@
 # Tern DB artifacts
 store.db-shm
 store.db-wal
+
+# Python artifacts
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
