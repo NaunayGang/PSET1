@@ -166,7 +166,7 @@ def main() -> None:
 			dropoff_filter_enabled = False
 			st.info(
 				"No hay zonas disponibles para filtrar por pickup/dropoff. "
-				"Crea Zones primero para poder usar estos filtros."
+				"Crea Zonas primero para poder usar estos filtros."
 			)
 
 		filters: dict[str, Any] = {}
