@@ -168,3 +168,67 @@ def delete_route(route_id: int) -> None:
     """Delete a route by id."""
 
     _request("DELETE", f"/routes/{route_id}")
+
+
+def upload_trips_parquet(
+    *,
+    filename: str,
+    content: bytes,
+    mode: str,
+    limit_rows: int = 50000,
+    top_n_routes: int = 50,
+    timeout_seconds: int = 120,
+) -> dict[str, Any]:
+    """Upload and process a parquet file.
+
+    Calls POST /uploads/trips-parquet using multipart/form-data.
+
+    Args:
+        filename: Name of the parquet file.
+        content: Raw parquet bytes.
+        mode: Processing mode ('create' or 'update').
+        limit_rows: Maximum rows to process.
+        top_n_routes: Top N routes to extract.
+        timeout_seconds: Request timeout (uploads may take longer).
+
+    Returns:
+        UploadResponse as dict.
+
+    Raises:
+        ApiError: If the backend returns a non-success response.
+        requests.RequestException: For connection/timeout errors.
+    """
+
+    base_url = get_api_url()
+    url = f"{base_url}/uploads/trips-parquet"
+
+    files = {
+        "file": (
+            filename,
+            content,
+            "application/octet-stream",
+        )
+    }
+    data = {
+        "mode": mode,
+        "limit_rows": str(limit_rows),
+        "top_n_routes": str(top_n_routes),
+    }
+
+    response = requests.post(
+        url=url,
+        files=files,
+        data=data,
+        timeout=timeout_seconds,
+    )
+
+    if response.ok:
+        return response.json()
+
+    try:
+        detail: Any = response.json().get("detail")
+    except Exception:  # noqa: BLE001
+        detail = response.text
+
+    raise ApiError(status_code=response.status_code, detail=detail)
+
