@@ -116,8 +116,15 @@ def main() -> None:
 
 	try:
 		zones = list_zones()
-	except Exception:  # noqa: BLE001
-		zones = []
+	except ApiError as err:
+		st.error(_format_api_error(err))
+		st.stop()
+	except Exception:
+		st.error(
+			"Error de conexión con el backend al obtener las zonas. "
+			"Por favor, verifica el servidor e intenta recargar la página."
+		)
+		st.stop()
 
 	zones_by_id: dict[int, dict[str, Any]] = {}
 	for zone in zones:
@@ -138,28 +145,36 @@ def main() -> None:
 			disabled=not active_filter_enabled,
 		)
 
-		pickup_filter_enabled = st.checkbox("Filtrar por pickup_zone_id", value=False)
-		pickup_filter = st.selectbox(
-			"pickup_zone_id",
-			options=zone_options,
-			format_func=lambda o: o[1],
-			disabled=not pickup_filter_enabled or not zone_options,
-		)
+		if zone_options:
+			pickup_filter_enabled = st.checkbox("Filtrar por pickup_zone_id", value=False)
+			pickup_filter = st.selectbox(
+				"pickup_zone_id",
+				options=zone_options,
+				format_func=lambda o: o[1],
+				disabled=not pickup_filter_enabled,
+			)
 
-		dropoff_filter_enabled = st.checkbox("Filtrar por dropoff_zone_id", value=False)
-		dropoff_filter = st.selectbox(
-			"dropoff_zone_id",
-			options=zone_options,
-			format_func=lambda o: o[1],
-			disabled=not dropoff_filter_enabled or not zone_options,
-		)
+			dropoff_filter_enabled = st.checkbox("Filtrar por dropoff_zone_id", value=False)
+			dropoff_filter = st.selectbox(
+				"dropoff_zone_id",
+				options=zone_options,
+				format_func=lambda o: o[1],
+				disabled=not dropoff_filter_enabled,
+			)
+		else:
+			pickup_filter_enabled = False
+			dropoff_filter_enabled = False
+			st.info(
+				"No hay zonas disponibles para filtrar por pickup/dropoff. "
+				"Crea Zonas primero para poder usar estos filtros."
+			)
 
 		filters: dict[str, Any] = {}
 		if active_filter_enabled:
 			filters["active"] = active_value
-		if pickup_filter_enabled and zone_options:
+		if zone_options and pickup_filter_enabled:
 			filters["pickup_zone_id"] = int(pickup_filter[0])
-		if dropoff_filter_enabled and zone_options:
+		if zone_options and dropoff_filter_enabled:
 			filters["dropoff_zone_id"] = int(dropoff_filter[0])
 
 	st.markdown("---")
@@ -240,70 +255,74 @@ def main() -> None:
 
 		loaded_route: dict[str, Any] | None = st.session_state.get("loaded_route")
 		if loaded_route and int(loaded_route.get("id", 0)) == int(edit_route_id):
-			with st.form("routes_edit_form"):
-				st.caption(
-					"El backend requiere que el id del URL coincida con el id del body."
+			if zone_options:
+				with st.form("routes_edit_form"):
+					st.caption(
+						"El backend requiere que el id del URL coincida con el id del body."
+					)
+
+					current_pickup_id = int(loaded_route.get("pickup_zone_id", 0) or 0)
+					current_dropoff_id = int(loaded_route.get("dropoff_zone_id", 0) or 0)
+
+					pickup_index = 0
+					dropoff_index = 0
+					for idx, (zone_id, _) in enumerate(zone_options):
+						if zone_id == current_pickup_id:
+							pickup_index = idx
+						if zone_id == current_dropoff_id:
+							dropoff_index = idx
+
+					pickup_edit = st.selectbox(
+						"pickup_zone_id",
+						options=zone_options,
+						format_func=lambda o: o[1],
+						index=pickup_index,
+					)
+					dropoff_edit = st.selectbox(
+						"dropoff_zone_id",
+						options=zone_options,
+						format_func=lambda o: o[1],
+						index=dropoff_index,
+					)
+					name_edit = st.text_input("name", value=str(loaded_route.get("name", "")))
+					active_edit = st.checkbox(
+						"active",
+						value=bool(loaded_route.get("active", True)),
+					)
+
+					save_clicked = st.form_submit_button("Guardar cambios")
+					if save_clicked:
+						pickup_id = int(pickup_edit[0])
+						dropoff_id = int(dropoff_edit[0])
+						if pickup_id == dropoff_id:
+							st.error("pickup_zone_id y dropoff_zone_id deben ser diferentes")
+						elif not name_edit.strip():
+							st.error("name no puede estar vacío")
+						else:
+							created_at = _parse_created_at(loaded_route.get("created_at"))
+							payload: dict[str, Any] = {
+								"id": int(edit_route_id),
+								"pickup_zone_id": pickup_id,
+								"dropoff_zone_id": dropoff_id,
+								"name": name_edit.strip(),
+								"active": bool(active_edit),
+							}
+							if created_at is not None:
+								payload["created_at"] = created_at.isoformat()
+
+							try:
+								updated = update_route(int(edit_route_id), payload)
+								st.success(f"Route actualizada: {updated.get('id')}")
+								st.session_state["loaded_route"] = updated
+							except ApiError as err:
+								st.error(_format_api_error(err))
+							except Exception as exc:  # noqa: BLE001
+								st.error(f"Error conectando con el backend: {exc}")
+			else:
+				st.warning(
+					"No hay zonas disponibles para editar los campos "
+					"'pickup_zone_id' y 'dropoff_zone_id'."
 				)
-
-				current_pickup_id = int(loaded_route.get("pickup_zone_id", 0) or 0)
-				current_dropoff_id = int(loaded_route.get("dropoff_zone_id", 0) or 0)
-
-				pickup_index = 0
-				dropoff_index = 0
-				for idx, (zone_id, _) in enumerate(zone_options):
-					if zone_id == current_pickup_id:
-						pickup_index = idx
-					if zone_id == current_dropoff_id:
-						dropoff_index = idx
-
-				pickup_edit = st.selectbox(
-					"pickup_zone_id",
-					options=zone_options,
-					format_func=lambda o: o[1],
-					index=pickup_index,
-					disabled=not zone_options,
-				)
-				dropoff_edit = st.selectbox(
-					"dropoff_zone_id",
-					options=zone_options,
-					format_func=lambda o: o[1],
-					index=dropoff_index,
-					disabled=not zone_options,
-				)
-				name_edit = st.text_input("name", value=str(loaded_route.get("name", "")))
-				active_edit = st.checkbox(
-					"active",
-					value=bool(loaded_route.get("active", True)),
-				)
-
-				save_clicked = st.form_submit_button("Guardar cambios")
-				if save_clicked:
-					pickup_id = int(pickup_edit[0])
-					dropoff_id = int(dropoff_edit[0])
-					if pickup_id == dropoff_id:
-						st.error("pickup_zone_id y dropoff_zone_id deben ser diferentes")
-					elif not name_edit.strip():
-						st.error("name no puede estar vacío")
-					else:
-						created_at = _parse_created_at(loaded_route.get("created_at"))
-						payload: dict[str, Any] = {
-							"id": int(edit_route_id),
-							"pickup_zone_id": pickup_id,
-							"dropoff_zone_id": dropoff_id,
-							"name": name_edit.strip(),
-							"active": bool(active_edit),
-						}
-						if created_at is not None:
-							payload["created_at"] = created_at.isoformat()
-
-						try:
-							updated = update_route(int(edit_route_id), payload)
-							st.success(f"Route actualizada: {updated.get('id')}")
-							st.session_state["loaded_route"] = updated
-						except ApiError as err:
-							st.error(_format_api_error(err))
-						except Exception as exc:  # noqa: BLE001
-							st.error(f"Error conectando con el backend: {exc}")
 
 			st.markdown("---")
 			delete_confirm = st.checkbox(
