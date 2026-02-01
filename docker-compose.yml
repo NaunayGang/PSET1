@@ -1,2 +1,61 @@
-# Docker Compose configuration
-# TODO: Implement in issue #19
+# Docker Compose configuration for Demand Prediction Service
+# Orchestrates FastAPI backend and Streamlit frontend with proper networking
+
+services:
+  # =============================================================================
+  # Backend Service - FastAPI
+  # =============================================================================
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: demand-prediction-api
+    ports:
+      - "8000:8000"
+    networks:
+      - app-network
+    environment:
+      - PYTHONUNBUFFERED=1
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+    restart: unless-stopped
+
+  # =============================================================================
+  # Frontend Service - Streamlit
+  # =============================================================================
+  app:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: demand-prediction-app
+    ports:
+      - "8501:8501"
+    networks:
+      - app-network
+    environment:
+      # API URL for Streamlit to call FastAPI
+      # Uses service name 'api' for Docker networking
+      - API_URL=http://api:8000
+      - PYTHONUNBUFFERED=1
+    depends_on:
+      api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8501/_stcore/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+
+# =============================================================================
+# Networks
+# =============================================================================
+networks:
+  app-network:
+    driver: bridge
+    name: demand-prediction-network
