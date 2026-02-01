@@ -1,0 +1,295 @@
+<!doctype html>
+<html
+    xmlns="http://www.w3.org/1999/xhtml"
+    lang=""
+    xml:lang=""
+    >
+    <head>
+        <meta charset="utf-8" />
+        <meta name="generator" content="pandoc" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, user-scalable=yes"
+        />
+                   <title>README</title>
+        <style>
+            code{white-space: pre-wrap;}
+            span.smallcaps{font-variant: small-caps;}
+            div.columns{display: flex; gap: min(4vw, 1.5em);}
+            div.column{flex: auto; overflow-x: auto;}
+            div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+            /* The extra [class] is a hack that increases specificity enough to
+               override a similar rule in reveal.js */
+            ul.task-list[class]{list-style: none;}
+            ul.task-list li input[type="checkbox"] {
+              font-size: inherit;
+              width: 0.8em;
+              margin: 0 0.8em 0.2em -1.6em;
+              vertical-align: middle;
+            }
+            /* CSS for syntax highlighting */
+            html { -webkit-text-size-adjust: 100%; }
+            pre > code.sourceCode { white-space: pre; position: relative; }
+            pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+            pre > code.sourceCode > span:empty { height: 1.2em; }
+            .sourceCode { overflow: visible; }
+            code.sourceCode > span { color: inherit; text-decoration: inherit; }
+            div.sourceCode { margin: 1em 0; }
+            pre.sourceCode { margin: 0; }
+            @media screen {
+            div.sourceCode { overflow: auto; }
+            }
+            @media print {
+            pre > code.sourceCode { white-space: pre-wrap; }
+            pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+            }
+            pre.numberSource code
+              { counter-reset: source-line 0; }
+            pre.numberSource code > span
+              { position: relative; left: -4em; counter-increment: source-line; }
+            pre.numberSource code > span > a:first-child::before
+              { content: counter(source-line);
+                position: relative; left: -1em; text-align: right; vertical-align: baseline;
+                border: none; display: inline-block;
+                -webkit-touch-callout: none; -webkit-user-select: none;
+                -khtml-user-select: none; -moz-user-select: none;
+                -ms-user-select: none; user-select: none;
+                padding: 0 4px; width: 4em;
+                color: #aaaaaa;
+              }
+            pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+            div.sourceCode
+              {   }
+            @media screen {
+            pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+            }
+            code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+            code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+            code span.at { color: #7d9029; } /* Attribute */
+            code span.bn { color: #40a070; } /* BaseN */
+            code span.bu { color: #008000; } /* BuiltIn */
+            code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+            code span.ch { color: #4070a0; } /* Char */
+            code span.cn { color: #880000; } /* Constant */
+            code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+            code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+            code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+            code span.dt { color: #902000; } /* DataType */
+            code span.dv { color: #40a070; } /* DecVal */
+            code span.er { color: #ff0000; font-weight: bold; } /* Error */
+            code span.ex { } /* Extension */
+            code span.fl { color: #40a070; } /* Float */
+            code span.fu { color: #06287e; } /* Function */
+            code span.im { color: #008000; font-weight: bold; } /* Import */
+            code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+            code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+            code span.op { color: #666666; } /* Operator */
+            code span.ot { color: #007020; } /* Other */
+            code span.pp { color: #bc7a00; } /* Preprocessor */
+            code span.sc { color: #4070a0; } /* SpecialChar */
+            code span.ss { color: #bb6688; } /* SpecialString */
+            code span.st { color: #4070a0; } /* String */
+            code span.va { color: #19177c; } /* Variable */
+            code span.vs { color: #4070a0; } /* VerbatimString */
+            code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+        </style>
+                <link rel="stylesheet" href="/pandoc-templates/docs.css" />
+         
+        <script
+            data-external="1"
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+        ></script>
+        <script>
+        // Tabset functionality for pandoc-rendered markdown
+        // Emulates R Markdown's {.tabset} behavior
+        document.addEventListener('DOMContentLoaded', function() {
+          // Find all headers with 'tabset' class (pandoc applies class to header, not section)
+          document.querySelectorAll('h1.tabset, h2.tabset, h3.tabset, h4.tabset, h5.tabset, h6.tabset').forEach(function(tabsetHeader) {
+            const tabLevel = parseInt(tabsetHeader.tagName[1]);
+            const childHeaderTag = 'H' + (tabLevel + 1);
+            
+            // Find all child sections (tabs) - siblings until next same-level header
+            const tabs = [];
+            const introContent = []; // Content before first tab
+            let currentTab = null;
+            
+            let sibling = tabsetHeader.nextElementSibling;
+            while (sibling) {
+              if (sibling.tagName === childHeaderTag) {
+                // New tab starts
+                if (currentTab) tabs.push(currentTab);
+                currentTab = {
+                  title: sibling.textContent,
+                  id: sibling.id || sibling.textContent.toLowerCase().replace(/\s+/g, '-'),
+                  header: sibling,
+                  content: []
+                };
+              } else if (sibling.tagName && sibling.tagName[0] === 'H' && parseInt(sibling.tagName[1]) <= tabLevel) {
+                // Hit a same-level or higher header, stop
+                break;
+              } else if (currentTab) {
+                // Add content to current tab
+                currentTab.content.push(sibling);
+              } else {
+                // Content before first tab (intro text)
+                introContent.push(sibling);
+              }
+              sibling = sibling.nextElementSibling;
+            }
+            if (currentTab) tabs.push(currentTab);
+            
+            if (tabs.length === 0) return;
+            
+            // Create tab UI
+            const tabContainer = document.createElement('div');
+            tabContainer.className = 'tab-container';
+            
+            // Create tab buttons
+            const tabButtons = document.createElement('div');
+            tabButtons.className = 'tab-buttons';
+            
+            tabs.forEach(function(tab, index) {
+              const button = document.createElement('button');
+              button.className = 'tab-button' + (index === 0 ? ' active' : '');
+              button.textContent = tab.title;
+              button.setAttribute('data-tab', tab.id);
+              button.addEventListener('click', function() {
+                // Deactivate all tabs in this container
+                tabContainer.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
+                tabContainer.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+                // Activate clicked tab
+                button.classList.add('active');
+                tabContainer.querySelector('.tab-panel[data-tab="' + tab.id + '"]').classList.add('active');
+              });
+              tabButtons.appendChild(button);
+            });
+            
+            tabContainer.appendChild(tabButtons);
+            
+            // Create tab panels and move content
+            tabs.forEach(function(tab, index) {
+              const panel = document.createElement('div');
+              panel.className = 'tab-panel' + (index === 0 ? ' active' : '');
+              panel.setAttribute('data-tab', tab.id);
+              tab.content.forEach(function(el) {
+                panel.appendChild(el);
+              });
+              tabContainer.appendChild(panel);
+              // Remove the original tab header
+              tab.header.remove();
+            });
+            
+            // Insert intro content right after tabset header, then tab container
+            let insertPoint = tabsetHeader;
+            introContent.forEach(function(el) {
+              insertPoint.after(el);
+              insertPoint = el;
+            });
+            insertPoint.after(tabContainer);
+          });
+        });
+        </script>
+    </head>
+    <body>
+                 <header id="title-block-header">
+            <div class="left">
+                <h1 class="title">Demand Prediction Service</h1>
+                            </div>
+            <div class="right">
+                             </div>
+        </header>
+                 <nav id="TOC" role="doc-toc">
+             <ul>
+<li><a href="#project-overview" id="toc-project-overview">Project
+Overview</a></li>
+<li><a href="#setup-instructions" id="toc-setup-instructions">Setup
+Instructions</a></li>
+<li><a href="#how-to-run" id="toc-how-to-run">How to Run</a>
+<ul>
+<li><a href="#docker-compose" id="toc-docker-compose">Docker
+Compose</a></li>
+<li><a href="#activate-environment"
+id="toc-activate-environment">Activate Environment</a></li>
+<li><a href="#backend-service" id="toc-backend-service">Backend
+Service</a></li>
+<li><a href="#frontend-service" id="toc-frontend-service">Frontend
+Service</a></li>
+<li><a href="#environment-variables"
+id="toc-environment-variables">Environment Variables</a></li>
+<li><a href="#endpoints" id="toc-endpoints">Endpoints</a></li>
+</ul></li>
+<li><a href="#api-documentation" id="toc-api-documentation">API
+Documentation</a></li>
+<li><a href="#contributing" id="toc-contributing">Contributing</a></li>
+</ul>
+        </nav>
+         <p>NYC TLC Zones and Routes Management System</p>
+<h1 id="project-overview">Project Overview</h1>
+<p>This system provides CRUD operations for managing zones and routes,
+with parquet file processing capabilities for NYC TLC trip data.</p>
+<h1 id="setup-instructions">Setup Instructions</h1>
+<p>TODO: Add setup instructions in issue #23 (Nico Tov)</p>
+<h1 id="how-to-run">How to Run</h1>
+<h2 id="docker-compose">Docker Compose</h2>
+<p>Build both services using BuildKit for parallel builds:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">COMPOSE_DOCKER_CLI_BUILD</span><span class="op">=</span>1 <span class="va">DOCKER_BUILDKIT</span><span class="op">=</span>1 <span class="ex">docker</span> compose build</span></code></pre></div>
+<p>Start all services and run in background:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose up <span class="at">-d</span></span></code></pre></div>
+<p>View logs:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose logs <span class="at">-f</span></span></code></pre></div>
+<p>Stop services:</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose down</span></code></pre></div>
+<details>
+<summary>
+Equivalent manual steps
+</summary>
+<p>Nix devshell provides all dependencies.</p>
+<h2 id="activate-environment">Activate Environment</h2>
+<p>Start devshell from project root:</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nix</span> develop</span></code></pre></div>
+<h2 id="backend-service">Backend Service</h2>
+<p>Navigate to backend directory:</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> backend</span></code></pre></div>
+<p>Start FastAPI with uvicorn:</p>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uvicorn</span> app.main:app <span class="at">--reload</span> <span class="at">--host</span> 0.0.0.0 <span class="at">--port</span> 8000</span></code></pre></div>
+<p>API available at <a href="http://localhost:8000"
+class="uri">http://localhost:8000</a></p>
+<h2 id="frontend-service">Frontend Service</h2>
+<p>Open new terminal in devshell. Navigate to frontend:</p>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> frontend</span></code></pre></div>
+<p>Start Streamlit:</p>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">streamlit</span> run app/Home.py <span class="at">--server.port</span> 8501 <span class="at">--server.address</span> 0.0.0.0</span></code></pre></div>
+<p>UI available at <a href="http://localhost:8501"
+class="uri">http://localhost:8501</a></p>
+<h2 id="environment-variables">Environment Variables</h2>
+<p>Configure API URL for frontend:</p>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="va">API_URL</span><span class="op">=</span>http://localhost:8000 <span class="ex">streamlit</span> run app/Home.py</span></code></pre></div>
+</details>
+<h2 id="endpoints">Endpoints</h2>
+<p>Backend API runs on <a href="http://localhost:8000"
+class="uri">http://localhost:8000</a></p>
+<p>OpenAPI documentation available at <a
+href="http://localhost:8000/docs"
+class="uri">http://localhost:8000/docs</a></p>
+<p>Frontend UI runs on <a href="http://localhost:8501"
+class="uri">http://localhost:8501</a></p>
+<p>Health check available at <a href="http://localhost:8000/health"
+class="uri">http://localhost:8000/health</a></p>
+<h1 id="api-documentation">API Documentation</h1>
+<p>Reference <code>docs/api_contract.html</code> for complete API
+documentation.</p>
+<h1 id="contributing">Contributing</h1>
+<p>Reference <code>CONTRIBUTING.html</code> for contribution
+guidelines.</p> 
+    </body>
+</html>
