@@ -126,3 +126,45 @@ def delete_zone(zone_id: int) -> None:
     """Delete a zone by id."""
 
     _request("DELETE", f"/zones/{zone_id}")
+
+
+def list_routes(
+    *,
+    active: bool | None = None,
+    pickup_zone_id: int | None = None,
+    dropoff_zone_id: int | None = None,
+) -> list[dict[str, Any]]:
+    """List routes with optional filters."""
+
+    params: dict[str, Any] = {}
+    if active is not None:
+        params["active"] = active
+    if pickup_zone_id is not None:
+        params["pickup_zone_id"] = pickup_zone_id
+    if dropoff_zone_id is not None:
+        params["dropoff_zone_id"] = dropoff_zone_id
+    return _request("GET", "/routes", params=params)
+
+
+def get_route(route_id: int) -> dict[str, Any]:
+    """Get a route by id."""
+
+    return _request("GET", f"/routes/{route_id}")
+
+
+def create_route(payload: dict[str, Any]) -> dict[str, Any]:
+    """Create a route."""
+
+    return _request("POST", "/routes", json=payload)
+
+
+def update_route(route_id: int, payload: dict[str, Any]) -> dict[str, Any]:
+    """Update a route by id."""
+
+    return _request("PUT", f"/routes/{route_id}", json=payload)
+
+
+def delete_route(route_id: int) -> None:
+    """Delete a route by id."""
+
+    _request("DELETE", f"/routes/{route_id}")
