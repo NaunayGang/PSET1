@@ -21,3 +21,9 @@ source venv/bin/activate
 python -m pytest tests/ -v
 ```
 ![Test Execution Results](resources/images/tests.png)
+
+## Parquet Functionality
+
+![Parquet Upload](resources/images/parquet1.png)
+
+![Uploaded zones](resources/images/parquet2.png)
