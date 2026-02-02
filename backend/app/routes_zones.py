@@ -60,6 +60,9 @@ async def create_zone(zone: ZoneBase):
         logger.warning(f"create_zone failed validation: {ve}")
 
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(ve))
+    except HTTPException:
+        # Re-raise HTTP exceptions (like 404 from storage operations)
+        raise
     except Exception as exc:  # unexpected
         logger.exception(f"create_zone unexpected error: {exc}")
 
@@ -122,6 +125,9 @@ async def get_zone(zone_id: int):
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND, detail="zone not found"
             )
+    except HTTPException:
+        # Re-raise HTTP exceptions
+        raise
     except Exception as exc:
         logger.exception(f"get_zone unexpected error: {exc}")
 
@@ -217,6 +223,9 @@ async def delete_zone(zone_id: int):
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND, detail="zone not found"
             )
+    except HTTPException:
+        # Re-raise HTTP exceptions
+        raise
     except Exception as exc:
         logger.exception(f"delete_zone unexpected error: {exc}")
         raise HTTPException(

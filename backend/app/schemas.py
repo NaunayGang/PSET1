@@ -127,14 +127,38 @@ class RouteBase(BaseModel):
         return v
 
 
-# class RouteCreate(RouteBase):
-#     """Schema for creating a new Route."""
-#     pass
+class RouteCreate(BaseModel):
+    """Schema for creating a new Route."""
+
+    pickup_zone_id: int = Field(
+        ..., gt=0, description="Pickup zone ID, must be positive"
+    )
+    dropoff_zone_id: int = Field(
+        ..., gt=0, description="Dropoff zone ID, must be positive"
+    )
+    name: str = Field(..., min_length=1, description="Route name, not empty")
+    active: bool = Field(default=True, description="Whether route is active")
+
+    @field_validator("name")
+    @classmethod
+    def validate_name_not_empty(cls, v: str) -> str:
+        """Ensure name is not empty or whitespace-only."""
+        if not v or not v.strip():
+            raise ValueError("Route name cannot be empty or whitespace-only")
+        return v.strip()
+
+    @field_validator("dropoff_zone_id")
+    @classmethod
+    def validate_different_zones(cls, v: int, info) -> int:
+        """Ensure pickup and dropoff zones are different."""
+        if "pickup_zone_id" in info.data and v == info.data["pickup_zone_id"]:
+            raise ValueError("pickup_zone_id and dropoff_zone_id must be different")
+        return v
 
 
-# class RouteUpdate(RouteBase):
-#     """Schema for updating an existing Route."""
-#     pass
+class RouteUpdate(RouteBase):
+    """Schema for updating an existing Route."""
+    pass
 
 
 # class RouteResponse(RouteBase):

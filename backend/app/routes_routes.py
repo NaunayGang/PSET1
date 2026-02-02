@@ -16,7 +16,7 @@ import logging
 
 from fastapi import APIRouter, HTTPException, status
 
-from app.schemas import RouteBase
+from app.schemas import RouteBase, RouteCreate
 
 router = APIRouter()
 
@@ -31,7 +31,7 @@ storage = get_global_storage()
     status_code=status.HTTP_201_CREATED,
     tags=["Routes"],
 )
-async def create_route(route: RouteBase):
+async def create_route(route: RouteCreate):
     """
     Create a new route.
     """
@@ -40,19 +40,30 @@ async def create_route(route: RouteBase):
     )
 
     try:
-        route.id = storage.assing_route_id()
-        logger.debug(f"Assigned route id={route.id}")
+        # Create RouteBase object with assigned ID
+        route_id = storage.assign_route_id()
+        route_base = RouteBase(
+            id=route_id,
+            pickup_zone_id=route.pickup_zone_id,
+            dropoff_zone_id=route.dropoff_zone_id,
+            name=route.name,
+            active=route.active
+        )
+        logger.debug(f"Assigned route id={route_id}")
 
-        storage.create_route(route)
+        storage.create_route(route_base)
         logger.info(
-            f"Route created: id={route.id} pickup={route.pickup_zone_id} dropoff={route.dropoff_zone_id} name={route.name}"
+            f"Route created: id={route_id} pickup={route.pickup_zone_id} dropoff={route.dropoff_zone_id} name={route.name}"
         )
 
-        return route
+        return route_base
     except ValueError as ve:
         logger.warning(f"create_route failed validation: {ve}")
 
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(ve))
+    except HTTPException:
+        # Re-raise HTTP exceptions
+        raise
     except Exception as exc:  # unexpected
         logger.exception(f"create_route unexpected error: {exc}")
 
@@ -100,6 +111,9 @@ async def get_route(route_id: int):
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND, detail="route not found"
             )
+    except HTTPException:
+        # Re-raise HTTP exceptions
+        raise
     except Exception as exc:
         logger.exception(f"get_route unexpected error: {exc}")
 
@@ -125,6 +139,9 @@ async def update_route(route_id: int, route: RouteBase):
         logger.warning(f"update_route failed validation: {ve}")
 
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(ve))
+    except HTTPException:
+        # Re-raise HTTP exceptions
+        raise
     except Exception as exc:
         logger.exception(f"update_route unexpected error: {exc}")
 
@@ -155,6 +172,9 @@ async def delete_route(route_id: int):
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND, detail="route not found"
             )
+    except HTTPException:
+        # Re-raise HTTP exceptions
+        raise
     except Exception as exc:
         logger.exception(f"delete_route unexpected error: {exc}")
         raise HTTPException(

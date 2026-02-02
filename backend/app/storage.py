@@ -338,6 +338,7 @@ class Storage:
         """
         self._routes_db.clear()
         self._zones_db.clear()
+        self._id_counter = 0
         logger.info("Storage cleared: all zones and routes removed")
 
     def get_storage_stats(self) -> dict[str, int]:
@@ -354,7 +355,7 @@ class Storage:
         logger.debug(f"Storage stats: {stats}")
         return stats
 
-    def assing_route_id(self) -> int:
+    def assign_route_id(self) -> int:
         """
         Function to assign IDs to the routes. Increments the id counter.
 
