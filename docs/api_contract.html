@@ -1,0 +1,835 @@
+<!doctype html>
+<html
+    xmlns="http://www.w3.org/1999/xhtml"
+    lang=""
+    xml:lang=""
+    >
+    <head>
+        <meta charset="utf-8" />
+        <meta name="generator" content="pandoc" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, user-scalable=yes"
+        />
+                   <title>api_contract</title>
+        <style>
+            code{white-space: pre-wrap;}
+            span.smallcaps{font-variant: small-caps;}
+            div.columns{display: flex; gap: min(4vw, 1.5em);}
+            div.column{flex: auto; overflow-x: auto;}
+            div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+            /* The extra [class] is a hack that increases specificity enough to
+               override a similar rule in reveal.js */
+            ul.task-list[class]{list-style: none;}
+            ul.task-list li input[type="checkbox"] {
+              font-size: inherit;
+              width: 0.8em;
+              margin: 0 0.8em 0.2em -1.6em;
+              vertical-align: middle;
+            }
+            /* CSS for syntax highlighting */
+            html { -webkit-text-size-adjust: 100%; }
+            pre > code.sourceCode { white-space: pre; position: relative; }
+            pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+            pre > code.sourceCode > span:empty { height: 1.2em; }
+            .sourceCode { overflow: visible; }
+            code.sourceCode > span { color: inherit; text-decoration: inherit; }
+            div.sourceCode { margin: 1em 0; }
+            pre.sourceCode { margin: 0; }
+            @media screen {
+            div.sourceCode { overflow: auto; }
+            }
+            @media print {
+            pre > code.sourceCode { white-space: pre-wrap; }
+            pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+            }
+            pre.numberSource code
+              { counter-reset: source-line 0; }
+            pre.numberSource code > span
+              { position: relative; left: -4em; counter-increment: source-line; }
+            pre.numberSource code > span > a:first-child::before
+              { content: counter(source-line);
+                position: relative; left: -1em; text-align: right; vertical-align: baseline;
+                border: none; display: inline-block;
+                -webkit-touch-callout: none; -webkit-user-select: none;
+                -khtml-user-select: none; -moz-user-select: none;
+                -ms-user-select: none; user-select: none;
+                padding: 0 4px; width: 4em;
+                color: #aaaaaa;
+              }
+            pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+            div.sourceCode
+              {   }
+            @media screen {
+            pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+            }
+            code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+            code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+            code span.at { color: #7d9029; } /* Attribute */
+            code span.bn { color: #40a070; } /* BaseN */
+            code span.bu { color: #008000; } /* BuiltIn */
+            code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+            code span.ch { color: #4070a0; } /* Char */
+            code span.cn { color: #880000; } /* Constant */
+            code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+            code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+            code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+            code span.dt { color: #902000; } /* DataType */
+            code span.dv { color: #40a070; } /* DecVal */
+            code span.er { color: #ff0000; font-weight: bold; } /* Error */
+            code span.ex { } /* Extension */
+            code span.fl { color: #40a070; } /* Float */
+            code span.fu { color: #06287e; } /* Function */
+            code span.im { color: #008000; font-weight: bold; } /* Import */
+            code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+            code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+            code span.op { color: #666666; } /* Operator */
+            code span.ot { color: #007020; } /* Other */
+            code span.pp { color: #bc7a00; } /* Preprocessor */
+            code span.sc { color: #4070a0; } /* SpecialChar */
+            code span.ss { color: #bb6688; } /* SpecialString */
+            code span.st { color: #4070a0; } /* String */
+            code span.va { color: #19177c; } /* Variable */
+            code span.vs { color: #4070a0; } /* VerbatimString */
+            code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+        </style>
+                <link rel="stylesheet" href="/pandoc-templates/docs.css" />
+         
+        <script
+            data-external="1"
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+        ></script>
+        <script>
+        // Tabset functionality for pandoc-rendered markdown
+        // Emulates R Markdown's {.tabset} behavior
+        document.addEventListener('DOMContentLoaded', function() {
+          // Find all headers with 'tabset' class (pandoc applies class to header, not section)
+          document.querySelectorAll('h1.tabset, h2.tabset, h3.tabset, h4.tabset, h5.tabset, h6.tabset').forEach(function(tabsetHeader) {
+            const tabLevel = parseInt(tabsetHeader.tagName[1]);
+            const childHeaderTag = 'H' + (tabLevel + 1);
+            
+            // Find all child sections (tabs) - siblings until next same-level header
+            const tabs = [];
+            const introContent = []; // Content before first tab
+            let currentTab = null;
+            
+            let sibling = tabsetHeader.nextElementSibling;
+            while (sibling) {
+              if (sibling.tagName === childHeaderTag) {
+                // New tab starts
+                if (currentTab) tabs.push(currentTab);
+                currentTab = {
+                  title: sibling.textContent,
+                  id: sibling.id || sibling.textContent.toLowerCase().replace(/\s+/g, '-'),
+                  header: sibling,
+                  content: []
+                };
+              } else if (sibling.tagName && sibling.tagName[0] === 'H' && parseInt(sibling.tagName[1]) <= tabLevel) {
+                // Hit a same-level or higher header, stop
+                break;
+              } else if (currentTab) {
+                // Add content to current tab
+                currentTab.content.push(sibling);
+              } else {
+                // Content before first tab (intro text)
+                introContent.push(sibling);
+              }
+              sibling = sibling.nextElementSibling;
+            }
+            if (currentTab) tabs.push(currentTab);
+            
+            if (tabs.length === 0) return;
+            
+            // Create tab UI
+            const tabContainer = document.createElement('div');
+            tabContainer.className = 'tab-container';
+            
+            // Create tab buttons
+            const tabButtons = document.createElement('div');
+            tabButtons.className = 'tab-buttons';
+            
+            tabs.forEach(function(tab, index) {
+              const button = document.createElement('button');
+              button.className = 'tab-button' + (index === 0 ? ' active' : '');
+              button.textContent = tab.title;
+              button.setAttribute('data-tab', tab.id);
+              button.addEventListener('click', function() {
+                // Deactivate all tabs in this container
+                tabContainer.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
+                tabContainer.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+                // Activate clicked tab
+                button.classList.add('active');
+                tabContainer.querySelector('.tab-panel[data-tab="' + tab.id + '"]').classList.add('active');
+              });
+              tabButtons.appendChild(button);
+            });
+            
+            tabContainer.appendChild(tabButtons);
+            
+            // Create tab panels and move content
+            tabs.forEach(function(tab, index) {
+              const panel = document.createElement('div');
+              panel.className = 'tab-panel' + (index === 0 ? ' active' : '');
+              panel.setAttribute('data-tab', tab.id);
+              tab.content.forEach(function(el) {
+                panel.appendChild(el);
+              });
+              tabContainer.appendChild(panel);
+              // Remove the original tab header
+              tab.header.remove();
+            });
+            
+            // Insert intro content right after tabset header, then tab container
+            let insertPoint = tabsetHeader;
+            introContent.forEach(function(el) {
+              insertPoint.after(el);
+              insertPoint = el;
+            });
+            insertPoint.after(tabContainer);
+          });
+        });
+        </script>
+    </head>
+    <body>
+                  <nav id="TOC" role="doc-toc">
+             <ul>
+<li><a href="#api-contract-documentation"
+id="toc-api-contract-documentation">API Contract Documentation</a>
+<ul>
+<li><a href="#overview" id="toc-overview">Overview</a></li>
+<li><a href="#general-conventions" id="toc-general-conventions">General
+Conventions</a>
+<ul>
+<li><a href="#http-methods" id="toc-http-methods">HTTP Methods</a></li>
+<li><a href="#response-codes" id="toc-response-codes">Response
+Codes</a></li>
+<li><a href="#error-response-format"
+id="toc-error-response-format">Error Response Format</a></li>
+</ul></li>
+<li><a href="#health-check" id="toc-health-check">Health Check</a>
+<ul>
+<li><a href="#get-api-health-status" id="toc-get-api-health-status">Get
+API Health Status</a></li>
+</ul></li>
+<li><a href="#zones" id="toc-zones">Zones</a>
+<ul>
+<li><a href="#zone-schema" id="toc-zone-schema">Zone Schema</a></li>
+<li><a href="#create-zone" id="toc-create-zone">Create Zone</a></li>
+<li><a href="#list-zones" id="toc-list-zones">List Zones</a></li>
+<li><a href="#get-zone-by-id" id="toc-get-zone-by-id">Get Zone by
+ID</a></li>
+<li><a href="#update-zone" id="toc-update-zone">Update Zone</a></li>
+<li><a href="#delete-zone" id="toc-delete-zone">Delete Zone</a></li>
+</ul></li>
+<li><a href="#routes" id="toc-routes">Routes</a>
+<ul>
+<li><a href="#route-schema" id="toc-route-schema">Route Schema</a></li>
+<li><a href="#create-route" id="toc-create-route">Create Route</a></li>
+<li><a href="#list-routes" id="toc-list-routes">List Routes</a></li>
+<li><a href="#get-route-by-id" id="toc-get-route-by-id">Get Route by
+ID</a></li>
+<li><a href="#update-route" id="toc-update-route">Update Route</a></li>
+<li><a href="#delete-route" id="toc-delete-route">Delete Route</a></li>
+</ul></li>
+<li><a href="#uploads" id="toc-uploads">Uploads</a>
+<ul>
+<li><a href="#upload-parquet-file" id="toc-upload-parquet-file">Upload
+Parquet File</a></li>
+</ul></li>
+<li><a href="#data-models-summary" id="toc-data-models-summary">Data
+Models Summary</a>
+<ul>
+<li><a href="#zone-model" id="toc-zone-model">Zone Model</a></li>
+<li><a href="#route-model" id="toc-route-model">Route Model</a></li>
+<li><a href="#upload-response-model"
+id="toc-upload-response-model">Upload Response Model</a></li>
+</ul></li>
+<li><a href="#implementation-dependencies"
+id="toc-implementation-dependencies">Implementation Dependencies</a>
+<ul>
+<li><a href="#zones-endpoints-10" id="toc-zones-endpoints-10">Zones
+Endpoints (#10)</a></li>
+<li><a href="#routes-endpoints-11" id="toc-routes-endpoints-11">Routes
+Endpoints (#11)</a></li>
+<li><a href="#upload-endpoints-12" id="toc-upload-endpoints-12">Upload
+Endpoints (#12)</a></li>
+</ul></li>
+<li><a href="#testing-checklist" id="toc-testing-checklist">Testing
+Checklist</a></li>
+<li><a href="#frontend-integration-notes"
+id="toc-frontend-integration-notes">Frontend Integration Notes</a></li>
+</ul></li>
+</ul>
+        </nav>
+         <h1 id="api-contract-documentation">API Contract
+Documentation</h1>
+<h2 id="overview">Overview</h2>
+<p>This document defines the complete API contract for the Demand
+Prediction Service. The API provides CRUD operations for Zones and
+Routes, along with parquet file upload capabilities for NYC TLC trip
+data processing.</p>
+<p><strong>Base URL</strong>: <code>http://localhost:8000</code></p>
+<p><strong>API Version</strong>: 1.0.0</p>
+<h2 id="general-conventions">General Conventions</h2>
+<h3 id="http-methods">HTTP Methods</h3>
+<ul>
+<li><strong>GET</strong>: Retrieve resources</li>
+<li><strong>POST</strong>: Create new resources</li>
+<li><strong>PUT</strong>: Update existing resources</li>
+<li><strong>DELETE</strong>: Remove resources</li>
+</ul>
+<h3 id="response-codes">Response Codes</h3>
+<ul>
+<li><strong>200 OK</strong>: Successful GET, PUT, or POST with response
+body</li>
+<li><strong>201 Created</strong>: Successful POST creating a new
+resource</li>
+<li><strong>204 No Content</strong>: Successful DELETE</li>
+<li><strong>400 Bad Request</strong>: Business rule violation or custom
+validation error</li>
+<li><strong>404 Not Found</strong>: Resource not found</li>
+<li><strong>422 Unprocessable Entity</strong>: Pydantic validation
+error</li>
+</ul>
+<h3 id="error-response-format">Error Response Format</h3>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;detail&quot;</span><span class="fu">:</span> <span class="st">&quot;Error message describing what went wrong&quot;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<p>For validation errors (422):</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;detail&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;loc&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;body&quot;</span><span class="ot">,</span> <span class="st">&quot;field_name&quot;</span><span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;msg&quot;</span><span class="fu">:</span> <span class="st">&quot;field required&quot;</span><span class="fu">,</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;value_error.missing&quot;</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="ot">]</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h2 id="health-check">Health Check</h2>
+<h3 id="get-api-health-status">Get API Health Status</h3>
+<p><strong>Endpoint</strong>: <code>GET /health</code></p>
+<p><strong>Description</strong>: Check if the API is running and
+healthy.</p>
+<p><strong>Tags</strong>: <code>Health</code></p>
+<p><strong>Request</strong>: None</p>
+<p><strong>Response</strong> (200):</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;status&quot;</span><span class="fu">:</span> <span class="st">&quot;ok&quot;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h2 id="zones">Zones</h2>
+<p>Zones represent NYC TLC Location IDs with geographic information.</p>
+<h3 id="zone-schema">Zone Schema</h3>
+<p><strong>Fields</strong>:</p>
+<ul>
+<li><code>id</code> (integer, required): TLC LocationID, must be
+positive</li>
+<li><code>borough</code> (string, required): Borough name, not
+empty</li>
+<li><code>zone_name</code> (string, required): Zone name, not empty</li>
+<li><code>service_zone</code> (string, required): Service zone
+designation</li>
+<li><code>active</code> (boolean, required): Whether zone is active</li>
+<li><code>created_at</code> (datetime, auto-generated): Timestamp of
+creation</li>
+</ul>
+<details>
+<summary>
+Explanation of fields
+</summary>
+<p><strong>Borough:</strong> A borough is a primary administrative
+division of New York City. NYC is composed of five boroughs:
+<strong>Manhattan, Brooklyn, Queens, The Bronx, and Staten
+Island</strong>. In the context of the TLC dataset, there is often a
+sixth “borough” designated as <strong>EWR</strong> (Newark Airport) or
+<strong>Unknown</strong>. In your schema, this field serves to
+categorize the specific <code>LocationID</code> into its respective
+geographic region of the city.</p>
+<p><strong>NYC TLC Location IDs:</strong> These are unique numerical
+identifiers (ranging from 1 to 265) assigned by the <strong>Taxi and
+Limousine Commission</strong> to specific “Taxi Zones.” Instead of using
+precise GPS coordinates (Latitude/Longitude) for every trip—which would
+be data-heavy and privacy-invasive—the TLC aggregates pickup and
+drop-off locations into these predefined zones. This makes it easier to
+analyze patterns like “trips from the Upper East Side to JFK
+Airport.”</p>
+<p><strong>Geographic Information Bundled:</strong> While your specific
+schema only lists <code>id</code> and <code>borough</code>, the official
+TLC “Zone” concept typically bundles the following geographic data:</p>
+<ul>
+<li><strong>Zone Name:</strong> The neighborhood name (e.g., “Times
+Square/Theatre District”, “Astoria”, “East Village”).</li>
+<li><strong>Service Zone:</strong> Categories like <strong>Yellow
+Zone</strong> (primarily Manhattan), <strong>Boro Zone</strong> (outer
+boroughs where Green Taxis operate), or <strong>Airports</strong>.</li>
+<li><strong>Geometry (Shapefiles):</strong> Behind the scenes, each ID
+corresponds to a specific polygon on a map. This allows systems to
+determine exactly which streets and boundaries fall within
+<code>LocationID: 142</code>.</li>
+</ul>
+</details>
+<p><strong>Validation Rules</strong>:</p>
+<ul>
+<li><code>id</code> must be &gt; 0</li>
+<li><code>zone_name</code> must not be empty</li>
+<li><code>borough</code> must not be empty</li>
+</ul>
+<h3 id="create-zone">Create Zone</h3>
+<p><strong>Endpoint</strong>: <code>POST /zones</code></p>
+<p><strong>Tags</strong>: <code>Zones</code></p>
+<p><strong>Request Body</strong>:</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;borough&quot;</span><span class="fu">:</span> <span class="st">&quot;Manhattan&quot;</span><span class="fu">,</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;zone_name&quot;</span><span class="fu">:</span> <span class="st">&quot;Newark Airport&quot;</span><span class="fu">,</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;service_zone&quot;</span><span class="fu">:</span> <span class="st">&quot;EWR&quot;</span><span class="fu">,</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;active&quot;</span><span class="fu">:</span> <span class="kw">true</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<p><strong>Response</strong> (201):</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;borough&quot;</span><span class="fu">:</span> <span class="st">&quot;Manhattan&quot;</span><span class="fu">,</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;zone_name&quot;</span><span class="fu">:</span> <span class="st">&quot;Newark Airport&quot;</span><span class="fu">,</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;service_zone&quot;</span><span class="fu">:</span> <span class="st">&quot;EWR&quot;</span><span class="fu">,</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;active&quot;</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;created_at&quot;</span><span class="fu">:</span> <span class="st">&quot;2025-01-25T20:00:00Z&quot;</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<p><strong>Error Responses</strong>:</p>
+<ul>
+<li>400: ID not positive, zone_name empty, or borough empty</li>
+<li>422: Missing required fields or invalid data types</li>
+</ul>
+<h3 id="list-zones">List Zones</h3>
+<p><strong>Endpoint</strong>: <code>GET /zones</code></p>
+<p><strong>Tags</strong>: <code>Zones</code></p>
+<p><strong>Query Parameters</strong> (all optional):</p>
+<ul>
+<li><code>active</code> (boolean): Filter by active status</li>
+<li><code>borough</code> (string): Filter by borough name</li>
+</ul>
+<p><strong>Request</strong>:
+<code>GET /zones?active=true&amp;borough=Manhattan</code></p>
+<p><strong>Response</strong> (200):</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ot">[</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">{</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;borough&quot;</span><span class="fu">:</span> <span class="st">&quot;Manhattan&quot;</span><span class="fu">,</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;zone_name&quot;</span><span class="fu">:</span> <span class="st">&quot;Newark Airport&quot;</span><span class="fu">,</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;service_zone&quot;</span><span class="fu">:</span> <span class="st">&quot;EWR&quot;</span><span class="fu">,</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;active&quot;</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;created_at&quot;</span><span class="fu">:</span> <span class="st">&quot;2025-01-25T20:00:00Z&quot;</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">{</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="dv">2</span><span class="fu">,</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;borough&quot;</span><span class="fu">:</span> <span class="st">&quot;Manhattan&quot;</span><span class="fu">,</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;zone_name&quot;</span><span class="fu">:</span> <span class="st">&quot;Jamaica Bay&quot;</span><span class="fu">,</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;service_zone&quot;</span><span class="fu">:</span> <span class="st">&quot;Boro Zone&quot;</span><span class="fu">,</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;active&quot;</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;created_at&quot;</span><span class="fu">:</span> <span class="st">&quot;2025-01-25T20:05:00Z&quot;</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">}</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="ot">]</span></span></code></pre></div>
+<h3 id="get-zone-by-id">Get Zone by ID</h3>
+<p><strong>Endpoint</strong>: <code>GET /zones/{id}</code></p>
+<p><strong>Tags</strong>: <code>Zones</code></p>
+<p><strong>Path Parameters</strong>:</p>
+<ul>
+<li><code>id</code> (integer): Zone ID</li>
+</ul>
+<p><strong>Request</strong>: <code>GET /zones/1</code></p>
+<p><strong>Response</strong> (200):</p>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;borough&quot;</span><span class="fu">:</span> <span class="st">&quot;Manhattan&quot;</span><span class="fu">,</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;zone_name&quot;</span><span class="fu">:</span> <span class="st">&quot;Newark Airport&quot;</span><span class="fu">,</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;service_zone&quot;</span><span class="fu">:</span> <span class="st">&quot;EWR&quot;</span><span class="fu">,</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;active&quot;</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;created_at&quot;</span><span class="fu">:</span> <span class="st">&quot;2025-01-25T20:00:00Z&quot;</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<p><strong>Error Responses</strong>:</p>
+<ul>
+<li>404: Zone with specified ID not found</li>
+</ul>
+<h3 id="update-zone">Update Zone</h3>
+<p><strong>Endpoint</strong>: <code>PUT /zones/{id}</code></p>
+<p><strong>Tags</strong>: <code>Zones</code></p>
+<p><strong>Path Parameters</strong>:</p>
+<ul>
+<li><code>id</code> (integer): Zone ID</li>
+</ul>
+<p><strong>Request Body</strong>:</p>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;borough&quot;</span><span class="fu">:</span> <span class="st">&quot;Manhattan&quot;</span><span class="fu">,</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;zone_name&quot;</span><span class="fu">:</span> <span class="st">&quot;Newark Airport - Updated&quot;</span><span class="fu">,</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;service_zone&quot;</span><span class="fu">:</span> <span class="st">&quot;EWR&quot;</span><span class="fu">,</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;active&quot;</span><span class="fu">:</span> <span class="kw">false</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<p><strong>Response</strong> (200):</p>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;borough&quot;</span><span class="fu">:</span> <span class="st">&quot;Manhattan&quot;</span><span class="fu">,</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;zone_name&quot;</span><span class="fu">:</span> <span class="st">&quot;Newark Airport - Updated&quot;</span><span class="fu">,</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;service_zone&quot;</span><span class="fu">:</span> <span class="st">&quot;EWR&quot;</span><span class="fu">,</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;active&quot;</span><span class="fu">:</span> <span class="kw">false</span><span class="fu">,</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;created_at&quot;</span><span class="fu">:</span> <span class="st">&quot;2025-01-25T20:00:00Z&quot;</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<p><strong>Error Responses</strong>:</p>
+<ul>
+<li>400: Validation errors (empty fields, invalid ID)</li>
+<li>404: Zone with specified ID not found</li>
+</ul>
+<h3 id="delete-zone">Delete Zone</h3>
+<p><strong>Endpoint</strong>: <code>DELETE /zones/{id}</code></p>
+<p><strong>Tags</strong>: <code>Zones</code></p>
+<p><strong>Path Parameters</strong>:</p>
+<ul>
+<li><code>id</code> (integer): Zone ID</li>
+</ul>
+<p><strong>Request</strong>: <code>DELETE /zones/1</code></p>
+<p><strong>Response</strong> (204): No content</p>
+<p><strong>Error Responses</strong>:</p>
+<ul>
+<li>404: Zone with specified ID not found</li>
+</ul>
+<h2 id="routes">Routes</h2>
+<p>Routes represent pickup-dropoff zone pairs with validation rules.</p>
+<h3 id="route-schema">Route Schema</h3>
+<p><strong>Fields</strong>:</p>
+<ul>
+<li><code>id</code> (integer or uuid, required): Route identifier</li>
+<li><code>pickup_zone_id</code> (integer, required): Reference to
+Zone.id for pickup</li>
+<li><code>dropoff_zone_id</code> (integer, required): Reference to
+Zone.id for dropoff</li>
+<li><code>name</code> (string, required): Route name, not empty</li>
+<li><code>active</code> (boolean, required): Whether route is
+active</li>
+<li><code>created_at</code> (datetime, auto-generated): Timestamp of
+creation</li>
+</ul>
+<p><strong>Validation Rules</strong>:</p>
+<ul>
+<li><code>pickup_zone_id</code> must be &gt; 0</li>
+<li><code>dropoff_zone_id</code> must be &gt; 0</li>
+<li><code>pickup_zone_id</code> != <code>dropoff_zone_id</code> (returns
+400 if equal)</li>
+<li><code>name</code> must not be empty</li>
+<li>Both pickup and dropoff zones must exist (returns 400 if not
+found)</li>
+</ul>
+<h3 id="create-route">Create Route</h3>
+<p><strong>Endpoint</strong>: <code>POST /routes</code></p>
+<p><strong>Tags</strong>: <code>Routes</code></p>
+<p><strong>Request Body</strong>:</p>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;pickup_zone_id&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;dropoff_zone_id&quot;</span><span class="fu">:</span> <span class="dv">2</span><span class="fu">,</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Manhattan to JFK&quot;</span><span class="fu">,</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;active&quot;</span><span class="fu">:</span> <span class="kw">true</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<p><strong>Response</strong> (201):</p>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;pickup_zone_id&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;dropoff_zone_id&quot;</span><span class="fu">:</span> <span class="dv">2</span><span class="fu">,</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Manhattan to JFK&quot;</span><span class="fu">,</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;active&quot;</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;created_at&quot;</span><span class="fu">:</span> <span class="st">&quot;2025-01-25T20:10:00Z&quot;</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<p><strong>Error Responses</strong>:</p>
+<ul>
+<li>400: pickup_zone_id == dropoff_zone_id, zones don’t exist, or IDs
+not positive</li>
+<li>422: Missing required fields or invalid data types</li>
+</ul>
+<h3 id="list-routes">List Routes</h3>
+<p><strong>Endpoint</strong>: <code>GET /routes</code></p>
+<p><strong>Tags</strong>: <code>Routes</code></p>
+<p><strong>Query Parameters</strong> (all optional):</p>
+<ul>
+<li><code>active</code> (boolean): Filter by active status</li>
+<li><code>pickup_zone_id</code> (integer): Filter by pickup zone ID</li>
+<li><code>dropoff_zone_id</code> (integer): Filter by dropoff zone
+ID</li>
+</ul>
+<p><strong>Request</strong>:
+<code>GET /routes?active=true&amp;pickup_zone_id=1</code></p>
+<p><strong>Response</strong> (200):</p>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ot">[</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">{</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;pickup_zone_id&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;dropoff_zone_id&quot;</span><span class="fu">:</span> <span class="dv">2</span><span class="fu">,</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Manhattan to JFK&quot;</span><span class="fu">,</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;active&quot;</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;created_at&quot;</span><span class="fu">:</span> <span class="st">&quot;2025-01-25T20:10:00Z&quot;</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">{</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="dv">2</span><span class="fu">,</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;pickup_zone_id&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;dropoff_zone_id&quot;</span><span class="fu">:</span> <span class="dv">3</span><span class="fu">,</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Manhattan to LaGuardia&quot;</span><span class="fu">,</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;active&quot;</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;created_at&quot;</span><span class="fu">:</span> <span class="st">&quot;2025-01-25T20:15:00Z&quot;</span></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">}</span></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a><span class="ot">]</span></span></code></pre></div>
+<h3 id="get-route-by-id">Get Route by ID</h3>
+<p><strong>Endpoint</strong>: <code>GET /routes/{id}</code></p>
+<p><strong>Tags</strong>: <code>Routes</code></p>
+<p><strong>Path Parameters</strong>:</p>
+<ul>
+<li><code>id</code> (integer): Route ID</li>
+</ul>
+<p><strong>Request</strong>: <code>GET /routes/1</code></p>
+<p><strong>Response</strong> (200):</p>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;pickup_zone_id&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;dropoff_zone_id&quot;</span><span class="fu">:</span> <span class="dv">2</span><span class="fu">,</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Manhattan to JFK&quot;</span><span class="fu">,</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;active&quot;</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;created_at&quot;</span><span class="fu">:</span> <span class="st">&quot;2025-01-25T20:10:00Z&quot;</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<p><strong>Error Responses</strong>:</p>
+<ul>
+<li>404: Route with specified ID not found</li>
+</ul>
+<h3 id="update-route">Update Route</h3>
+<p><strong>Endpoint</strong>: <code>PUT /routes/{id}</code></p>
+<p><strong>Tags</strong>: <code>Routes</code></p>
+<p><strong>Path Parameters</strong>:</p>
+<ul>
+<li><code>id</code> (integer): Route ID</li>
+</ul>
+<p><strong>Request Body</strong>:</p>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;pickup_zone_id&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;dropoff_zone_id&quot;</span><span class="fu">:</span> <span class="dv">2</span><span class="fu">,</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Manhattan to JFK - Express&quot;</span><span class="fu">,</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;active&quot;</span><span class="fu">:</span> <span class="kw">false</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<p><strong>Response</strong> (200):</p>
+<div class="sourceCode" id="cb15"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;pickup_zone_id&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;dropoff_zone_id&quot;</span><span class="fu">:</span> <span class="dv">2</span><span class="fu">,</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Manhattan to JFK - Express&quot;</span><span class="fu">,</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;active&quot;</span><span class="fu">:</span> <span class="kw">false</span><span class="fu">,</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;created_at&quot;</span><span class="fu">:</span> <span class="st">&quot;2025-01-25T20:10:00Z&quot;</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<p><strong>Error Responses</strong>:</p>
+<ul>
+<li>400: pickup_zone_id == dropoff_zone_id or zones don’t exist</li>
+<li>404: Route with specified ID not found</li>
+</ul>
+<h3 id="delete-route">Delete Route</h3>
+<p><strong>Endpoint</strong>: <code>DELETE /routes/{id}</code></p>
+<p><strong>Tags</strong>: <code>Routes</code></p>
+<p><strong>Path Parameters</strong>:</p>
+<ul>
+<li><code>id</code> (integer): Route ID</li>
+</ul>
+<p><strong>Request</strong>: <code>DELETE /routes/1</code></p>
+<p><strong>Response</strong> (204): No content</p>
+<p><strong>Error Responses</strong>:</p>
+<ul>
+<li>404: Route with specified ID not found</li>
+</ul>
+<h2 id="uploads">Uploads</h2>
+<p>Upload and process NYC TLC trip data parquet files.</p>
+<h3 id="upload-parquet-file">Upload Parquet File</h3>
+<p><strong>Endpoint</strong>:
+<code>POST /uploads/trips-parquet</code></p>
+<p><strong>Tags</strong>: <code>Uploads</code></p>
+<p><strong>Content Type</strong>: <code>multipart/form-data</code></p>
+<p><strong>Form Parameters</strong>:</p>
+<ul>
+<li><code>file</code> (file, required): Parquet file to upload</li>
+<li><code>mode</code> (string, required): Processing mode - “create” or
+“update”</li>
+<li><code>limit_rows</code> (integer, optional): Maximum rows to process
+(default: 50000)</li>
+<li><code>top_n_routes</code> (integer, optional): Number of top routes
+to process (default: 50)</li>
+</ul>
+<p><strong>Request</strong>:</p>
+<pre><code>POST /uploads/trips-parquet
+Content-Type: multipart/form-data
+
+file: yellow_tripdata_2024-01.parquet
+mode: create
+limit_rows: 50000
+top_n_routes: 50</code></pre>
+<p><strong>Response</strong> (200):</p>
+<div class="sourceCode" id="cb17"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;file_name&quot;</span><span class="fu">:</span> <span class="st">&quot;yellow_tripdata_2024-01.parquet&quot;</span><span class="fu">,</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;rows_read&quot;</span><span class="fu">:</span> <span class="dv">50000</span><span class="fu">,</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;zones_created&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="fu">,</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;zones_updated&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="fu">,</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;routes_detected&quot;</span><span class="fu">:</span> <span class="dv">120</span><span class="fu">,</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;routes_created&quot;</span><span class="fu">:</span> <span class="dv">80</span><span class="fu">,</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;routes_updated&quot;</span><span class="fu">:</span> <span class="dv">40</span><span class="fu">,</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;errors&quot;</span><span class="fu">:</span> <span class="ot">[]</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<p><strong>Error Response with Errors</strong>:</p>
+<div class="sourceCode" id="cb18"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;file_name&quot;</span><span class="fu">:</span> <span class="st">&quot;yellow_tripdata_2024-01.parquet&quot;</span><span class="fu">,</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;rows_read&quot;</span><span class="fu">:</span> <span class="dv">50000</span><span class="fu">,</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;zones_created&quot;</span><span class="fu">:</span> <span class="dv">5</span><span class="fu">,</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;zones_updated&quot;</span><span class="fu">:</span> <span class="dv">10</span><span class="fu">,</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;routes_detected&quot;</span><span class="fu">:</span> <span class="dv">120</span><span class="fu">,</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;routes_created&quot;</span><span class="fu">:</span> <span class="dv">75</span><span class="fu">,</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;routes_updated&quot;</span><span class="fu">:</span> <span class="dv">40</span><span class="fu">,</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;errors&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Route with pickup=1 dropoff=1 failed: pickup and dropoff cannot be equal&quot;</span><span class="ot">,</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Zone with id=999 not found during route creation&quot;</span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>  <span class="ot">]</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<p><strong>Processing Logic</strong>:</p>
+<ol type="1">
+<li>Read parquet file using pandas</li>
+<li>Apply <code>limit_rows</code> to prevent memory issues</li>
+<li>Compute (PULocationID, DOLocationID) pairs with counts</li>
+<li>Select top N routes by frequency</li>
+<li>For each top route:</li>
+</ol>
+<ul>
+<li>Check if zones exist, create with defaults if missing</li>
+<li>Check if route exists via GET
+/routes?pickup_zone_id=X&amp;dropoff_zone_id=Y</li>
+<li>If not exists: POST /routes</li>
+<li>If exists and mode=“update”: PUT /routes/{id}</li>
+</ul>
+<p><strong>Required Columns</strong>:</p>
+<ul>
+<li><code>PULocationID</code>: Pickup location ID</li>
+<li><code>DOLocationID</code>: Dropoff location ID</li>
+</ul>
+<p><strong>Error Responses</strong>:</p>
+<ul>
+<li>400: Missing required columns (PULocationID, DOLocationID)</li>
+<li>400: Invalid mode (must be “create” or “update”)</li>
+<li>422: Invalid file format or parameters</li>
+</ul>
+<h2 id="data-models-summary">Data Models Summary</h2>
+<h3 id="zone-model">Zone Model</h3>
+<div class="sourceCode" id="cb19"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;id&quot;</span>: <span class="bu">int</span>,              <span class="co"># &gt; 0, required</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;borough&quot;</span>: <span class="bu">str</span>,         <span class="co"># not empty, required</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;zone_name&quot;</span>: <span class="bu">str</span>,       <span class="co"># not empty, required</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;service_zone&quot;</span>: <span class="bu">str</span>,    <span class="co"># required</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;active&quot;</span>: <span class="bu">bool</span>,         <span class="co"># required</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;created_at&quot;</span>: datetime  <span class="co"># auto-generated</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<h3 id="route-model">Route Model</h3>
+<div class="sourceCode" id="cb20"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;id&quot;</span>: <span class="bu">int</span> <span class="op">|</span> uuid,           <span class="co"># required</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;pickup_zone_id&quot;</span>: <span class="bu">int</span>,      <span class="co"># &gt; 0, required, must exist in zones</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;dropoff_zone_id&quot;</span>: <span class="bu">int</span>,     <span class="co"># &gt; 0, required, must exist in zones, != pickup</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;name&quot;</span>: <span class="bu">str</span>,                <span class="co"># not empty, required</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;active&quot;</span>: <span class="bu">bool</span>,             <span class="co"># required</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;created_at&quot;</span>: datetime      <span class="co"># auto-generated</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<h3 id="upload-response-model">Upload Response Model</h3>
+<div class="sourceCode" id="cb21"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;file_name&quot;</span>: <span class="bu">str</span>,</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;rows_read&quot;</span>: <span class="bu">int</span>,</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;zones_created&quot;</span>: <span class="bu">int</span>,</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;zones_updated&quot;</span>: <span class="bu">int</span>,</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;routes_detected&quot;</span>: <span class="bu">int</span>,</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;routes_created&quot;</span>: <span class="bu">int</span>,</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;routes_updated&quot;</span>: <span class="bu">int</span>,</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;errors&quot;</span>: List[<span class="bu">str</span>]</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<h2 id="implementation-dependencies">Implementation Dependencies</h2>
+<h3 id="zones-endpoints-10">Zones Endpoints (#10)</h3>
+<ul>
+<li><strong>Depends on</strong>: Issue #6 (Pydantic Schemas - Nico
+Naran)</li>
+<li><strong>Enables</strong>: Routes endpoints, Upload endpoints</li>
+</ul>
+<h3 id="routes-endpoints-11">Routes Endpoints (#11)</h3>
+<ul>
+<li><strong>Depends on</strong>: Issue #6 (Pydantic Schemas - Nico
+Naran), Issue #10 (Zones)</li>
+<li><strong>Enables</strong>: Upload endpoints</li>
+</ul>
+<h3 id="upload-endpoints-12">Upload Endpoints (#12)</h3>
+<ul>
+<li><strong>Depends on</strong>:
+<ul>
+<li>Issue #6 (Pydantic Schemas - Nico Naran)</li>
+<li>Issue #7 (Parquet Storage Layer - Nico Naran)</li>
+<li>Issue #8 (Route Optimization Algorithm - Nico Naran)</li>
+<li>Issue #9 (Integrate Algorithm - Nico Naran)</li>
+<li>Issue #10 (Zones Endpoints)</li>
+<li>Issue #11 (Routes Endpoints)</li>
+</ul></li>
+</ul>
+<h2 id="testing-checklist">Testing Checklist</h2>
+<p>Minimum 8 API tests recommended:</p>
+<p><strong>Zones</strong>:</p>
+<ul class="task-list">
+<li><label><input type="checkbox" />Create zone
+successfully</label></li>
+<li><label><input type="checkbox" />List zones with filters</label></li>
+<li><label><input type="checkbox" />Get zone by ID (404 for
+non-existent)</label></li>
+<li><label><input type="checkbox" />Update zone
+successfully</label></li>
+<li><label><input type="checkbox" />Delete zone
+successfully</label></li>
+</ul>
+<p><strong>Routes</strong>:</p>
+<ul class="task-list">
+<li><label><input type="checkbox" />Create route
+successfully</label></li>
+<li><label><input type="checkbox" />Validation: pickup_zone_id ==
+dropoff_zone_id returns 400</label></li>
+<li><label><input type="checkbox" />Update route (404 for
+non-existent)</label></li>
+</ul>
+<p><strong>Upload</strong>:</p>
+<ul class="task-list">
+<li><label><input type="checkbox" />Upload parquet returns
+summary</label></li>
+<li><label><input type="checkbox" />Loaded items appear in list
+endpoints</label></li>
+</ul>
+<h2 id="frontend-integration-notes">Frontend Integration Notes</h2>
+<p><strong>API URL Configuration</strong>:</p>
+<ul>
+<li>Docker Compose: <code>http://api:8000</code></li>
+<li>Local Development: <code>http://localhost:8000</code></li>
+</ul>
+<p><strong>CORS</strong>:</p>
+<ul>
+<li>Enabled for all origins in development</li>
+<li>Frontend can make requests from any origin</li>
+</ul>
+<p><strong>Authentication</strong>:</p>
+<ul>
+<li>Not required for MVP (PSET #1)</li>
+<li>To be added in future iterations</li>
+</ul> 
+    </body>
+</html>

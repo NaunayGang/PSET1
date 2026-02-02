@@ -1,0 +1,543 @@
+<!doctype html>
+<html
+    xmlns="http://www.w3.org/1999/xhtml"
+    lang=""
+    xml:lang=""
+    >
+    <head>
+        <meta charset="utf-8" />
+        <meta name="generator" content="pandoc" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, user-scalable=yes"
+        />
+                   <title>REQUIREMENTS</title>
+        <style>
+            code{white-space: pre-wrap;}
+            span.smallcaps{font-variant: small-caps;}
+            div.columns{display: flex; gap: min(4vw, 1.5em);}
+            div.column{flex: auto; overflow-x: auto;}
+            div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+            /* The extra [class] is a hack that increases specificity enough to
+               override a similar rule in reveal.js */
+            ul.task-list[class]{list-style: none;}
+            ul.task-list li input[type="checkbox"] {
+              font-size: inherit;
+              width: 0.8em;
+              margin: 0 0.8em 0.2em -1.6em;
+              vertical-align: middle;
+            }
+            /* CSS for syntax highlighting */
+            html { -webkit-text-size-adjust: 100%; }
+            pre > code.sourceCode { white-space: pre; position: relative; }
+            pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+            pre > code.sourceCode > span:empty { height: 1.2em; }
+            .sourceCode { overflow: visible; }
+            code.sourceCode > span { color: inherit; text-decoration: inherit; }
+            div.sourceCode { margin: 1em 0; }
+            pre.sourceCode { margin: 0; }
+            @media screen {
+            div.sourceCode { overflow: auto; }
+            }
+            @media print {
+            pre > code.sourceCode { white-space: pre-wrap; }
+            pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+            }
+            pre.numberSource code
+              { counter-reset: source-line 0; }
+            pre.numberSource code > span
+              { position: relative; left: -4em; counter-increment: source-line; }
+            pre.numberSource code > span > a:first-child::before
+              { content: counter(source-line);
+                position: relative; left: -1em; text-align: right; vertical-align: baseline;
+                border: none; display: inline-block;
+                -webkit-touch-callout: none; -webkit-user-select: none;
+                -khtml-user-select: none; -moz-user-select: none;
+                -ms-user-select: none; user-select: none;
+                padding: 0 4px; width: 4em;
+                color: #aaaaaa;
+              }
+            pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+            div.sourceCode
+              {   }
+            @media screen {
+            pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+            }
+            code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+            code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+            code span.at { color: #7d9029; } /* Attribute */
+            code span.bn { color: #40a070; } /* BaseN */
+            code span.bu { color: #008000; } /* BuiltIn */
+            code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+            code span.ch { color: #4070a0; } /* Char */
+            code span.cn { color: #880000; } /* Constant */
+            code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+            code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+            code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+            code span.dt { color: #902000; } /* DataType */
+            code span.dv { color: #40a070; } /* DecVal */
+            code span.er { color: #ff0000; font-weight: bold; } /* Error */
+            code span.ex { } /* Extension */
+            code span.fl { color: #40a070; } /* Float */
+            code span.fu { color: #06287e; } /* Function */
+            code span.im { color: #008000; font-weight: bold; } /* Import */
+            code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+            code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+            code span.op { color: #666666; } /* Operator */
+            code span.ot { color: #007020; } /* Other */
+            code span.pp { color: #bc7a00; } /* Preprocessor */
+            code span.sc { color: #4070a0; } /* SpecialChar */
+            code span.ss { color: #bb6688; } /* SpecialString */
+            code span.st { color: #4070a0; } /* String */
+            code span.va { color: #19177c; } /* Variable */
+            code span.vs { color: #4070a0; } /* VerbatimString */
+            code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+        </style>
+                <link rel="stylesheet" href="/pandoc-templates/docs.css" />
+         
+        <script
+            data-external="1"
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+        ></script>
+        <script>
+        // Tabset functionality for pandoc-rendered markdown
+        // Emulates R Markdown's {.tabset} behavior
+        document.addEventListener('DOMContentLoaded', function() {
+          // Find all headers with 'tabset' class (pandoc applies class to header, not section)
+          document.querySelectorAll('h1.tabset, h2.tabset, h3.tabset, h4.tabset, h5.tabset, h6.tabset').forEach(function(tabsetHeader) {
+            const tabLevel = parseInt(tabsetHeader.tagName[1]);
+            const childHeaderTag = 'H' + (tabLevel + 1);
+            
+            // Find all child sections (tabs) - siblings until next same-level header
+            const tabs = [];
+            const introContent = []; // Content before first tab
+            let currentTab = null;
+            
+            let sibling = tabsetHeader.nextElementSibling;
+            while (sibling) {
+              if (sibling.tagName === childHeaderTag) {
+                // New tab starts
+                if (currentTab) tabs.push(currentTab);
+                currentTab = {
+                  title: sibling.textContent,
+                  id: sibling.id || sibling.textContent.toLowerCase().replace(/\s+/g, '-'),
+                  header: sibling,
+                  content: []
+                };
+              } else if (sibling.tagName && sibling.tagName[0] === 'H' && parseInt(sibling.tagName[1]) <= tabLevel) {
+                // Hit a same-level or higher header, stop
+                break;
+              } else if (currentTab) {
+                // Add content to current tab
+                currentTab.content.push(sibling);
+              } else {
+                // Content before first tab (intro text)
+                introContent.push(sibling);
+              }
+              sibling = sibling.nextElementSibling;
+            }
+            if (currentTab) tabs.push(currentTab);
+            
+            if (tabs.length === 0) return;
+            
+            // Create tab UI
+            const tabContainer = document.createElement('div');
+            tabContainer.className = 'tab-container';
+            
+            // Create tab buttons
+            const tabButtons = document.createElement('div');
+            tabButtons.className = 'tab-buttons';
+            
+            tabs.forEach(function(tab, index) {
+              const button = document.createElement('button');
+              button.className = 'tab-button' + (index === 0 ? ' active' : '');
+              button.textContent = tab.title;
+              button.setAttribute('data-tab', tab.id);
+              button.addEventListener('click', function() {
+                // Deactivate all tabs in this container
+                tabContainer.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
+                tabContainer.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+                // Activate clicked tab
+                button.classList.add('active');
+                tabContainer.querySelector('.tab-panel[data-tab="' + tab.id + '"]').classList.add('active');
+              });
+              tabButtons.appendChild(button);
+            });
+            
+            tabContainer.appendChild(tabButtons);
+            
+            // Create tab panels and move content
+            tabs.forEach(function(tab, index) {
+              const panel = document.createElement('div');
+              panel.className = 'tab-panel' + (index === 0 ? ' active' : '');
+              panel.setAttribute('data-tab', tab.id);
+              tab.content.forEach(function(el) {
+                panel.appendChild(el);
+              });
+              tabContainer.appendChild(panel);
+              // Remove the original tab header
+              tab.header.remove();
+            });
+            
+            // Insert intro content right after tabset header, then tab container
+            let insertPoint = tabsetHeader;
+            introContent.forEach(function(el) {
+              insertPoint.after(el);
+              insertPoint = el;
+            });
+            insertPoint.after(tabContainer);
+          });
+        });
+        </script>
+    </head>
+    <body>
+                  <nav id="TOC" role="doc-toc">
+             <ul>
+<li><a href="#learning-objectives" id="toc-learning-objectives">Learning
+Objectives</a></li>
+<li><a href="#deliverables" id="toc-deliverables">Deliverables</a></li>
+<li><a href="#functional-scope-mvp"
+id="toc-functional-scope-mvp">Functional Scope (MVP)</a>
+<ul>
+<li><a href="#zone-mandatory-crud" id="toc-zone-mandatory-crud">Zone
+(Mandatory CRUD)</a></li>
+<li><a href="#route-mandatory-crud" id="toc-route-mandatory-crud">Route
+(Mandatory CRUD)</a></li>
+</ul></li>
+<li><a href="#api-specification-fastapi"
+id="toc-api-specification-fastapi">API Specification (FastAPI)</a>
+<ul>
+<li><a href="#health" id="toc-health">Health</a></li>
+<li><a href="#crud-zones" id="toc-crud-zones">CRUD Zones</a></li>
+<li><a href="#crud-routes" id="toc-crud-routes">CRUD Routes</a></li>
+<li><a href="#error-standards" id="toc-error-standards">Error
+Standards</a></li>
+</ul></li>
+<li><a href="#frontend-streamlit" id="toc-frontend-streamlit">Frontend
+(Streamlit)</a>
+<ul>
+<li><a href="#home" id="toc-home">Home</a></li>
+<li><a href="#mandatory-pages" id="toc-mandatory-pages">Mandatory
+pages</a></li>
+</ul></li>
+<li><a href="#load-data" id="toc-load-data">Load Data</a>
+<ul>
+<li><a href="#objective" id="toc-objective">Objective</a></li>
+<li><a href="#upload-endpoint-backend"
+id="toc-upload-endpoint-backend">Upload Endpoint (Backend)</a></li>
+<li><a href="#minimum-expected-columns"
+id="toc-minimum-expected-columns">Minimum expected columns</a></li>
+<li><a href="#minimum-logic-required"
+id="toc-minimum-logic-required">Minimum logic required</a></li>
+<li><a href="#ui-requirements-upload-parquet"
+id="toc-ui-requirements-upload-parquet">UI requirements (Upload
+Parquet)</a></li>
+</ul></li>
+<li><a href="#docker-and-docker-compose"
+id="toc-docker-and-docker-compose">Docker and Docker Compose</a>
+<ul>
+<li><a href="#services" id="toc-services">Services</a></li>
+<li><a href="#technical-requirements"
+id="toc-technical-requirements">Technical requirements</a></li>
+</ul></li>
+<li><a href="#git-github" id="toc-git-github">Git &amp; GitHub</a>
+<ul>
+<li><a href="#minimum-workflow" id="toc-minimum-workflow">Minimum
+workflow</a></li>
+<li><a href="#evidence" id="toc-evidence">Evidence</a></li>
+</ul></li>
+<li><a href="#testing" id="toc-testing">Testing</a></li>
+<li><a href="#repository-structure"
+id="toc-repository-structure">Repository structure</a></li>
+<li><a href="#rubric" id="toc-rubric">Rubric</a></li>
+</ul>
+        </nav>
+         <h1 id="learning-objectives">Learning Objectives</h1>
+<ul>
+<li><strong>Git:</strong> Clear commits, branches, tags.</li>
+<li><strong>GitHub:</strong> Issues, PRs, reviews.</li>
+<li><strong>Docker:</strong> Reproducible images for backend and
+frontend.</li>
+<li><strong>Docker Compose:</strong> Launch services with correct
+networking.</li>
+<li><strong>FastAPI:</strong> Complete CRUD endpoints (with
+validations).</li>
+<li><strong>Streamlit:</strong> Multipage interface that consumes the
+backend via HTTP.</li>
+<li><strong>Basic Ingestion:</strong> Load a real parquet file and use
+CRUD endpoints to populate/update data.</li>
+</ul>
+<h1 id="deliverables">Deliverables</h1>
+<ol type="1">
+<li>GitHub repository with:
+<ul>
+<li><code>backend/</code>, <code>frontend/</code>,
+<code>docker-compose.yml</code></li>
+<li><code>README.md</code> (setup, how to run, endpoints, how to use the
+UI)</li>
+<li><code>CONTRIBUTING.md</code> (rules for branches/PR/commits)</li>
+<li><code>docs/</code> with decisions + evidence (screenshots,
+logs)</li>
+</ul></li>
+<li>Services running with Docker Compose:
+<ul>
+<li><code>api</code> (FastAPI)</li>
+<li><code>app</code> (Streamlit)</li>
+</ul></li>
+<li>Mandatory CRUD of 2 entities: Zones and Routes.</li>
+<li>Multipage Streamlit frontend: Home + navigation menu to CRUD pages
+and Upload.</li>
+<li>Parquet loading (NYC TLC): Upload from Streamlit; backend processes
+create/update Zones and/or Routes via CRUD endpoints.</li>
+</ol>
+<h1 id="functional-scope-mvp">Functional Scope (MVP)</h1>
+<p>Build a Demand Prediction Service with two resources.</p>
+<h2 id="zone-mandatory-crud">Zone (Mandatory CRUD)</h2>
+<p>Fields:</p>
+<ul>
+<li><code>id</code> (int) - TLC LocationID</li>
+<li><code>borough</code> (string)</li>
+<li><code>zone_name</code> (string)</li>
+<li><code>service_zone</code> (string)</li>
+<li><code>active</code> (bool)</li>
+<li><code>created_at</code> (datetime)</li>
+</ul>
+<h2 id="route-mandatory-crud">Route (Mandatory CRUD)</h2>
+<p>Fields:</p>
+<ul>
+<li><code>id</code> (int or uuid)</li>
+<li><code>pickup_zone_id</code> (int) - reference to
+<code>Zone.id</code></li>
+<li><code>dropoff_zone_id</code> (int) - reference to
+<code>Zone.id</code></li>
+<li><code>name</code> (string)</li>
+<li><code>active</code> (bool)</li>
+<li><code>created_at</code> (datetime)</li>
+</ul>
+<p>Minimum rules:</p>
+<ul>
+<li><code>pickup_zone_id</code> and <code>dropoff_zone_id</code> must be
+&gt; 0</li>
+<li><code>pickup_zone_id</code> != <code>dropoff_zone_id</code> (if
+equal -&gt; 400)</li>
+<li><code>name</code> not empty</li>
+<li>Validate that pickup/dropoff zones exist; otherwise return 400</li>
+<li>Persistence for PSet #1: in-memory (dict)</li>
+</ul>
+<h1 id="api-specification-fastapi">API Specification (FastAPI)</h1>
+<p>Base URL: <code>http://localhost:8000</code></p>
+<h2 id="health">Health</h2>
+<ul>
+<li>GET <code>/health</code> -&gt; 200
+<code>{ "status": "ok" }</code></li>
+</ul>
+<h2 id="crud-zones">CRUD Zones</h2>
+<ul>
+<li>POST <code>/zones</code></li>
+<li>GET <code>/zones</code> (optional filters: active, borough)</li>
+<li>GET <code>/zones/{id}</code></li>
+<li>PUT <code>/zones/{id}</code></li>
+<li>DELETE <code>/zones/{id}</code> -&gt; 204</li>
+</ul>
+<p>Minimum validation for Zones:</p>
+<ul>
+<li><code>id</code> positive</li>
+<li><code>zone_name</code> not empty</li>
+<li><code>borough</code> not empty</li>
+</ul>
+<h2 id="crud-routes">CRUD Routes</h2>
+<ul>
+<li>POST <code>/routes</code></li>
+<li>GET <code>/routes</code> (optional filters: active, pickup_zone_id,
+dropoff_zone_id)</li>
+<li>GET <code>/routes/{id}</code></li>
+<li>PUT <code>/routes/{id}</code></li>
+<li>DELETE <code>/routes/{id}</code> -&gt; 204</li>
+</ul>
+<p>Minimum validation for Routes:</p>
+<ul>
+<li><code>pickup_zone_id</code>, <code>dropoff_zone_id</code>
+positive</li>
+<li><code>pickup_zone_id</code> != <code>dropoff_zone_id</code> (400 if
+equal)</li>
+<li><code>name</code> not empty</li>
+</ul>
+<h2 id="error-standards">Error Standards</h2>
+<ul>
+<li>400: Business rules / custom validation</li>
+<li>404: Resource not found</li>
+<li>422: Automatic Pydantic validation</li>
+</ul>
+<h1 id="frontend-streamlit">Frontend (Streamlit)</h1>
+<p>Key requirement: Streamlit must consume the backend via HTTP
+requests; the API URL must be configurable (e.g.,
+<code>API_URL=http://api:8000</code> in compose, or
+<code>http://localhost:8000</code> locally).</p>
+<h2 id="home">Home</h2>
+<ul>
+<li>System title + brief description</li>
+<li>Backend status (call GET <code>/health</code>)</li>
+<li>Navigation menu to other pages</li>
+</ul>
+<h2 id="mandatory-pages">Mandatory pages</h2>
+<ol type="1">
+<li>Zones: List (with filters), create, edit, delete.</li>
+<li>Routes: List (with filters), create, edit, delete. Use dropdowns
+populated from <code>/zones</code> for pickup/dropoff.</li>
+<li>Load Data: Upload <code>.parquet</code>, choose mode
+(create/update), show summary (# read, created, updated, errors).</li>
+</ol>
+<p>Navigation may use Streamlit multipage (<code>pages/</code>) or a
+sidebar menu.</p>
+<h1 id="load-data">Load Data</h1>
+<p>Source: <a
+href="https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page"
+class="uri">https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page</a></p>
+<h2 id="objective">Objective</h2>
+<p>Load a real parquet file and, based on the load, create or update
+resources using the CRUD endpoints for Zones and Routes.</p>
+<h2 id="upload-endpoint-backend">Upload Endpoint (Backend)</h2>
+<ul>
+<li>Endpoint: POST <code>/uploads/trips-parquet</code></li>
+<li>Content type: multipart/form-data</li>
+<li>Parameters:
+<ul>
+<li>file: parquet file</li>
+<li>mode: “create” or “update”</li>
+<li>limit_rows (optional, default: 50_000)</li>
+<li>top_n_routes (optional, default: 50)</li>
+</ul></li>
+</ul>
+<p>Response (200):</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;file_name&quot;</span><span class="fu">:</span> <span class="st">&quot;yellow_tripdata_2024-01.parquet&quot;</span><span class="fu">,</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;rows_read&quot;</span><span class="fu">:</span> <span class="dv">50000</span><span class="fu">,</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;zones_created&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="fu">,</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;zones_updated&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="fu">,</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;routes_detected&quot;</span><span class="fu">:</span> <span class="dv">120</span><span class="fu">,</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;routes_created&quot;</span><span class="fu">:</span> <span class="dv">80</span><span class="fu">,</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;routes_updated&quot;</span><span class="fu">:</span> <span class="dv">40</span><span class="fu">,</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;errors&quot;</span><span class="fu">:</span> <span class="ot">[]</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h2 id="minimum-expected-columns">Minimum expected columns</h2>
+<ul>
+<li><code>PULocationID</code></li>
+<li><code>DOLocationID</code></li>
+</ul>
+<p>If either column is missing, return 400 with a clear message.</p>
+<h2 id="minimum-logic-required">Minimum logic required</h2>
+<ol type="1">
+<li>Read parquet using pandas.</li>
+<li>Apply <code>limit_rows</code> to avoid OOM.</li>
+<li>Compute pairs (<code>PULocationID</code>, <code>DOLocationID</code>)
+and counts.</li>
+<li>Select top N routes by frequency.</li>
+</ol>
+<p>For each top route:</p>
+<ul>
+<li>Create or update via the CRUD endpoints (POST <code>/routes</code>,
+PUT <code>/routes/{id}</code>).</li>
+</ul>
+<p>Recommended upsert approach:</p>
+<ul>
+<li>Check existence: GET
+<code>/routes?pickup_zone_id=...&amp;dropoff_zone_id=...</code>.</li>
+<li>If not exists -&gt; POST <code>/routes</code>.</li>
+<li>If exists -&gt; PUT <code>/routes/{id}</code> (e.g., set
+<code>active=true</code> or update <code>name</code>).</li>
+</ul>
+<p>Zones during load:</p>
+<ul>
+<li>Create missing Zones found in PULocationID/DOLocationID (POST
+<code>/zones</code> with defaults: borough=“Unknown”, zone_name=“Zone
+<id>”, service_zone=“Unknown”).</li>
+<li>Update existing Zones as needed (PUT <code>/zones/{id}</code>) e.g.,
+mark <code>active=true</code>.</li>
+</ul>
+<h2 id="ui-requirements-upload-parquet">UI requirements (Upload
+Parquet)</h2>
+<ul>
+<li><code>st.file_uploader</code> for parquet files.</li>
+<li>Mode selector (create / update).</li>
+<li>“Process” button.</li>
+<li>Summary: rows read, routes detected, created, updated, errors.</li>
+<li>Show errors in a table or list.</li>
+</ul>
+<h1 id="docker-and-docker-compose">Docker and Docker Compose</h1>
+<h2 id="services">Services</h2>
+<ul>
+<li>api: Port mapping <code>8000:8000</code>, run uvicorn with
+<code>--host 0.0.0.0 --port 8000</code>.</li>
+<li>app: Port mapping <code>8501:8501</code>, run streamlit with
+<code>--server.address 0.0.0.0</code>, depends_on api.</li>
+</ul>
+<h2 id="technical-requirements">Technical requirements</h2>
+<ul>
+<li>One Dockerfile per service.</li>
+<li><code>docker-compose.yml</code> at repo root.</li>
+<li>Streamlit should call FastAPI via <code>http://api:8000</code> when
+in compose.</li>
+<li>Include pandas and pyarrow in images for parquet handling.</li>
+</ul>
+<h1 id="git-github">Git &amp; GitHub</h1>
+<h2 id="minimum-workflow">Minimum workflow</h2>
+<ul>
+<li>Protect <code>main</code> branch (recommended).</li>
+<li>Branch naming: <code>feature/...</code> and
+<code>fix/...</code>.</li>
+<li>Use PRs for all changes.</li>
+</ul>
+<h2 id="evidence">Evidence</h2>
+<ul>
+<li>5+ real Issues.</li>
+<li>2+ PRs with review/comments.</li>
+</ul>
+<h1 id="testing">Testing</h1>
+<p>Recommended at least 8 API tests:</p>
+<ul>
+<li>Zones: create, list, get 404, update, delete.</li>
+<li>Routes: create, validation pickup==dropoff (400), update 404.</li>
+<li>Upload: loading parquet returns summary and loaded items appear in
+list page.</li>
+</ul>
+<h1 id="repository-structure">Repository structure</h1>
+<pre><code>.
+├─ backend/
+│ ├─ app/
+│ │ ├─ main.py
+│ │ ├─ routes_zones.py
+│ │ ├─ routes_routes.py
+│ │ ├─ routes_uploads.py
+│ │ ├─ schemas.py
+│ │ └─ storage.py
+│ ├─ tests/
+│ ├─ Dockerfile
+│ └─ requirements.txt
+├─ frontend/
+│ ├─ app/
+│ │ ├─ Home.py
+│ │ └─ pages/
+│ │ ├─ 1_Zones.py
+│ │ ├─ 2_Routes.py
+│ │ └─ 3_Upload_Parquet.py
+│ ├─ Dockerfile
+│ └─ requirements.txt
+├─ docker-compose.yml
+├─ README.md
+├─ CONTRIBUTING.md
+└─ docs/
+    ├─ api_contract.md
+    └─ evidence.md</code></pre>
+<h1 id="rubric">Rubric</h1>
+<ul>
+<li>Git &amp; GitHub (20): issues, PRs, commits, tag.</li>
+<li>Docker &amp; Compose (25): reproducible build, correct
+networking.</li>
+<li>FastAPI CRUD Zones+Routes (30): complete endpoints, validation,
+errors.</li>
+<li>Upload Parquet (15): create/update flow with summary.</li>
+<li>Streamlit UX (10): Home + menu + CRUD pages + error handling.</li>
+</ul> 
+    </body>
+</html>
