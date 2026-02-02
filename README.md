@@ -8,9 +8,19 @@ NYC TLC Zones and Routes Management System
 
 This system provides CRUD operations for managing zones and routes, with parquet file processing capabilities for NYC TLC trip data.
 
+# Prerequisites
+
+- Docker Engine 20.10+
+- Docker Compose V2
+
 # Setup Instructions
 
-TODO: Add setup instructions in issue #23 (Nico Tov)
+Clone repository:
+
+```bash
+git clone <repository-url>
+cd pset1
+```
 
 # How to Run
 
@@ -40,12 +50,11 @@ Stop services:
 docker compose down
 ```
 
-<details>
-<summary>Equivalent manual steps</summary>
+## Manual Setup
 
 Nix devshell provides all dependencies.
 
-## Activate Environment
+### Activate Environment
 
 Start devshell from project root:
 
@@ -53,7 +62,7 @@ Start devshell from project root:
 nix develop
 ```
 
-## Backend Service
+### Backend Service
 
 Navigate to backend directory:
 
@@ -69,7 +78,7 @@ uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 
 API available at <http://localhost:8000>
 
-## Frontend Service
+### Frontend Service
 
 Open new terminal in devshell. Navigate to frontend:
 
@@ -85,7 +94,7 @@ streamlit run app/Home.py --server.port 8501 --server.address 0.0.0.0
 
 UI available at <http://localhost:8501>
 
-## Environment Variables
+### Environment Variables
 
 Configure API URL for frontend:
 
@@ -93,9 +102,7 @@ Configure API URL for frontend:
 API_URL=http://localhost:8000 streamlit run app/Home.py
 ```
 
-</details>
-
-## Endpoints
+# Endpoints
 
 Backend API runs on <http://localhost:8000>
 
@@ -104,6 +111,19 @@ OpenAPI documentation available at <http://localhost:8000/docs>
 Frontend UI runs on <http://localhost:8501>
 
 Health check available at <http://localhost:8000/health>
+
+# Usage
+
+## Web Interface
+
+Access the Streamlit frontend at <http://localhost:8501>
+
+The interface provides:
+
+- Home page with system overview
+- Zones management page for CRUD operations
+- Routes management page for CRUD operations
+- Upload page for parquet file processing
 
 # API Documentation
 
