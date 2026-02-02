@@ -125,6 +125,10 @@ The interface provides:
 - Routes management page for CRUD operations
 - Upload page for parquet file processing
 
+# Documentation
+
+Reference [DEMO.md](docs-src/DEMO.md#what-is-tern?)
+
 # API Documentation
 
 Reference `docs/api_contract.md` for complete API documentation.

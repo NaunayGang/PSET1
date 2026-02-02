@@ -79,6 +79,8 @@ You can serve it using a simple HTTP Python server:
 python -m http.server -d docs 8080 # This works in Python 3.7 and onwards
 ```
 
+> Prerequisite: Have devshell activated
+
 Then open up in your browser: <http://localhost:8080>
 
 ## Any problem, bug?
