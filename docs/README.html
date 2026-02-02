@@ -202,12 +202,16 @@
              <ul>
 <li><a href="#project-overview" id="toc-project-overview">Project
 Overview</a></li>
+<li><a href="#prerequisites"
+id="toc-prerequisites">Prerequisites</a></li>
 <li><a href="#setup-instructions" id="toc-setup-instructions">Setup
 Instructions</a></li>
 <li><a href="#how-to-run" id="toc-how-to-run">How to Run</a>
 <ul>
 <li><a href="#docker-compose" id="toc-docker-compose">Docker
 Compose</a></li>
+<li><a href="#manual-setup" id="toc-manual-setup">Manual Setup</a>
+<ul>
 <li><a href="#activate-environment"
 id="toc-activate-environment">Activate Environment</a></li>
 <li><a href="#backend-service" id="toc-backend-service">Backend
@@ -216,7 +220,13 @@ Service</a></li>
 Service</a></li>
 <li><a href="#environment-variables"
 id="toc-environment-variables">Environment Variables</a></li>
+</ul></li>
+</ul></li>
 <li><a href="#endpoints" id="toc-endpoints">Endpoints</a></li>
+<li><a href="#usage" id="toc-usage">Usage</a>
+<ul>
+<li><a href="#web-interface" id="toc-web-interface">Web
+Interface</a></li>
 </ul></li>
 <li><a href="#api-documentation" id="toc-api-documentation">API
 Documentation</a></li>
@@ -227,55 +237,59 @@ Documentation</a></li>
 <h1 id="project-overview">Project Overview</h1>
 <p>This system provides CRUD operations for managing zones and routes,
 with parquet file processing capabilities for NYC TLC trip data.</p>
+<h1 id="prerequisites">Prerequisites</h1>
+<ul>
+<li>Docker Engine 20.10+</li>
+<li>Docker Compose V2</li>
+</ul>
 <h1 id="setup-instructions">Setup Instructions</h1>
-<p>TODO: Add setup instructions in issue #23 (Nico Tov)</p>
+<p>Clone repository:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone <span class="op">&lt;</span>repository-url<span class="op">&gt;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> pset1</span></code></pre></div>
 <h1 id="how-to-run">How to Run</h1>
 <h2 id="docker-compose">Docker Compose</h2>
 <p>Build both services using BuildKit for parallel builds:</p>
-<div class="sourceCode" id="cb1"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">COMPOSE_DOCKER_CLI_BUILD</span><span class="op">=</span>1 <span class="va">DOCKER_BUILDKIT</span><span class="op">=</span>1 <span class="ex">docker</span> compose build</span></code></pre></div>
-<p>Start all services and run in background:</p>
 <div class="sourceCode" id="cb2"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose up <span class="at">-d</span></span></code></pre></div>
-<p>View logs:</p>
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">COMPOSE_DOCKER_CLI_BUILD</span><span class="op">=</span>1 <span class="va">DOCKER_BUILDKIT</span><span class="op">=</span>1 <span class="ex">docker</span> compose build</span></code></pre></div>
+<p>Start all services and run in background:</p>
 <div class="sourceCode" id="cb3"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose logs <span class="at">-f</span></span></code></pre></div>
-<p>Stop services:</p>
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose up <span class="at">-d</span></span></code></pre></div>
+<p>View logs:</p>
 <div class="sourceCode" id="cb4"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose down</span></code></pre></div>
-<details>
-<summary>
-Equivalent manual steps
-</summary>
-<p>Nix devshell provides all dependencies.</p>
-<h2 id="activate-environment">Activate Environment</h2>
-<p>Start devshell from project root:</p>
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose logs <span class="at">-f</span></span></code></pre></div>
+<p>Stop services:</p>
 <div class="sourceCode" id="cb5"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nix</span> develop</span></code></pre></div>
-<h2 id="backend-service">Backend Service</h2>
-<p>Navigate to backend directory:</p>
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> compose down</span></code></pre></div>
+<h2 id="manual-setup">Manual Setup</h2>
+<p>Nix devshell provides all dependencies.</p>
+<h3 id="activate-environment">Activate Environment</h3>
+<p>Start devshell from project root:</p>
 <div class="sourceCode" id="cb6"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> backend</span></code></pre></div>
-<p>Start FastAPI with uvicorn:</p>
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nix</span> develop</span></code></pre></div>
+<h3 id="backend-service">Backend Service</h3>
+<p>Navigate to backend directory:</p>
 <div class="sourceCode" id="cb7"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uvicorn</span> app.main:app <span class="at">--reload</span> <span class="at">--host</span> 0.0.0.0 <span class="at">--port</span> 8000</span></code></pre></div>
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> backend</span></code></pre></div>
+<p>Start FastAPI with uvicorn:</p>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uvicorn</span> app.main:app <span class="at">--reload</span> <span class="at">--host</span> 0.0.0.0 <span class="at">--port</span> 8000</span></code></pre></div>
 <p>API available at <a href="http://localhost:8000"
 class="uri">http://localhost:8000</a></p>
-<h2 id="frontend-service">Frontend Service</h2>
+<h3 id="frontend-service">Frontend Service</h3>
 <p>Open new terminal in devshell. Navigate to frontend:</p>
-<div class="sourceCode" id="cb8"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> frontend</span></code></pre></div>
-<p>Start Streamlit:</p>
 <div class="sourceCode" id="cb9"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">streamlit</span> run app/Home.py <span class="at">--server.port</span> 8501 <span class="at">--server.address</span> 0.0.0.0</span></code></pre></div>
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> frontend</span></code></pre></div>
+<p>Start Streamlit:</p>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">streamlit</span> run app/Home.py <span class="at">--server.port</span> 8501 <span class="at">--server.address</span> 0.0.0.0</span></code></pre></div>
 <p>UI available at <a href="http://localhost:8501"
 class="uri">http://localhost:8501</a></p>
-<h2 id="environment-variables">Environment Variables</h2>
+<h3 id="environment-variables">Environment Variables</h3>
 <p>Configure API URL for frontend:</p>
-<div class="sourceCode" id="cb10"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="va">API_URL</span><span class="op">=</span>http://localhost:8000 <span class="ex">streamlit</span> run app/Home.py</span></code></pre></div>
-</details>
-<h2 id="endpoints">Endpoints</h2>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="va">API_URL</span><span class="op">=</span>http://localhost:8000 <span class="ex">streamlit</span> run app/Home.py</span></code></pre></div>
+<h1 id="endpoints">Endpoints</h1>
 <p>Backend API runs on <a href="http://localhost:8000"
 class="uri">http://localhost:8000</a></p>
 <p>OpenAPI documentation available at <a
@@ -285,6 +299,17 @@ class="uri">http://localhost:8000/docs</a></p>
 class="uri">http://localhost:8501</a></p>
 <p>Health check available at <a href="http://localhost:8000/health"
 class="uri">http://localhost:8000/health</a></p>
+<h1 id="usage">Usage</h1>
+<h2 id="web-interface">Web Interface</h2>
+<p>Access the Streamlit frontend at <a href="http://localhost:8501"
+class="uri">http://localhost:8501</a></p>
+<p>The interface provides:</p>
+<ul>
+<li>Home page with system overview</li>
+<li>Zones management page for CRUD operations</li>
+<li>Routes management page for CRUD operations</li>
+<li>Upload page for parquet file processing</li>
+</ul>
 <h1 id="api-documentation">API Documentation</h1>
 <p>Reference <code>docs/api_contract.html</code> for complete API
 documentation.</p>
