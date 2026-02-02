@@ -132,3 +132,14 @@ Reference `docs/api_contract.md` for complete API documentation.
 # Contributing
 
 Reference `CONTRIBUTING.md` for contribution guidelines.
+
+
+# README checklist
+
+-   [x] `docker compose up --build` starts api and app.
+-   [x] Home shows backend health and navigation to pages.
+-   [x] CRUD Zones works completely from UI.
+-   [x] CRUD Routes works completely from UI (using Zones).
+-   [x] Upload parquet processes and performs create/update via CRUD endpoints.
+-   [x] README documents how to run and test.
+-   [x] Evidence in GitHub (issues/PR/tag) is ready.

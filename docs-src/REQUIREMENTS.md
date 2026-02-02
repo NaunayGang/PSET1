@@ -261,12 +261,3 @@ Recommended at least 8 API tests:
 -   Upload Parquet (15): create/update flow with summary.
 -   Streamlit UX (10): Home + menu + CRUD pages + error handling.
 
-# README checklist
-
--   [ ] `docker compose up --build` starts api and app.
--   [ ] Home shows backend health and navigation to pages.
--   [ ] CRUD Zones works completely from UI.
--   [ ] CRUD Routes works completely from UI (using Zones).
--   [ ] Upload parquet processes and performs create/update via CRUD endpoints.
--   [ ] README documents how to run and test.
--   [ ] Evidence in GitHub (issues/PR/tag) is ready.
